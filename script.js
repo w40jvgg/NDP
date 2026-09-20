@@ -5,20 +5,26 @@
   const navBtn = document.querySelector('[data-nav-toggle]');
   const nav = document.querySelector('.nav-links');
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-  const smallScreen = window.matchMedia?.('(max-width: 780px)');
+  const smallScreen = window.matchMedia?.('(max-width: 780px), (max-height: 520px) and (orientation: landscape) and (pointer: coarse)');
 
   let stored = null;
   try { stored = localStorage.getItem('nd-theme'); } catch (_) {}
   const systemLight = window.matchMedia?.('(prefers-color-scheme: light)').matches;
 
-  const applyTheme = (theme) => {
+  let themeTimer = 0;
+  const applyTheme = (theme, animate = false) => {
+    if (animate && !reduceMotion?.matches) {
+      root.classList.add('ndp-theme-transition');
+      clearTimeout(themeTimer);
+      themeTimer = window.setTimeout(() => root.classList.remove('ndp-theme-transition'), 230);
+    }
     root.dataset.theme = theme;
     try { localStorage.setItem('nd-theme', theme); } catch (_) {}
     themeBtn?.setAttribute('aria-label', theme === 'dark' ? 'Включить светлую тему' : 'Включить тёмную тему');
   };
 
-  applyTheme(stored || (systemLight ? 'light' : 'dark'));
-  themeBtn?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark'));
+  applyTheme(stored || (systemLight ? 'light' : 'dark'), false);
+  themeBtn?.addEventListener('click', () => applyTheme(root.dataset.theme === 'dark' ? 'light' : 'dark', true));
 
   navBtn?.addEventListener('click', () => {
     const open = nav?.classList.toggle('open');
@@ -103,7 +109,7 @@
   const copyPanels = [...document.querySelectorAll('.story-copy-panel[data-copy-stage]')];
   const visualPanels = [...document.querySelectorAll('.story-visual-panel[data-visual-stage]')];
   const railSteps = [...document.querySelectorAll('.story-rail-step[data-rail-stage]')];
-  const storyCompact = window.matchMedia?.('(max-width: 680px)');
+  const storyCompact = window.matchMedia?.('(max-width: 780px), (max-height: 520px) and (orientation: landscape) and (pointer: coarse)');
 
   const storyData = [
     { current: 'Аудиофайл → объект произведения', result: 'Звук → объект', system: 'SYSTEM / AUDIO OBJECT', color: '#8b5cf6' },
@@ -241,7 +247,7 @@
     const y = window.scrollY || document.documentElement.scrollTop;
     header?.classList.toggle('is-compact', y > 36);
 
-    if (hero && heroVisual && !reduceMotion?.matches) {
+    if (hero && heroVisual && !smallScreen?.matches && !reduceMotion?.matches) {
       const heroRect = hero.getBoundingClientRect();
       const heroProgress = Math.max(0, Math.min(1, -heroRect.top / Math.max(1, heroRect.height * .82)));
       const scale = 1 - heroProgress * .055;
@@ -250,19 +256,23 @@
       heroVisual.style.filter = `blur(${heroProgress * 1.2}px)`;
     }
 
-    if (story && storyScroll) {
-      if (reduceMotion?.matches) {
-        setStoryStage(0, true);
-      } else if (!storyCompact?.matches) {
-        const rect = storyScroll.getBoundingClientRect();
-        const viewport = window.innerHeight;
-        const travel = Math.max(1, rect.height - viewport);
-        const progress = clamp01(-rect.top / travel);
-        setStoryTarget(progress);
-      }
+    if (story && storyScroll && !storyCompact?.matches && !reduceMotion?.matches) {
+      const rect = storyScroll.getBoundingClientRect();
+      const viewport = window.innerHeight;
+      const travel = Math.max(1, rect.height - viewport);
+      const progress = clamp01(-rect.top / travel);
+      setStoryTarget(progress);
     }
 
     updateStackCards();
+  };
+
+  const resetMobileMotion = () => {
+    if (smallScreen?.matches && heroVisual) {
+      heroVisual.style.transform = '';
+      heroVisual.style.opacity = '';
+      heroVisual.style.filter = '';
+    }
   };
 
   const requestScrollFrame = () => {
@@ -277,7 +287,7 @@
   window.addEventListener('scroll', requestScrollFrame, { passive: true });
   window.addEventListener('resize', requestScrollFrame, { passive: true });
   reduceMotion?.addEventListener?.('change', requestScrollFrame);
-  smallScreen?.addEventListener?.('change', requestScrollFrame);
+  smallScreen?.addEventListener?.('change', () => { resetMobileMotion(); requestScrollFrame(); });
   storyCompact?.addEventListener?.('change', requestScrollFrame);
   requestScrollFrame();
 })();

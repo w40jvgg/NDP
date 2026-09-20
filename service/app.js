@@ -165,12 +165,17 @@
   const randomId = () => `ND-${Math.random().toString(16).slice(2,6).toUpperCase()}-${Math.random().toString(16).slice(2,6).toUpperCase()}`;
   const today = () => new Intl.DateTimeFormat('ru-RU').format(new Date());
 
-  function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme; localStorage.setItem(STORAGE.theme, theme);
+  let themeTimer=0;
+  function applyTheme(theme, animate=false) {
+    const root=document.documentElement;
+    if(animate && !matchMedia('(prefers-reduced-motion: reduce)').matches){
+      root.classList.add('ndp-theme-transition');clearTimeout(themeTimer);themeTimer=setTimeout(()=>root.classList.remove('ndp-theme-transition'),230);
+    }
+    root.dataset.theme = theme; localStorage.setItem(STORAGE.theme, theme);
   }
-  applyTheme(localStorage.getItem(STORAGE.theme) || 'dark');
-  $('#theme-toggle').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light':'dark'));
-  $('#settings-theme').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light':'dark'));
+  applyTheme(localStorage.getItem(STORAGE.theme) || 'dark',false);
+  $('#theme-toggle').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light':'dark',true));
+  $('#settings-theme').addEventListener('click',()=>applyTheme(document.documentElement.dataset.theme === 'dark' ? 'light':'dark',true));
 
   function showAuth() { $('#auth-shell').classList.remove('hidden'); $('#app-shell').classList.add('hidden'); }
   function showApp() {

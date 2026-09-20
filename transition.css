@@ -212,10 +212,27 @@ html.ndp-arrival-pending .ndp-transition-stage,
   .ndp-transition-stage,
   .ndp-equalizer,
   body.ndp-transitioning > *:not(.ndp-transition) {
-    transition-duration: .01ms !important;
+    transition-duration: 180ms !important;
   }
   .ndp-eq-bar {
     animation: none !important;
     transform: translateX(-50%) scaleY(1);
   }
+}
+
+
+/* Mobile compositor path: keep the 5 s brand transition but avoid expensive per-frame filters. */
+@media (max-width:900px), (pointer:coarse) and (max-height:560px) {
+  .ndp-transition{min-height:100svh;min-height:100dvh}
+  .ndp-transition-stage{width:min(96svmin,1024px)}
+  .ndp-eq-bar{animation-name:ndp-wave-mobile;box-shadow:inset 0 1px 1px rgba(255,255,255,.28),0 0 9px var(--glow)}
+}
+@keyframes ndp-wave-mobile{
+  0%{transform:translateX(-50%) scaleY(.24)}
+  13%{transform:translateX(-50%) scaleY(.74)}
+  29%{transform:translateX(-50%) scaleY(.42)}
+  47%{transform:translateX(-50%) scaleY(1)}
+  64%{transform:translateX(-50%) scaleY(.57)}
+  82%{transform:translateX(-50%) scaleY(.86)}
+  100%{transform:translateX(-50%) scaleY(.31)}
 }

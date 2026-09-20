@@ -9,6 +9,10 @@
     <script>
     (() => {
       try {
+        const storedTheme = localStorage.getItem('nd-theme');
+        document.documentElement.dataset.theme = storedTheme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      } catch (_) {}
+      try {
         const u = new URL(window.location.href);
         if (u.searchParams.get('ndp-transition') === '1' || sessionStorage.getItem('ndp-transition-arrival') === '1') {
           document.documentElement.classList.add('ndp-arrival-pending');
@@ -25,7 +29,7 @@
   <header class="site-header">
     <div class="container nav">
       <a class="brand" href="service/index.html" data-ndp-transition aria-label="Открыть сервис NormalDance Protocol">
-        <img src="assets/ndp-logo.png" alt="NDP — NormalDance Protocol" width="44" height="44">
+        <img src="assets/ndp-logo-192.png" srcset="assets/ndp-logo-192.png 192w, assets/ndp-logo.png 768w" sizes="44px" alt="NDP — NormalDance Protocol" width="44" height="44" decoding="async">
         <span class="brand-copy"><strong>NormalDance</strong><span>Protocol / NDP</span></span>
       </a>
       <nav class="nav-links" aria-label="Основная навигация">
@@ -493,7 +497,7 @@
   </footer>
   <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
     <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
-      <img class="ndp-transition-logo" src="assets/ndp-transition-logo.png" alt="NDP — NormalDance Protocol">
+      <img class="ndp-transition-logo" src="assets/ndp-transition-logo-1024.png" srcset="assets/ndp-transition-logo-1024.png 1024w, assets/ndp-transition-logo.png 2508w" sizes="(max-width: 780px) 96vmin, 90vmin" alt="NDP — NormalDance Protocol" width="2508" height="2508" decoding="async">
       <div class="ndp-equalizer ndp-equalizer--top" aria-hidden="true">
         <span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span>
       </div>

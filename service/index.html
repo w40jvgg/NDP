@@ -9,6 +9,10 @@
     <script>
     (() => {
       try {
+        const storedTheme = localStorage.getItem('nd-theme');
+        document.documentElement.dataset.theme = storedTheme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+      } catch (_) {}
+      try {
         const u = new URL(window.location.href);
         if (u.searchParams.get('ndp-transition') === '1' || sessionStorage.getItem('ndp-transition-arrival') === '1') {
           document.documentElement.classList.add('ndp-arrival-pending');
@@ -27,7 +31,7 @@
   <section id="auth-shell" class="auth-shell" aria-labelledby="auth-title">
     <div class="auth-visual">
       <a class="brand brand-large" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-        <img src="assets/ndp-logo-full.png" alt="NDP — NormalDance Protocol. Music Rights Infrastructure" width="190" height="190">
+        <img src="assets/ndp-logo-full-400.png" srcset="assets/ndp-logo-full-400.png 400w, assets/ndp-logo-full.png 800w" sizes="190px" alt="NDP — NormalDance Protocol. Music Rights Infrastructure" width="190" height="190" decoding="async">
       </a>
       <div class="auth-copy">
         <p class="eyebrow">Инфраструктура музыкальных прав</p>
@@ -55,7 +59,7 @@
     <div class="auth-panel">
       <div class="auth-card">
         <a class="auth-card-brand" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-          <img src="assets/ndp-mark.png" alt="NDP" width="52" height="52">
+          <img src="assets/ndp-mark-192.png" srcset="assets/ndp-mark-192.png 192w, assets/ndp-mark.png 512w" sizes="52px" alt="NDP" width="52" height="52" decoding="async">
           <div><strong>NDP</strong><span>NormalDance Protocol</span></div>
         </a>
         <div class="auth-tabs" role="tablist" aria-label="Авторизация">
@@ -99,7 +103,7 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
         <a class="brand" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-          <img src="assets/ndp-mark.png" alt="NDP" width="42" height="42">
+          <img src="assets/ndp-mark-192.png" srcset="assets/ndp-mark-192.png 192w, assets/ndp-mark.png 512w" sizes="42px" alt="NDP" width="42" height="42" decoding="async">
           <span><strong>NormalDance</strong><small>Protocol / NDP</small></span>
         </a>
         <button class="icon-button sidebar-close" id="sidebar-close" type="button" aria-label="Закрыть меню">×</button>
@@ -524,7 +528,7 @@
 
   <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
     <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
-      <img class="ndp-transition-logo" src="../assets/ndp-transition-logo.png" alt="NDP — NormalDance Protocol">
+      <img class="ndp-transition-logo" src="../assets/ndp-transition-logo-1024.png" srcset="../assets/ndp-transition-logo-1024.png 1024w, ../assets/ndp-transition-logo.png 2508w" sizes="(max-width: 900px) 96vmin, 90vmin" alt="NDP — NormalDance Protocol" width="2508" height="2508" decoding="async">
       <div class="ndp-equalizer ndp-equalizer--top" aria-hidden="true">
         <span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span><span class="ndp-eq-bar"></span>
       </div>
