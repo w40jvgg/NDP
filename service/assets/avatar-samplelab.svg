@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="t d">
+<title id="t">Sample Lab</title><desc id="d">Абстрактный аватар демо-пользователя Sample Lab</desc>
+<defs><linearGradient id="g" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#F3B45B"/><stop offset="1" stop-color="#7C6CFF"/></linearGradient></defs>
+<rect width="256" height="256" rx="128" fill="#0B0E15"/><circle cx="128" cy="128" r="117" fill="none" stroke="url(#g)" stroke-width="7"/>
+<path d="M73 215c12-34 31-52 56-52 26 0 44 18 54 52" fill="#202636"/><ellipse cx="128" cy="104" rx="47" ry="59" fill="#D8C5AF"/>
+<path d="M82 104c0-47 24-76 51-76 23 0 42 17 48 46-14-8-30-11-49-9-17 2-34 8-50 18v21Z" fill="#2A2730"/>
+<rect x="94" y="88" width="27" height="18" rx="7" fill="none" stroke="#171A24" stroke-width="5"/><rect x="135" y="88" width="27" height="18" rx="7" fill="none" stroke="#171A24" stroke-width="5"/><path d="M121 96h14" stroke="#171A24" stroke-width="5"/>
+<path d="M111 129c11 8 23 8 34 0" fill="none" stroke="#8A6B5A" stroke-width="5" stroke-linecap="round"/>
+<circle cx="108" cy="96" r="3" fill="#161A23"/><circle cx="149" cy="96" r="3" fill="#161A23"/>
+<path d="M89 207c13-14 27-21 41-21 15 0 28 7 39 21" fill="none" stroke="url(#g)" stroke-width="7" stroke-linecap="round"/>
+</svg>

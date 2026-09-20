@@ -1,0 +1,537 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0a0c11">
+  <meta name="description" content="NormalDance Protocol — демонстрационный интерфейс сервиса музыкальных прав, проверки произведений, реестра и цифровых паспортов.">
+  <title>NDP — NormalDance Protocol</title>
+  <link rel="icon" href="assets/ndp-favicon.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="../transition.css">
+</head>
+<body>
+  <div id="toast-root" class="toast-root" aria-live="polite"></div>
+
+  <section id="auth-shell" class="auth-shell" aria-labelledby="auth-title">
+    <a class="landing-return auth-landing-return" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">← Вернуться на лэндинг</a>
+    <div class="auth-visual">
+      <a class="brand brand-large" href="#" aria-label="NDP — NormalDance Protocol">
+        <img src="assets/ndp-logo-full.png" alt="NDP — NormalDance Protocol. Music Rights Infrastructure" width="190" height="190">
+      </a>
+      <div class="auth-copy">
+        <p class="eyebrow">Инфраструктура музыкальных прав</p>
+        <h1 id="auth-title">Управляйте происхождением, правами и использованием музыки.</h1>
+        <p>Один интерфейс для проверки произведений, регистрации цифровых паспортов, работы с производными треками и событиями роялти.</p>
+      </div>
+      <div class="auth-graph" aria-hidden="true">
+        <svg viewBox="0 0 620 300">
+          <path d="M90 150C190 150 205 74 300 74"/>
+          <path d="M90 150C190 150 210 150 300 150"/>
+          <path d="M90 150C190 150 205 228 300 228"/>
+          <path d="M340 150C430 150 454 104 530 104"/>
+          <path d="M340 150C430 150 454 198 530 198"/>
+          <circle cx="76" cy="150" r="24" class="n0"/><circle cx="76" cy="150" r="6" class="dot signal"/>
+          <circle cx="318" cy="74" r="18"/><circle cx="318" cy="74" r="5" class="dot"/>
+          <circle cx="318" cy="150" r="21"/><circle cx="318" cy="150" r="5" class="dot signal"/>
+          <circle cx="318" cy="228" r="18"/><circle cx="318" cy="228" r="5" class="dot warn"/>
+          <circle cx="548" cy="104" r="16"/><circle cx="548" cy="104" r="4" class="dot signal"/>
+          <circle cx="548" cy="198" r="16"/><circle cx="548" cy="198" r="4" class="dot signal"/>
+        </svg>
+      </div>
+      <div class="auth-foot">Демонстрационный контур · данные хранятся только в вашем браузере</div>
+    </div>
+
+    <div class="auth-panel">
+      <div class="auth-card">
+        <div class="auth-card-brand" aria-label="NDP — NormalDance Protocol">
+          <img src="assets/ndp-mark.png" alt="NDP" width="52" height="52">
+          <div><strong>NDP</strong><span>NormalDance Protocol</span></div>
+        </div>
+        <div class="auth-tabs" role="tablist" aria-label="Авторизация">
+          <button type="button" class="auth-tab active" data-auth-tab="login" role="tab" aria-selected="true">Вход</button>
+          <button type="button" class="auth-tab" data-auth-tab="register" role="tab" aria-selected="false">Регистрация</button>
+        </div>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <div>
+            <p class="eyebrow">Добро пожаловать</p>
+            <h2>Войти в сервис</h2>
+            <p class="form-intro">Используйте демо-профиль или создайте собственный локальный аккаунт.</p>
+          </div>
+          <label class="field"><span>Электронная почта</span><input id="login-email" type="email" autocomplete="email" placeholder="name@example.ru" required></label>
+          <label class="field"><span>Пароль</span><input id="login-password" type="password" autocomplete="current-password" placeholder="Минимум 6 символов" required></label>
+          <div id="login-error" class="form-error" role="alert"></div>
+          <button class="button primary full" type="submit">Войти</button>
+          <button class="button secondary full" type="button" id="demo-login">Войти в демо-профиль</button>
+          <div class="demo-credentials"><span>Демо:</span> demo@normaldance.ru · пароль: demo2026</div>
+        </form>
+
+        <form id="register-form" class="auth-form hidden" novalidate>
+          <div>
+            <p class="eyebrow">Новый профиль</p>
+            <h2>Создать аккаунт</h2>
+            <p class="form-intro">В этой демонстрации регистрация работает локально и не отправляет данные на сервер.</p>
+          </div>
+          <label class="field"><span>Имя или сценическое имя</span><input id="register-name" type="text" autocomplete="name" placeholder="Алексей / AENDYE" required></label>
+          <label class="field"><span>Электронная почта</span><input id="register-email" type="email" autocomplete="email" placeholder="name@example.ru" required></label>
+          <label class="field"><span>Роль</span><select id="register-role"><option>Автор / артист</option><option>Продюсер</option><option>Лейбл / правообладатель</option><option>Разработчик / AI-сервис</option></select></label>
+          <label class="field"><span>Пароль</span><input id="register-password" type="password" autocomplete="new-password" placeholder="Минимум 6 символов" required></label>
+          <label class="check"><input id="register-consent" type="checkbox" required><span>Я согласен с условиями демонстрационного режима и понимаю, что это имитация сервиса.</span></label>
+          <div id="register-error" class="form-error" role="alert"></div>
+          <button class="button primary full" type="submit">Создать аккаунт</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div id="app-shell" class="app-shell hidden">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <a class="brand" href="#dashboard" data-view-link="dashboard">
+          <img src="assets/ndp-mark.png" alt="NDP" width="42" height="42">
+          <span><strong>NormalDance</strong><small>Protocol / NDP</small></span>
+        </a>
+        <button class="icon-button sidebar-close" id="sidebar-close" type="button" aria-label="Закрыть меню">×</button>
+      </div>
+
+      <nav class="side-nav" aria-label="Разделы сервиса">
+        <button class="side-link active" data-view="dashboard"><span class="nav-icon">⌂</span><span>Главная</span></button>
+        <button class="side-link" data-view="verify"><span class="nav-icon">⌁</span><span>Проверка</span></button>
+        <button class="side-link" data-view="registry"><span class="nav-icon">◫</span><span>Реестр</span></button>
+        <button class="side-link" data-view="register-track"><span class="nav-icon">＋</span><span>Регистрация</span></button>
+        <button class="side-link" data-view="royalties"><span class="nav-icon">⇄</span><span>Роялти</span></button>
+        <button class="side-link" data-view="how-it-works"><span class="nav-icon">◎</span><span>Как работает</span></button>
+        <button class="side-link" data-view="developers"><span class="nav-icon">⌘</span><span>API / MCP</span></button>
+      </nav>
+
+      <div class="sidebar-section-label">Профиль</div>
+      <nav class="side-nav compact">
+        <button class="side-link" data-view="account"><span class="nav-icon">○</span><span>Личный кабинет</span></button>
+        <button class="side-link" data-view="settings"><span class="nav-icon">⚙</span><span>Настройки</span></button>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="status-dot"></span>
+        <div><strong>Демо-контур</strong><small>Имитация API и ADNA локально</small></div>
+      </div>
+    </aside>
+
+    <div class="app-main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <a class="landing-return topbar-landing-return" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">← Вернуться на лэндинг</a>
+          <button id="sidebar-open" class="icon-button mobile-menu" type="button" aria-label="Открыть меню">☰</button>
+          <div class="topbar-title">
+            <div class="crumb" id="view-kicker">NORMALDANCE / ОБЗОР</div>
+            <h1 id="view-title">Главная</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <button id="top-messages-button" class="messages-top-button" type="button" data-go="messages" aria-label="Открыть сообщения">
+            <span class="messages-top-icon" aria-hidden="true">✉</span>
+            <span class="messages-top-label">Сообщения</span>
+            <span class="nav-badge top-message-badge" id="message-unread">0</span>
+          </button>
+          <button class="profile-button" id="profile-menu-button" type="button" aria-expanded="false">
+            <span class="avatar" id="top-avatar">ND</span>
+            <span class="profile-copy"><strong id="top-name">Пользователь</strong><small id="top-role">Автор</small></span>
+            <span class="chevron">⌄</span>
+          </button>
+          <button class="icon-button" id="theme-toggle" type="button" aria-label="Сменить тему" title="Сменить тему">☼</button>
+          <div class="profile-menu hidden" id="profile-menu">
+            <button type="button" data-view-menu="account">Личный кабинет</button>
+            <button type="button" data-view-menu="settings">Настройки</button>
+            <button type="button" id="logout-button">Выйти</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="view-wrap">
+        <section class="view active" id="view-dashboard" data-view-section="dashboard">
+          <div class="notice demo-notice"><span>ДЕМО</span><p>Интерфейс имитирует работу NormalDance. Проверка аудио, совпадения, выплаты и сетевые операции не являются результатом реального ADNA-анализа.</p></div>
+
+          <div class="welcome-row">
+            <div>
+              <p class="eyebrow">Рабочее пространство</p>
+              <h2>Добрый день, <span id="dashboard-name">пользователь</span>.</h2>
+              <p>Здесь собраны произведения, статусы прав, события использования и быстрые действия.</p>
+            </div>
+            <button class="button primary" type="button" data-go="register-track">Зарегистрировать произведение</button>
+          </div>
+
+          <div class="metric-grid">
+            <article class="metric-card"><span class="metric-label">Произведений</span><strong id="metric-tracks">4</strong><small>в вашем реестре</small></article>
+            <article class="metric-card"><span class="metric-label">Проверено</span><strong id="metric-verified">4</strong><small>цифровых паспортов</small></article>
+            <article class="metric-card"><span class="metric-label">Производных</span><strong id="metric-derivatives">2</strong><small>связанных объектов</small></article>
+            <article class="metric-card"><span class="metric-label">Начислено</span><strong id="metric-royalty">12 480 ₽</strong><small>демо-расчёт за период</small></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel large-panel">
+              <div class="panel-head"><div><span class="panel-kicker">Быстрый старт</span><h3>Что вы хотите сделать?</h3></div></div>
+              <div class="action-grid">
+                <button class="action-card" data-go="verify"><span class="action-icon">⌁</span><strong>Проверить трек</strong><small>Загрузить аудио и получить демонстрационный вердикт</small><span>Перейти →</span></button>
+                <button class="action-card" data-go="register-track"><span class="action-icon">＋</span><strong>Создать паспорт</strong><small>Авторы, сплиты, лицензии и цифровая идентичность</small><span>Перейти →</span></button>
+                <button class="action-card" data-go="registry"><span class="action-icon">◫</span><strong>Открыть реестр</strong><small>Все произведения и связи происхождения в одном месте</small><span>Перейти →</span></button>
+                <button class="action-card" data-go="royalties"><span class="action-icon">⇄</span><strong>Роялти</strong><small>События использования и каскадный расчёт долей</small><span>Перейти →</span></button>
+                <button class="action-card" data-go="how-it-works"><span class="action-icon">◎</span><strong>Как работает</strong><small>Пройти сквозной сценарий ADNA → реестр → выплата</small><span>Запустить демо →</span></button>
+                <button class="action-card" data-go="messages"><span class="action-icon">✉</span><strong>Сообщения</strong><small>Переговоры о покупке, продаже и обмене сэмплов</small><span>Открыть →</span></button>
+              </div>
+            </section>
+
+            <section class="panel activity-panel">
+              <div class="panel-head"><div><span class="panel-kicker">Последние события</span><h3>Активность</h3></div></div>
+              <div class="activity-list" id="activity-list"></div>
+            </section>
+          </div>
+
+          <section class="panel">
+            <div class="panel-head"><div><span class="panel-kicker">Мои произведения</span><h3>Последние записи</h3></div><button class="text-button" data-go="registry">Открыть весь реестр →</button></div>
+            <div class="table-scroll"><table class="data-table"><thead><tr><th>Произведение</th><th>NDP-ID / ISRC</th><th>Тип</th><th>Статус</th><th></th></tr></thead><tbody id="dashboard-track-table"></tbody></table></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-verify" data-view-section="verify">
+          <div class="page-grid verify-layout">
+            <section class="panel verify-panel">
+              <div class="panel-head stacked"><div><span class="panel-kicker">ADNA / проверка</span><h2>Проверить произведение</h2><p>Загрузите аудиофайл. В демо-режиме браузер создаст локальный хэш и покажет детерминированную имитацию результата.</p></div></div>
+              <div class="verify-tabs" role="tablist">
+                <button class="verify-tab active" data-verify-tab="file" type="button">Аудиофайл</button>
+                <button class="verify-tab" data-verify-tab="fingerprint" type="button">ADNA-отпечаток</button>
+                <button class="verify-tab" data-verify-tab="isrc" type="button">ISRC / NDP-ID</button>
+              </div>
+
+              <div class="verify-pane active" data-verify-pane="file">
+                <label class="upload-zone" id="upload-zone">
+                  <input id="verify-file" type="file" accept="audio/*,.mp3,.wav,.flac,.ogg,.m4a">
+                  <span class="upload-mark">⌁</span><strong>Перетащите аудиофайл сюда</strong><span>или нажмите, чтобы выбрать · до 32 МБ</span>
+                </label>
+                <div class="selected-file hidden" id="selected-file"><div><strong id="selected-file-name"></strong><span id="selected-file-size"></span></div><button id="clear-file" class="icon-button" type="button" aria-label="Удалить файл">×</button></div>
+                <button id="verify-file-button" class="button primary" type="button" disabled>Проверить произведение</button>
+                <p class="microcopy">Файл не отправляется: эта версия работает полностью локально. Реальный движок ADNA здесь не подключён.</p>
+              </div>
+
+              <div class="verify-pane" data-verify-pane="fingerprint">
+                <label class="field"><span>ADNA v1 / v2</span><textarea id="fingerprint-input" rows="7" placeholder="Вставьте base64-отпечаток или значение, начинающееся с QTI…"></textarea></label>
+                <button id="verify-fingerprint-button" class="button primary" type="button">Сверить с реестром</button>
+              </div>
+
+              <div class="verify-pane" data-verify-pane="isrc">
+                <label class="field"><span>ISRC или NDP-ID</span><input id="verify-id-input" type="text" placeholder="RU-NDP-26-91752 или ND-84F2-19A7"></label>
+                <button id="verify-id-button" class="button primary" type="button">Найти в реестре</button>
+              </div>
+            </section>
+
+            <aside class="panel result-panel" id="verify-result-panel">
+              <div class="empty-state" id="verify-empty"><span class="empty-icon">◎</span><h3>Результат появится здесь</h3><p>Выберите способ проверки и запустите анализ.</p></div>
+              <div class="analysis-state hidden" id="analysis-state"><div class="scan-ring"></div><h3 id="analysis-title">Вычисляем отпечаток…</h3><p id="analysis-copy">Подготавливаем локальную демонстрацию результата.</p><div class="progress"><i id="analysis-progress"></i></div><div class="analysis-steps"><span data-step="1">Аудио</span><span data-step="2">ADNA</span><span data-step="3">Реестр</span><span data-step="4">Права</span></div></div>
+              <div class="verify-result hidden" id="verify-result"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-registry" data-view-section="registry">
+          <section class="panel registry-toolbar">
+            <div class="toolbar-row">
+              <div class="search-field"><span>⌕</span><input id="registry-search" type="search" placeholder="Название, артист, ISRC или NDP-ID"></div>
+              <select id="registry-filter" class="control-select"><option value="all">Все типы</option><option value="Оригинал">Оригиналы</option><option value="Ремикс">Ремиксы</option><option value="Производное">Производные</option></select>
+              <button class="button primary" data-go="register-track">＋ Добавить</button>
+            </div>
+          </section>
+          <div class="registry-layout">
+            <section class="panel registry-list-panel">
+              <div class="panel-head"><div><span class="panel-kicker">Реестр прав</span><h2>Произведения</h2></div><span class="count-badge" id="registry-count">0</span></div>
+              <div class="registry-list" id="registry-list"></div>
+            </section>
+            <aside class="panel passport-panel" id="passport-panel"></aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-register-track" data-view-section="register-track">
+          <div class="register-layout">
+            <section class="panel">
+              <div class="panel-head stacked"><div><span class="panel-kicker">NDT / цифровой паспорт</span><h2>Регистрация произведения</h2><p>Заполните сведения по шагам. Новый объект будет сохранён в локальный демонстрационный реестр.</p></div></div>
+              <div class="wizard-head">
+                <button class="wizard-step active" data-wizard-step="1"><span>1</span><strong>Произведение</strong></button>
+                <button class="wizard-step" data-wizard-step="2"><span>2</span><strong>Права</strong></button>
+                <button class="wizard-step" data-wizard-step="3"><span>3</span><strong>Лицензии</strong></button>
+                <button class="wizard-step" data-wizard-step="4"><span>4</span><strong>Проверка</strong></button>
+              </div>
+
+              <form id="track-form" novalidate>
+                <div class="wizard-pane active" data-wizard-pane="1">
+                  <div class="form-grid two">
+                    <label class="field"><span>Название произведения *</span><input id="track-title" required placeholder="Название трека"></label>
+                    <label class="field"><span>Исполнитель / автор *</span><input id="track-artist" required placeholder="Сценическое имя"></label>
+                    <label class="field"><span>ISRC</span><input id="track-isrc" placeholder="RU-NDP-26-00001"></label>
+                    <label class="field"><span>Тип объекта</span><select id="track-type"><option>Оригинал</option><option>Ремикс</option><option>Производное</option><option>Сэмпл</option></select></label>
+                    <label class="field"><span>Жанр</span><input id="track-genre" placeholder="Drum & Bass"></label>
+                    <label class="field"><span>BPM</span><input id="track-bpm" type="number" min="1" max="300" placeholder="174"></label>
+                    <label class="field full-span"><span>Родительское произведение</span><select id="track-parent"><option value="">Нет / исходное произведение</option></select></label>
+                  </div>
+                </div>
+
+                <div class="wizard-pane" data-wizard-pane="2">
+                  <div class="split-header"><div><h3>Участники и доли</h3><p>Сумма долей должна составлять ровно 100%.</p></div><button id="add-split" class="button secondary small" type="button">＋ Добавить участника</button></div>
+                  <div id="split-editor" class="split-editor"></div>
+                  <div class="split-total"><span>Итого</span><strong id="split-total-value">100%</strong></div>
+                </div>
+
+                <div class="wizard-pane" data-wizard-pane="3">
+                  <div class="license-grid">
+                    <label class="option-card selected"><input type="radio" name="ai-license" value="Разрешено" checked><span class="option-icon">✓</span><strong>Использование ИИ разрешено</strong><small>События использования регистрируются и могут участвовать в расчёте роялти.</small></label>
+                    <label class="option-card"><input type="radio" name="ai-license" value="С условиями"><span class="option-icon">≋</span><strong>С условиями</strong><small>Разрешение зависит от типа использования и параметров лицензии.</small></label>
+                    <label class="option-card"><input type="radio" name="ai-license" value="Запрещено"><span class="option-icon">×</span><strong>Запрещено</strong><small>Машиночитаемое ограничение использования произведения ИИ.</small></label>
+                  </div>
+                  <label class="field"><span>Комментарий к лицензии</span><textarea id="track-license-note" rows="4" placeholder="Например: разрешено только для поиска и атрибуции"></textarea></label>
+                </div>
+
+                <div class="wizard-pane" data-wizard-pane="4">
+                  <div id="registration-review" class="registration-review"></div>
+                  <label class="check"><input id="track-confirm" type="checkbox"><span>Подтверждаю корректность внесённых сведений для демонстрационной регистрации.</span></label>
+                </div>
+
+                <div id="track-form-error" class="form-error"></div>
+                <div class="wizard-actions"><button id="wizard-back" class="button secondary" type="button" disabled>Назад</button><button id="wizard-next" class="button primary" type="button">Продолжить</button></div>
+              </form>
+            </section>
+            <aside class="panel sticky-preview">
+              <span class="panel-kicker">Предпросмотр паспорта</span>
+              <div class="preview-passport" id="preview-passport"></div>
+            </aside>
+          </div>
+        </section>
+
+        <section class="view" id="view-royalties" data-view-section="royalties">
+          <div class="royalty-summary">
+            <article class="summary-card"><span>Начислено за период</span><strong>12 480 ₽</strong><small>демонстрационные данные</small></article>
+            <article class="summary-card"><span>Событий использования</span><strong>284</strong><small>за последние 30 дней</small></article>
+            <article class="summary-card"><span>К выплате</span><strong>8 736 ₽</strong><small>после распределения долей</small></article>
+          </div>
+          <div class="royalty-layout">
+            <section class="panel">
+              <div class="panel-head"><div><span class="panel-kicker">Каскадный расчёт</span><h2>События роялти</h2></div></div>
+              <div class="event-timeline" id="royalty-events"></div>
+            </section>
+            <aside class="panel flow-demo">
+              <span class="panel-kicker">Пример расчёта</span><h3>Использование → права → доли</h3>
+              <div class="flow-step"><span>01</span><div><strong>Обнаружен трек</strong><small>Полуночный / Сдвиг</small></div></div>
+              <div class="flow-line"></div>
+              <div class="flow-step"><span>02</span><div><strong>Найдена связь</strong><small>67% от исходного произведения</small></div></div>
+              <div class="flow-line"></div>
+              <div class="flow-step"><span>03</span><div><strong>Разрешён граф прав</strong><small>4 участника + источник сэмпла</small></div></div>
+              <div class="flow-line"></div>
+              <div class="flow-step active"><span>04</span><div><strong>Рассчитаны доли</strong><small>Событие готово к выплате</small></div></div>
+              <div class="distribution-bar"><i style="width:40%"></i><i style="width:30%"></i><i style="width:20%"></i><i style="width:10%"></i></div>
+              <div class="distribution-list"><span><i></i>Автор 40%</span><span><i></i>Продюсер 30%</span><span><i></i>Артист 20%</span><span><i></i>Источник сэмпла 10%</span></div>
+            </aside>
+          </div>
+        </section>
+
+
+        <section class="view" id="view-how-it-works" data-view-section="how-it-works">
+          <section class="panel how-hero">
+            <div><p class="eyebrow">Сквозная демонстрация</p><h2>Как работает NormalDance</h2><p>Один сценарий показывает путь от звука до подтверждённых прав и автоматического расчёта вознаграждения. Все значения ниже — демонстрационные.</p></div>
+            <button class="button primary" id="run-how-demo" type="button">▶ Запустить полный сценарий</button>
+          </section>
+
+          <div class="how-progress" aria-label="Этапы демонстрации">
+            <button class="how-step active" type="button" data-how-step="1"><span>01</span><div><strong>ADNA</strong><small>Идентификация</small></div></button>
+            <i></i><button class="how-step" type="button" data-how-step="2"><span>02</span><div><strong>NDP-ID</strong><small>Реестр прав</small></div></button>
+            <i></i><button class="how-step" type="button" data-how-step="3"><span>03</span><div><strong>1 000 ₽</strong><small>Распределение</small></div></button>
+          </div>
+
+          <section class="how-demo-stage active" data-how-pane="1">
+            <div class="how-copy panel">
+              <span class="panel-kicker">01 / идентификация</span>
+              <h2>Перцептивный отпечаток ADNA</h2>
+              <p>Алгоритм строит компактный отпечаток спектрограммы размером 256 байт, устойчивый к сжатию, конвертации форматов и изменению громкости. В тестовой выборке перекодированные копии дают сходство ≥ 0,95, а чужие треки — ≤ 0,44. По назначению это автоматический Content ID для правообладателей.</p>
+              <div class="fact-row"><span><strong>256 байт</strong><small>компактный отпечаток</small></span><span><strong>≥ 0,95</strong><small>перекодированная копия</small></span><span><strong>≤ 0,44</strong><small>чужой материал</small></span></div>
+            </div>
+            <div class="panel adna-lab">
+              <div class="lab-head"><span class="panel-kicker">ADNA / LIVE DEMO</span><span class="demo-state" id="adna-demo-state">ГОТОВО</span></div>
+              <div class="audio-source"><div><strong>metro_break_172.wav</strong><small>WAV · 44.1 kHz · 00:12</small></div><span>12.4 MB</span></div>
+              <div class="waveform" id="adna-waveform" aria-hidden="true"></div>
+              <div class="fingerprint-output"><span>ADNA-V1 / 256 B</span><code id="demo-fingerprint">—</code></div>
+              <div class="similarity-meter"><div><span>Сходство с реестром</span><strong id="demo-similarity">0,00</strong></div><div class="meter"><i id="demo-similarity-bar"></i><b class="threshold t44">0,44</b><b class="threshold t95">0,95</b></div></div>
+              <div class="adna-result" id="adna-demo-result"><span>◎</span><div><strong>Анализ не запущен</strong><small>Запустите сценарий или этот этап отдельно.</small></div></div>
+              <button class="button secondary full" id="run-adna-demo" type="button">Проверить отпечаток</button>
+            </div>
+          </section>
+
+          <section class="how-demo-stage" data-how-pane="2">
+            <div class="how-copy panel">
+              <span class="panel-kicker">02 / реестр прав</span>
+              <h2>Реестр прав с цепочкой производных</h2>
+              <p>Каждое произведение — трек, сэмпл или пак — получает NDP-ID и машинно-читаемый манифест: авторы, сплиты и условия лицензии. Связи «производное → исходное» позволяют пройти по графу происхождения и рассчитать каскадные роялти.</p>
+              <div class="manifest-mini"><span>NDP-ID</span><code>ND-SMP-43BC-0201</code><span>Лицензия</span><strong>Коммерческое использование · 10% downstream</strong><span>Правообладатель</span><strong>Sample Lab · 100%</strong></div>
+            </div>
+            <div class="panel rights-graph-demo">
+              <div class="lab-head"><span class="panel-kicker">ГРАФ ПРОИСХОЖДЕНИЯ</span><span class="demo-state" id="registry-demo-state">ОЖИДАЕТ ADNA</span></div>
+              <div class="rights-node source" data-rights-node="source"><span>SAMPLE</span><strong>Стеклянные барабаны</strong><small>ND-SMP-43BC-0201</small></div>
+              <div class="graph-link"><i></i><span>используется в</span></div>
+              <div class="rights-node parent" data-rights-node="parent"><span>TRACK</span><strong>Полуночный маршрут</strong><small>ND-84F2-19A7</small></div>
+              <div class="graph-link"><i></i><span>производное</span></div>
+              <div class="rights-node derivative" data-rights-node="derivative"><span>DERIVATIVE</span><strong>Полуночный / Сдвиг</strong><small>ND-1AA3-8C71</small></div>
+              <div class="graph-resolve" id="graph-resolve"><strong>0 / 3</strong><small>узлов прав разрешено</small></div>
+              <button class="button secondary full" id="run-registry-demo" type="button">Разрешить цепочку прав</button>
+            </div>
+          </section>
+
+          <section class="how-demo-stage" data-how-pane="3">
+            <div class="how-copy panel">
+              <span class="panel-kicker">03 / расчёт и выплата</span>
+              <h2>Автоматическое распределение выплат</h2>
+              <p>Событие использования → проверка отпечатка реестром → распределение вознаграждения между правообладателями по сплитам и связям происхождения. Расчётный слой не зависит от платёжного рельса: СБП — сейчас, цифровой рубль — по мере готовности банковских API. Данные и инфраструктура предполагаются на территории РФ.</p>
+              <div class="payment-rail"><span class="active">СБП</span><i>→</i><span>Расчётный слой NDP</span><i>→</i><span>Цифровой рубль</span></div>
+            </div>
+            <div class="panel payout-demo">
+              <div class="lab-head"><span class="panel-kicker">СОБЫТИЕ USAGE-74291</span><span class="demo-state" id="payout-demo-state">ОЖИДАЕТ ПРАВА</span></div>
+              <div class="usage-amount"><span>Сумма события</span><strong>1 000 ₽</strong></div>
+              <div class="payout-lines" id="payout-lines">
+                <div><span>ÆNDYΞ · автор источника</span><strong data-payout="420">0 ₽</strong></div>
+                <div><span>KERA · ремиксер</span><strong data-payout="300">0 ₽</strong></div>
+                <div><span>Producer B · продюсер</span><strong data-payout="180">0 ₽</strong></div>
+                <div><span>Sample Lab · сэмпл / downstream</span><strong data-payout="100">0 ₽</strong></div>
+              </div>
+              <div class="payout-total"><span>Распределено</span><strong id="payout-total">0 ₽ / 1 000 ₽</strong></div>
+              <button class="button primary full" id="run-payout-demo" type="button">Рассчитать и распределить</button>
+            </div>
+          </section>
+
+          <section class="panel demo-log-panel"><div class="panel-head"><div><span class="panel-kicker">Технический журнал</span><h3>Что происходит внутри</h3></div><button class="text-button" id="reset-how-demo" type="button">Сбросить демо</button></div><div class="demo-log" id="how-demo-log"><span>Сценарий готов к запуску.</span></div></section>
+        </section>
+
+        <section class="view" id="view-messages" data-view-section="messages">
+          <div class="messages-layout">
+            <section class="panel conversation-list-panel">
+              <div class="panel-head"><div><span class="panel-kicker">Личные сообщения</span><h2>Диалоги</h2></div><span class="count-badge" id="conversation-count">3</span></div>
+              <div class="conversation-search search-field"><span>⌕</span><input id="conversation-search" type="search" placeholder="Имя, сэмпл или предложение"></div>
+              <div class="conversation-list" id="conversation-list"></div>
+            </section>
+            <section class="panel chat-panel">
+              <div class="chat-head" id="chat-head"></div>
+              <div class="chat-context" id="chat-context"></div>
+              <div class="chat-messages" id="chat-messages"></div>
+              <form class="chat-compose" id="message-form">
+                <textarea id="message-input" rows="2" placeholder="Напишите сообщение…" aria-label="Текст сообщения"></textarea>
+                <div><button class="button secondary small" id="simulate-incoming" type="button">Получить демо-сообщение</button><button class="button primary" type="submit">Отправить</button></div>
+              </form>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-user-profile" data-view-section="user-profile">
+          <div class="public-profile-page">
+            <button class="profile-back" id="public-profile-back" type="button">← Вернуться к сообщениям</button>
+
+            <section class="panel public-profile-hero">
+              <div class="public-profile-main">
+                <div class="public-profile-avatar-wrap">
+                  <img id="public-profile-avatar" class="public-profile-avatar" src="assets/avatar-kera.svg" alt="Аватар пользователя">
+                  <span class="public-profile-online" id="public-profile-online" aria-label="Статус пользователя"></span>
+                </div>
+                <div class="public-profile-title">
+                  <div class="public-profile-badges"><span class="badge success" id="public-profile-verified">NDP VERIFIED</span><span class="badge neutral">ДЕМО-ПРОФИЛЬ</span></div>
+                  <h2 id="public-profile-name">Пользователь</h2>
+                  <p id="public-profile-role">Роль</p>
+                  <div class="public-profile-meta"><span id="public-profile-location">—</span><span>•</span><span id="public-profile-joined">—</span><span>•</span><span id="public-profile-response">—</span></div>
+                </div>
+              </div>
+              <div class="public-profile-actions">
+                <button class="button primary" id="public-profile-message" type="button">✉ Написать сообщение</button>
+                <button class="button secondary" id="public-profile-copy-id" type="button">Скопировать NDP-ID</button>
+              </div>
+            </section>
+
+            <div class="public-profile-grid">
+              <section class="panel public-profile-about">
+                <div class="panel-head stacked"><div><span class="panel-kicker">Публичный профиль</span><h3>О пользователе</h3></div></div>
+                <p id="public-profile-bio" class="public-profile-bio"></p>
+                <dl class="public-profile-data">
+                  <div><dt>NDP-ID</dt><dd><code id="public-profile-id">—</code></dd></div>
+                  <div><dt>Основные жанры</dt><dd id="public-profile-genres">—</dd></div>
+                  <div><dt>Специализация</dt><dd id="public-profile-specialties">—</dd></div>
+                  <div><dt>Условия работы</dt><dd id="public-profile-policy">—</dd></div>
+                </dl>
+              </section>
+
+              <section class="panel public-profile-stats-panel">
+                <div class="panel-head stacked"><div><span class="panel-kicker">Репутация в NDP</span><h3>Статистика</h3></div></div>
+                <div class="public-profile-stats" id="public-profile-stats"></div>
+                <div class="reputation-card">
+                  <div><span>Рейтинг сделок</span><strong id="public-profile-rating">—</strong></div>
+                  <div class="reputation-meter"><i id="public-profile-rating-bar"></i></div>
+                  <small id="public-profile-rating-note">—</small>
+                </div>
+              </section>
+            </div>
+
+            <section class="panel public-profile-catalog-panel">
+              <div class="panel-head"><div><span class="panel-kicker">Публичная библиотека</span><h3>Сэмплы и релизы</h3></div><span class="count-badge" id="public-profile-catalog-count">0</span></div>
+              <div class="public-profile-catalog" id="public-profile-catalog"></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="view" id="view-developers" data-view-section="developers">
+          <div class="developer-hero panel">
+            <div><p class="eyebrow">Машинный интерфейс</p><h2>NormalDance API / MCP</h2><p>Демонстрация того, как внешняя система может идентифицировать произведение, читать права и регистрировать событие использования.</p></div>
+            <span class="api-status"><i class="status-dot"></i> ДЕМО-API ДОСТУПЕН</span>
+          </div>
+          <div class="developer-grid">
+            <section class="panel endpoint-list">
+              <button class="endpoint active" data-endpoint="identify"><span class="method post">POST</span><code>/oracle/identify</code><small>Идентификация ADNA</small></button>
+              <button class="endpoint" data-endpoint="track"><span class="method get">GET</span><code>/registry/tracks/{isrc}</code><small>Карточка прав</small></button>
+              <button class="endpoint" data-endpoint="usage"><span class="method post">POST</span><code>/usage/events</code><small>Событие использования</small></button>
+              <button class="endpoint" data-endpoint="mcp"><span class="method mcp">MCP</span><code>register_track</code><small>Регистрация произведения</small></button>
+            </section>
+            <section class="panel code-panel"><div class="code-top"><span id="code-title">POST /oracle/identify</span><button id="copy-code" class="text-button" type="button">Копировать</button></div><pre><code id="code-example"></code></pre></section>
+          </div>
+        </section>
+
+        <section class="view" id="view-account" data-view-section="account">
+          <div class="account-layout">
+            <section class="panel profile-card-large"><div class="profile-hero"><span class="avatar xl" id="account-avatar">ND</span><div><p class="eyebrow">Личный кабинет</p><h2 id="account-name">Пользователь</h2><p id="account-role">Автор / артист</p></div></div><dl class="account-data"><div><dt>Электронная почта</dt><dd id="account-email"></dd></div><div><dt>NDP-профиль</dt><dd id="account-id"></dd></div><div><dt>Создан</dt><dd id="account-created"></dd></div><div><dt>Статус</dt><dd><span class="badge success">Активен</span></dd></div></dl></section>
+            <section class="panel"><div class="panel-head stacked"><div><span class="panel-kicker">Данные профиля</span><h3>Редактирование</h3></div></div><form id="profile-form"><label class="field"><span>Имя / сценическое имя</span><input id="profile-name" required></label><label class="field"><span>Роль</span><select id="profile-role"><option>Автор / артист</option><option>Продюсер</option><option>Лейбл / правообладатель</option><option>Разработчик / AI-сервис</option></select></label><button class="button primary" type="submit">Сохранить изменения</button></form></section>
+          </div>
+          <section class="panel sample-library-panel" id="sample-library-panel">
+            <div class="panel-head"><div><span class="panel-kicker">Моя библиотека</span><h2>Сэмплы и сэмпл-паки</h2><p>Демонстрационный каталог ваших звуков с NDP-ID, лицензиями и условиями сделки.</p></div><button class="button secondary small" id="add-demo-sample" type="button">＋ Добавить демо-сэмпл</button></div>
+            <div class="sample-toolbar"><div class="search-field"><span>⌕</span><input id="sample-search" type="search" placeholder="Название, тег, NDP-ID"></div><select class="control-select" id="sample-filter"><option value="all">Все</option><option value="В продаже">В продаже</option><option value="Обмен">Обмен</option><option value="Не продаётся">Не продаётся</option></select></div>
+            <div class="sample-grid" id="sample-grid"></div>
+          </section>
+        </section>
+
+        <section class="view" id="view-settings" data-view-section="settings">
+          <div class="settings-grid">
+            <section class="panel setting-section"><span class="panel-kicker">Интерфейс</span><h2>Настройки</h2><div class="setting-row"><div><strong>Тема</strong><small>Переключение между тёмным и светлым интерфейсом.</small></div><button id="settings-theme" class="button secondary small">Сменить тему</button></div><div class="setting-row"><div><strong>Демонстрационные уведомления</strong><small>Показывать системные сообщения внутри интерфейса.</small></div><label class="switch"><input id="notifications-toggle" type="checkbox" checked><span></span></label></div></section>
+            <section class="panel setting-section danger-section"><span class="panel-kicker">Локальные данные</span><h3>Сброс демонстрации</h3><p>Удалит созданные вами локальные произведения, события и профиль. Демо-профиль будет восстановлен при следующем входе.</p><button id="reset-demo" class="button danger">Сбросить локальные данные</button></section>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
+    <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
+      <img class="ndp-transition-logo" src="../assets/ndp-logo.png" alt="NDP — NormalDance Protocol">
+      <div class="ndp-wave-window" aria-hidden="true">
+        <svg class="ndp-wave" viewBox="0 0 1000 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ndpWaveGradientLanding" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#7c3cff"/>
+              <stop offset="0.5" stop-color="#50b7ff"/>
+              <stop offset="1" stop-color="#20ebc5"/>
+            </linearGradient>
+          </defs>
+          <path class="ndp-wave-path ndp-wave-path-ghost" d="M0 90 C35 90 42 35 75 90 S115 145 150 90 S190 22 225 90 S265 158 300 90 S340 42 375 90 S415 132 450 90 S490 14 525 90 S565 166 600 90 S640 48 675 90 S715 126 750 90 S790 28 825 90 S865 151 900 90 S955 54 1000 90"/>
+          <path class="ndp-wave-path" d="M0 90 C35 90 42 35 75 90 S115 145 150 90 S190 22 225 90 S265 158 300 90 S340 42 375 90 S415 132 450 90 S490 14 525 90 S565 166 600 90 S640 48 675 90 S715 126 750 90 S790 28 825 90 S865 151 900 90 S955 54 1000 90"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script src="app.js"></script>
+  <script src="../transition.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0a0c11">
+  <meta name="description" content="NormalDance Protocol — инфраструктура верификации происхождения музыки, управления правами и автоматического распределения роялти.">
+  <title>NormalDance Protocol — инфраструктура музыкальных прав</title>
+  <link rel="icon" href="assets/ndp-logo.png" type="image/png">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="transition.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="NormalDance Protocol — на главную">
+        <img src="assets/ndp-logo.png" alt="NDP — NormalDance Protocol" width="44" height="44">
+        <span class="brand-copy"><strong>NormalDance</strong><span>Protocol / NDP</span></span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#technology">Технология</a>
+        <a href="#provenance">Происхождение</a>
+        <a href="#royalties">Роялти</a>
+        <a href="#ai">Для ИИ</a>
+        <a href="#developers">Разработчикам</a>
+      </nav>
+      <div class="nav-actions">
+        <a class="service-link" href="service/index.html" data-ndp-transition>Открыть сервис <span aria-hidden="true">↗</span></a>
+        <button class="icon-button" type="button" data-theme-toggle aria-label="Включить светлую тему" title="Сменить тему">
+          <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
+        </button>
+        <button class="nav-toggle" type="button" data-nav-toggle aria-expanded="false" aria-label="Открыть меню">
+          <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <p class="eyebrow">Инфраструктура музыкальных прав / 2026</p>
+          <h1>У каждого звука есть история.<span class="line-accent">Сделаем её проверяемой.</span></h1>
+          <p class="hero-lead">NormalDance связывает звук, происхождение, права и выплаты в одну проверяемую систему. У каждого произведения — цифровая идентичность, граф производных работ и машиночитаемые условия использования.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#provenance">Показать происхождение <span aria-hidden="true">↗</span></a>
+            <a class="btn btn-secondary" href="#technology">Как это работает</a>
+          </div>
+          <div class="hero-meta" aria-label="Ключевые характеристики">
+            <div class="meta-item"><strong>ADNA</strong><span>Перцептивная идентичность</span></div>
+            <div class="meta-item"><strong>NDT</strong><span>Паспорт прав</span></div>
+            <div class="meta-item"><strong>MCP / API</strong><span>Машинный интерфейс</span></div>
+            <div class="meta-item"><strong>152-ФЗ</strong><span>Российский реестр</span></div>
+          </div>
+        </div>
+
+        <div class="graph-shell" data-hero-visual aria-label="Интерактивный граф происхождения произведения">
+          <div class="graph-topbar">
+            <div class="status"><i class="status-dot"></i> ГРАФ ПРОИСХОЖДЕНИЯ · АКТИВЕН</div>
+            <div class="graph-id">ND-84F2-19A7</div>
+          </div>
+          <div class="graph-stage">
+            <svg viewBox="0 0 620 390" role="img" aria-label="Граф связей исходного трека, сэмпла, ремикса, лицензии для ИИ и события использования">
+              <defs>
+                <linearGradient id="edgeSpectrum" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#7c6cff"/><stop offset="1" stop-color="#22e6c3"/></linearGradient>
+              </defs>
+              <path class="edge active" d="M120 192 C215 192 218 90 318 90"/>
+              <path class="edge active" d="M120 192 C225 192 220 192 318 192"/>
+              <path class="edge" d="M120 192 C218 192 224 298 318 298"/>
+              <path class="edge signal" d="M362 192 C450 192 468 124 536 124"/>
+              <path class="edge signal" d="M362 192 C451 192 468 262 536 262"/>
+
+              <g class="node-hit" data-hero-node="original" tabindex="0" role="button" aria-label="Оригинал: Полуночный маршрут">
+                <circle class="node-ring" cx="98" cy="192" r="34"/><circle class="node-core signal" cx="98" cy="192" r="8"/>
+                <text class="node-label" x="48" y="244">Полуночный маршрут</text><text class="node-meta" x="48" y="260">ОРИГИНАЛ / МАСТЕР</text>
+              </g>
+              <g class="node-hit" data-hero-node="sample" tabindex="0" role="button" aria-label="Сэмпл: Барабанный фрагмент A">
+                <circle class="node-ring" cx="340" cy="90" r="26"/><circle class="node-core" cx="340" cy="90" r="7"/>
+                <text class="node-label" x="301" y="132">Барабанный фрагмент A</text><text class="node-meta" x="311" y="148">СЭМПЛ / 12,4 С</text>
+              </g>
+              <g class="node-hit" data-hero-node="remix" tabindex="0" role="button" aria-label="Ремикс: Полуночный маршрут / Сдвиг">
+                <circle class="node-ring" cx="340" cy="192" r="29"/><circle class="node-core" cx="340" cy="192" r="7"/>
+                <text class="node-label" x="294" y="239">Полуночный / Сдвиг</text><text class="node-meta" x="305" y="255">РЕМИКС / ЛИЦЕНЗИЯ</text>
+              </g>
+              <g class="node-hit" data-hero-node="ai" tabindex="0" role="button" aria-label="Лицензированное использование ИИ">
+                <circle class="node-ring" cx="340" cy="298" r="25"/><circle class="node-core warning" cx="340" cy="298" r="7"/>
+                <text class="node-label" x="311" y="341">Использование ИИ</text><text class="node-meta" x="299" y="357">С УСЛОВИЯМИ</text>
+              </g>
+              <g class="node-hit" data-hero-node="usage" tabindex="0" role="button" aria-label="Событие использования обнаружено">
+                <circle class="node-ring" cx="556" cy="124" r="21"/><circle class="node-core signal" cx="556" cy="124" r="6"/>
+                <text class="node-label" x="516" y="161">Использование</text><text class="node-meta" x="520" y="177">ОБНАРУЖЕНО</text>
+              </g>
+              <g class="node-hit" data-hero-node="usage" tabindex="0" role="button" aria-label="Событие прав разрешено">
+                <circle class="node-ring" cx="556" cy="262" r="21"/><circle class="node-core signal" cx="556" cy="262" r="6"/>
+                <text class="node-label" x="518" y="299">Событие прав</text><text class="node-meta" x="520" y="315">РАЗРЕШЕНО</text>
+              </g>
+            </svg>
+            <div class="graph-panel">
+              <div class="graph-detail">
+                <div class="kicker" id="hero-detail-kicker">Исходная запись</div>
+                <h3 id="hero-detail-title">Полуночный маршрут</h3>
+                <p id="hero-detail-copy">ND-84F2-19A7 · мастер подтверждён</p>
+              </div>
+              <div class="rights-mini">
+                <div class="rights-bar" aria-label="Распределение прав 40, 30, 20 и 10 процентов"><i></i><i></i><i></i><i></i></div>
+                <div class="rights-legend"><span>АВТОР 40</span><span>ПРОДЮСЕР 30</span><span>АРТИСТ 20</span><span>СЭМПЛ 10</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="technology">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">01 / Идея бренда</p><h2>Не украшать технологию. Сделать технологию визуальным языком.</h2></div>
+          <p>NormalDance не выглядит как музыкальный сервис или криптопроект. Интерфейс показывает реальную структуру системы: идентичность, подтверждённую связь, происхождение, право и событие.</p>
+        </div>
+        <div class="thesis-grid">
+          <article class="thesis-item"><span class="num">A / ИДЕНТИЧНОСТЬ</span><svg class="glyph" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="34" fill="none" stroke="currentColor" opacity=".18"/><circle cx="60" cy="60" r="6" fill="var(--signal)"/><circle cx="34" cy="43" r="4" fill="var(--brand)"/><circle cx="84" cy="36" r="3" fill="var(--brand)"/><circle cx="88" cy="78" r="5" fill="var(--brand)"/><path d="M37 45l19 12M64 56l18-17M64 64l20 11" stroke="var(--line-strong)"/></svg><h3>Отпечаток — это идентичность</h3><p>Перцептивный отпечаток ADNA связывает звук с устойчивой цифровой идентичностью — независимо от обычных преобразований аудио.</p></article>
+          <article class="thesis-item"><span class="num">B / ПРОИСХОЖДЕНИЕ</span><svg class="glyph" viewBox="0 0 120 120" aria-hidden="true"><circle cx="28" cy="60" r="6" fill="var(--signal)"/><circle cx="77" cy="31" r="5" fill="var(--brand)"/><circle cx="85" cy="60" r="5" fill="var(--brand)"/><circle cx="77" cy="89" r="5" fill="var(--warning)"/><path d="M34 60c18 0 22-29 37-29M34 60h45M34 60c18 0 22 29 37 29" stroke="var(--line-strong)" fill="none"/></svg><h3>Связи становятся доказательством</h3><p>Производные работы не существуют в вакууме: сэмпл, ремикс и использование ИИ становятся узлами одного проверяемого графа происхождения.</p></article>
+          <article class="thesis-item"><span class="num">C / ПРАВА</span><svg class="glyph" viewBox="0 0 120 120" aria-hidden="true"><rect x="20" y="42" width="80" height="8" rx="4" fill="var(--surface-2)"/><rect x="20" y="42" width="34" height="8" rx="4" fill="var(--brand)"/><rect x="54" y="42" width="24" height="8" fill="var(--signal)"/><rect x="78" y="42" width="14" height="8" fill="var(--warning)"/><rect x="92" y="42" width="8" height="8" rx="4" fill="var(--danger)"/><path d="M20 67h50M20 78h63" stroke="var(--line-strong)" stroke-width="3" stroke-linecap="round"/></svg><h3>Права становятся машиночитаемыми</h3><p>Авторы, доли, лицензии и ограничения фиксируются в цифровом паспорте произведения, который читают как люди, так и внешние системы.</p></article>
+          <article class="thesis-item"><span class="num">D / РАСЧЁТЫ</span><svg class="glyph" viewBox="0 0 120 120" aria-hidden="true"><path d="M20 60h76" stroke="var(--line-strong)"/><circle cx="27" cy="60" r="6" fill="var(--brand)"/><circle cx="58" cy="60" r="6" fill="var(--signal)"/><circle cx="91" cy="60" r="6" fill="var(--signal)"/><path d="M36 52l12 8-12 8M67 52l12 8-12 8" stroke="var(--text-3)" fill="none"/></svg><h3>Использование превращается в расчёт</h3><p>Событие использования разрешается через граф прав, превращаясь в расчёт долей и распределение роялти по цепочке участников.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section story-section" id="provenance" data-story data-story-stage="0">
+      <div class="container">
+        <div class="section-heading story-heading" data-reveal>
+          <div>
+            <p class="eyebrow">02 / Как работает NormalDance</p>
+            <h2>Один трек проходит восемь проверяемых этапов — от звука до выплаты.</h2>
+          </div>
+          <p>Прокручивайте страницу: каждая сцена полностью сменяет предыдущую и показывает только один процесс. Цвет и интерфейс этого блока фиксированы и не зависят от темы сайта.</p>
+        </div>
+      </div>
+
+      <div class="story-scroll" aria-label="Последовательная демонстрация работы NormalDance">
+        <div class="story-sticky">
+          <div class="container story-layout">
+            <div class="story-copy">
+              <div class="story-step-label"><span id="story-step-number">01</span><span>/ 08</span></div>
+              <div class="story-copy-deck" aria-live="polite">
+                <article class="story-copy-panel" data-copy-stage="0" aria-hidden="false">
+                  <p class="eyebrow">01 · ИСХОДНЫЙ ТРЕК</p>
+                  <h3>Произведение становится цифровым объектом системы.</h3>
+                  <p>NormalDance принимает мастер-запись и связывает её с единым объектом произведения. Исходный аудиофайл не является «правом» сам по себе — он становится точкой входа в проверяемую цепочку данных.</p>
+                  <div class="story-fact"><span>ВХОД</span><b>WAV / MP3 / FLAC</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="1" aria-hidden="true">
+                  <p class="eyebrow">02 · NDT / ПАСПОРТ ПРАВ</p>
+                  <h3>Авторы, доли и условия становятся машиночитаемыми.</h3>
+                  <p>Паспорт NDT фиксирует участников, сплиты, лицензии и разрешения для внешних сервисов и ИИ. Визуальные доли ниже — демонстрационные.</p>
+                  <div class="story-fact"><span>ПРАВА</span><b>50% · 30% · 20%</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="2" aria-hidden="true">
+                  <p class="eyebrow">03 · ADNA / ИДЕНТИФИКАЦИЯ</p>
+                  <h3>Звук получает устойчивый перцептивный отпечаток.</h3>
+                  <p>ADNA используется для поиска того же произведения и его производных после перекодирования и других допустимых преобразований. Вердикт формируется по измеренному сходству.</p>
+                  <div class="story-fact"><span>ПОРОГИ ДЕМО</span><b>same ≥ 0,90 · derivative ≥ 0,75</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="3" aria-hidden="true">
+                  <p class="eyebrow">04 · ГРАФ ПРОИСХОЖДЕНИЯ</p>
+                  <h3>Сэмпл, ремикс и новое произведение связываются с источником.</h3>
+                  <p>Каждый подтверждённый объект становится узлом. Связь показывает происхождение и позволяет системе учитывать участников исходной и производной работы одновременно.</p>
+                  <div class="story-fact"><span>ГРАФ</span><b>ORIGINAL → SAMPLE → DERIVATIVE</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="4" aria-hidden="true">
+                  <p class="eyebrow">05 · СОБЫТИЕ ИСПОЛЬЗОВАНИЯ</p>
+                  <h3>Факт использования привязывается к конкретному произведению.</h3>
+                  <p>Событие получает идентификатор, источник, время и найденное совпадение. Затем система разрешает его через граф происхождения и права.</p>
+                  <div class="story-fact"><span>СОБЫТИЕ</span><b>EV-2026-074291</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="5" aria-hidden="true">
+                  <p class="eyebrow">06 · ROYALTY ENGINE</p>
+                  <h3>Система определяет участников цепочки и рассчитывает доли.</h3>
+                  <p>Сумма использования проходит через правила произведения и его происхождения. Расчёт выполняется по зафиксированным сплитам; числа на сцене служат только для демонстрации логики.</p>
+                  <div class="story-fact"><span>РАСЧЁТ ДЕМО</span><b>2 500 ₽ → 1 250 / 750 / 500</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="6" aria-hidden="true">
+                  <p class="eyebrow">07 · КАСКАДНЫЕ РОЯЛТИ</p>
+                  <h3>Роялти проходит назад по подтверждённому графу прав.</h3>
+                  <p>Поток стоимости следует тем же связям, по которым доказано происхождение. Так в расчёт попадают не только авторы производного трека, но и участники исходных объектов.</p>
+                  <div class="story-fact"><span>МАРШРУТ</span><b>USAGE → GRAPH → HOLDERS</b></div>
+                </article>
+                <article class="story-copy-panel" data-copy-stage="7" aria-hidden="true">
+                  <p class="eyebrow">08 · ВЫПЛАТА</p>
+                  <h3>Рассчитанные суммы превращаются в платёжные поручения.</h3>
+                  <p>После проверки получателей NormalDance подготавливает распределение. Текущий целевой контур — СБП; цифровой рубль предусмотрен как последующий платёжный слой.</p>
+                  <div class="story-fact"><span>ВЫХОД</span><b>РАСПРЕДЕЛЕНИЕ → ВЫПЛАТА</b></div>
+                </article>
+              </div>
+
+              <div class="story-progress" aria-hidden="true">
+                <i class="is-active"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+              </div>
+              <div class="story-current" id="story-current">Аудиофайл → объект произведения</div>
+            </div>
+
+            <div class="story-visual">
+              <div class="story-canvas" aria-hidden="true">
+                <div class="story-grid"></div>
+                <div class="story-aurora"></div>
+
+                <div class="story-flowbar">
+                  <span class="story-rail-step active" data-rail-stage="0"><i></i><b>Трек</b></span>
+                  <span class="story-rail-step" data-rail-stage="1"><i></i><b>Права</b></span>
+                  <span class="story-rail-step" data-rail-stage="2"><i></i><b>ADNA</b></span>
+                  <span class="story-rail-step" data-rail-stage="3"><i></i><b>Граф</b></span>
+                  <span class="story-rail-step" data-rail-stage="4"><i></i><b>Usage</b></span>
+                  <span class="story-rail-step" data-rail-stage="5"><i></i><b>Расчёт</b></span>
+                  <span class="story-rail-step" data-rail-stage="6"><i></i><b>Роялти</b></span>
+                  <span class="story-rail-step" data-rail-stage="7"><i></i><b>Выплата</b></span>
+                </div>
+
+                <div class="story-stage-stack">
+                  <article class="story-visual-panel is-visible" data-visual-stage="0">
+                    <div class="audio-ingest">
+                      <div class="scene-kicker"><span class="scene-dot purple"></span>AUDIO INGEST / MASTER</div>
+                      <div class="audio-disc"><span>NDP</span><i></i></div>
+                      <div class="audio-main">
+                        <strong>Полуночный маршрут</strong>
+                        <span>MASTER · 03:42 · 48 kHz / 24 bit</span>
+                        <div class="scene-wave" aria-hidden="true">
+                          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                      </div>
+                      <div class="ingest-metrics"><div><span>Объект</span><b>создан</b></div><div><span>Источник</span><b>master</b></div><div><span>Статус</span><b class="mint">готов</b></div></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="1">
+                    <div class="rights-scene">
+                      <div class="rights-passport-v2">
+                        <div class="scene-kicker"><span class="scene-dot cyan"></span>NDT / RIGHTS PASSPORT</div>
+                        <div class="passport-name"><strong>Полуночный маршрут</strong><code>ND-84F2-19A7</code></div>
+                        <div class="passport-grid">
+                          <div><span>Авторы</span><b>3</b></div><div><span>Лицензия</span><b>ACTIVE</b></div><div><span>AI policy</span><b>DEFINED</b></div><div><span>Версия</span><b>NDT v1</b></div>
+                        </div>
+                        <div class="split-bar-v2"><i></i><i></i><i></i></div>
+                        <div class="split-legend-v2"><span><i></i>Автор A <b>50%</b></span><span><i></i>Автор B <b>30%</b></span><span><i></i>Правообладатель <b>20%</b></span></div>
+                      </div>
+                      <div class="rights-ring"><div><strong>100%</strong><span>прав описано</span></div></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="2">
+                    <div class="adna-scene">
+                      <div class="scene-kicker"><span class="scene-dot mint"></span>ADNA / PERCEPTUAL FINGERPRINT</div>
+                      <div class="adna-layout">
+                        <div class="fingerprint-field">
+                          <div class="fp-row r1"></div><div class="fp-row r2"></div><div class="fp-row r3"></div><div class="fp-row r4"></div><div class="fp-row r5"></div><div class="fp-row r6"></div><div class="fp-row r7"></div><div class="fp-row r8"></div><div class="fp-row r9"></div>
+                          <code>ADNA · ND-84F2-19A7</code>
+                        </div>
+                        <div class="similarity-card">
+                          <span>СХОДСТВО / ДЕМО</span>
+                          <div><b>Оригинал</b><em style="--score:1">1.00</em></div>
+                          <div><b>MP3-копия</b><em style="--score:.97">0.97</em></div>
+                          <div><b>Производное</b><em style="--score:.82">0.82</em></div>
+                          <div><b>Другой трек</b><em class="low" style="--score:.31">0.31</em></div>
+                        </div>
+                      </div>
+                      <div class="thresholds"><span><i class="same"></i>same ≥ 0,90</span><span><i class="derivative"></i>derivative 0,75–0,90</span><span><i class="different"></i>different &lt; 0,75</span></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="3">
+                    <div class="graph-scene-v2">
+                      <div class="scene-kicker"><span class="scene-dot amber"></span>PROVENANCE GRAPH / VERIFIED LINKS</div>
+                      <svg class="network-v2" viewBox="0 0 690 390" role="presentation">
+                        <defs><linearGradient id="gPurpleMint" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#2de2c4"/></linearGradient></defs>
+                        <path class="net-edge e1" d="M142 196C242 196 250 89 355 89"/><path class="net-edge e2" d="M142 196C252 196 256 196 373 196"/><path class="net-edge e3" d="M142 196C243 196 255 309 355 309"/><path class="net-edge e4" d="M405 89C486 89 494 145 554 145"/><path class="net-edge e5" d="M423 196C506 196 514 244 574 244"/>
+                        <g class="net-node n-original"><circle cx="115" cy="196" r="40"/><circle class="core" cx="115" cy="196" r="8"/><text x="115" y="256">ОРИГИНАЛ</text></g>
+                        <g class="net-node n-sample"><circle cx="380" cy="89" r="31"/><circle class="core purple" cx="380" cy="89" r="7"/><text x="380" y="136">СЭМПЛ</text></g>
+                        <g class="net-node n-remix"><circle cx="400" cy="196" r="34"/><circle class="core cyan" cx="400" cy="196" r="7"/><text x="400" y="247">РЕМИКС</text></g>
+                        <g class="net-node n-edit"><circle cx="380" cy="309" r="30"/><circle class="core amber" cx="380" cy="309" r="7"/><text x="380" y="356">EDIT</text></g>
+                        <g class="net-node n-derivative"><circle cx="580" cy="145" r="29"/><circle class="core mint" cx="580" cy="145" r="7"/><text x="580" y="190">НОВЫЙ ТРЕК</text></g>
+                        <g class="net-node n-ai"><circle cx="602" cy="244" r="26"/><circle class="core pink" cx="602" cy="244" r="6"/><text x="602" y="287">AI USAGE</text></g>
+                      </svg>
+                      <div class="graph-key"><span><i class="k1"></i>исходное</span><span><i class="k2"></i>производное</span><span><i class="k3"></i>условное использование</span></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="4">
+                    <div class="usage-scene-v2">
+                      <div class="usage-radar"><div class="radar-ring r1"></div><div class="radar-ring r2"></div><div class="radar-ring r3"></div><div class="usage-pin"><span></span></div></div>
+                      <div class="usage-event-card">
+                        <div class="scene-kicker"><span class="scene-dot pink"></span>USAGE EVENT / RESOLVED</div>
+                        <strong>Использование обнаружено</strong>
+                        <code>EV-2026-074291</code>
+                        <dl><div><dt>Источник</dt><dd>платформа / stream</dd></div><div><dt>Совпадение</dt><dd>ND-991C-72D0</dd></div><div><dt>Similarity</dt><dd class="mint">0.96 / same</dd></div><div><dt>Граф прав</dt><dd>разрешён</dd></div></dl>
+                      </div>
+                      <div class="usage-route"><span>Сигнал</span><i></i><span>ADNA</span><i></i><span>Rights graph</span></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="5">
+                    <div class="calc-scene-v2">
+                      <div class="scene-kicker"><span class="scene-dot cyan"></span>ROYALTY ENGINE / CALCULATION</div>
+                      <div class="calc-total"><span>Сумма события / демо</span><strong>2 500 ₽</strong><small>после идентификации и разрешения прав</small></div>
+                      <div class="calc-waterfall">
+                        <div class="calc-row a"><span>Автор A</span><i><b></b></i><strong>50%</strong><em>1 250 ₽</em></div>
+                        <div class="calc-row b"><span>Автор B</span><i><b></b></i><strong>30%</strong><em>750 ₽</em></div>
+                        <div class="calc-row c"><span>Правообладатель</span><i><b></b></i><strong>20%</strong><em>500 ₽</em></div>
+                      </div>
+                      <div class="calc-check"><span>Σ долей</span><b>100%</b><span>Статус</span><b class="mint">валидно</b></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="6">
+                    <div class="royalty-scene-v2">
+                      <div class="scene-kicker"><span class="scene-dot amber"></span>CASCADE ROYALTY / VALUE FLOW</div>
+                      <svg class="royalty-flow-svg" viewBox="0 0 690 390" role="presentation">
+                        <defs><linearGradient id="royaltyFlow" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2de2c4"/><stop offset=".52" stop-color="#60a5fa"/><stop offset="1" stop-color="#8b5cf6"/></linearGradient></defs>
+                        <path class="roy-path p1" d="M570 195C480 195 458 82 350 82C263 82 239 92 147 92"/><path class="roy-path p2" d="M570 195C472 195 450 195 350 195C260 195 240 195 147 195"/><path class="roy-path p3" d="M570 195C480 195 458 308 350 308C263 308 239 298 147 298"/>
+                        <circle class="roy-dot d1" r="5"/><circle class="roy-dot d2" r="5"/><circle class="roy-dot d3" r="5"/>
+                        <g class="roy-node usage"><circle cx="590" cy="195" r="36"/><text x="590" y="192">USAGE</text><text x="590" y="210">2 500 ₽</text></g>
+                        <g class="roy-node holder h1"><circle cx="115" cy="92" r="32"/><text x="115" y="89">A</text><text x="115" y="106">50%</text></g>
+                        <g class="roy-node holder h2"><circle cx="115" cy="195" r="32"/><text x="115" y="192">B</text><text x="115" y="209">30%</text></g>
+                        <g class="roy-node holder h3"><circle cx="115" cy="298" r="32"/><text x="115" y="295">C</text><text x="115" y="312">20%</text></g>
+                      </svg>
+                      <div class="royalty-caption"><span>событие использования</span><b>→ граф происхождения и прав →</b><span>получатели</span></div>
+                    </div>
+                  </article>
+
+                  <article class="story-visual-panel" data-visual-stage="7">
+                    <div class="payout-scene-v2">
+                      <div class="scene-kicker"><span class="scene-dot mint"></span>PAYMENT LAYER / READY</div>
+                      <div class="payout-summary"><div><span>К распределению / демо</span><strong>2 500 ₽</strong></div><div class="payment-rail"><i></i><span>СБП</span><b>готово к отправке</b></div></div>
+                      <div class="payout-grid-v2">
+                        <article><span class="avatar a">A</span><div><b>Автор A</b><small>50% · получатель проверен</small></div><strong>1 250 ₽</strong><i>готово</i></article>
+                        <article><span class="avatar b">B</span><div><b>Автор B</b><small>30% · получатель проверен</small></div><strong>750 ₽</strong><i>готово</i></article>
+                        <article><span class="avatar c">C</span><div><b>Правообладатель</b><small>20% · получатель проверен</small></div><strong>500 ₽</strong><i>готово</i></article>
+                      </div>
+                      <div class="payout-note">Идентификация → права → расчёт → распределение → выплата</div>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="story-stage-footer"><span id="story-stage-system">SYSTEM / AUDIO OBJECT</span><b id="story-result">Звук → объект</b></div>
+              </div>
+            </div>
+
+            <div class="story-index" aria-hidden="true"><span class="active">01</span><span>02</span><span>03</span><span>04</span><span>05</span><span>06</span><span>07</span><span>08</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container story-mobile-summary">
+        <ol>
+          <li><strong>01 · Трек</strong><span>Мастер-запись становится объектом произведения.</span></li>
+          <li><strong>02 · Права</strong><span>NDT фиксирует авторов, доли, лицензии и условия использования.</span></li>
+          <li><strong>03 · ADNA</strong><span>Перцептивный отпечаток идентифицирует оригинал и производные.</span></li>
+          <li><strong>04 · Граф</strong><span>Сэмплы, ремиксы и новые треки связываются с источниками.</span></li>
+          <li><strong>05 · Usage</strong><span>Конкретное использование становится событием учёта.</span></li>
+          <li><strong>06 · Расчёт</strong><span>Royalty Engine определяет участников и применяет сплиты.</span></li>
+          <li><strong>07 · Роялти</strong><span>Стоимость каскадно проходит по подтверждённому графу прав.</span></li>
+          <li><strong>08 · Выплата</strong><span>Суммы подготавливаются к распределению между получателями.</span></li>
+        </ol>
+      </div>
+    </section>
+
+
+    <section class="section" id="capabilities">
+      <div class="container">
+        <div class="section-heading" data-reveal>
+          <div><p class="eyebrow">03 / Возможности платформы</p><h2>Один протокол связывает идентичность, права, происхождение и расчёт.</h2></div>
+          <p>Карточки собираются в стек по мере прокрутки: от цифрового паспорта произведения до автоматизированной выплаты.</p>
+        </div>
+        <div class="capability-stack">
+          <article class="capability-card" style="--stack-i:0" data-reveal><span>01 / NDT</span><h3>Цифровой паспорт прав</h3><p>Авторы, правообладатели, доли, лицензии и условия использования становятся частью машиночитаемого объекта.</p><b>ПРАВА → ДАННЫЕ</b></article>
+          <article class="capability-card" style="--stack-i:1" data-reveal><span>02 / ADNA</span><h3>Идентификация произведений</h3><p>Перцептивный отпечаток связывает звук с устойчивой цифровой идентичностью и позволяет искать совпадения.</p><b>ЗВУК → ID</b></article>
+          <article class="capability-card" style="--stack-i:2" data-reveal><span>03 / GRAPH</span><h3>Обнаружение производных</h3><p>Сэмпл, ремикс, edit и другое производное произведение фиксируются как проверяемые связи с источником.</p><b>ID → ПРОИСХОЖДЕНИЕ</b></article>
+          <article class="capability-card" style="--stack-i:3" data-reveal><span>04 / RIGHTS</span><h3>Граф прав</h3><p>Система определяет не только совпадение звука, но и цепочку участников, лицензий и условий использования.</p><b>СВЯЗЬ → ПРАВА</b></article>
+          <article class="capability-card" style="--stack-i:4" data-reveal><span>05 / ROYALTY</span><h3>Расчёт роялти</h3><p>При событии использования расчётный модуль проходит по графу происхождения и применяет зафиксированные сплиты.</p><b>СОБЫТИЕ → РАСЧЁТ</b></article>
+          <article class="capability-card" style="--stack-i:5" data-reveal><span>06 / PAYMENT</span><h3>Автоматизированные выплаты</h3><p>Рассчитанные суммы готовятся к распределению между всеми участниками цепочки: СБП сейчас, цифровой рубль — следующий контур.</p><b>РАСЧЁТ → ВЫПЛАТА</b></article>
+        </div>
+
+        <div class="demo-heading" data-reveal><p class="eyebrow">04 / Интерактивный граф</p><h2>Паспорт трека раскрывается через его связи.</h2><p>Нажмите на узел и посмотрите тип связи, идентификатор, долю происхождения и статус верификации.</p></div>
+        <div class="demo-layout" data-reveal>
+          <div class="demo-canvas">
+            <svg viewBox="0 0 800 560" role="img" aria-label="Демонстрационный граф произведения Полуночный маршрут">
+              <path class="edge lit" d="M158 282C266 282 272 128 384 128"/><path class="edge lit" d="M158 282C270 282 284 282 405 282"/><path class="edge" d="M158 282C266 282 282 435 396 435"/><path class="edge lit" d="M446 282C562 282 575 186 676 186"/>
+              <g class="node" data-demo-node="original" tabindex="0" role="button" aria-label="Оригинал Полуночный маршрут"><circle class="main" cx="130" cy="282" r="44"/><circle class="dot" cx="130" cy="282" r="9"/><text class="title" x="74" y="345">Полуночный маршрут</text><text class="meta" x="82" y="362">ОРИГИНАЛ / 100%</text></g>
+              <g class="node" data-demo-node="sample" data-state="verified" tabindex="0" role="button" aria-label="Сэмпл Стеклянные барабаны"><circle class="main" cx="410" cy="128" r="32"/><circle class="dot" cx="410" cy="128" r="7"/><text class="title" x="371" y="177">Стеклянные барабаны</text><text class="meta" x="378" y="194">СЭМПЛ / 18%</text></g>
+              <g class="node" data-demo-node="remix" data-state="verified" tabindex="0" role="button" aria-label="Ремикс Полуночный сдвиг"><circle class="main" cx="432" cy="282" r="38"/><circle class="dot" cx="432" cy="282" r="8"/><text class="title" x="374" y="338">Полуночный / Сдвиг</text><text class="meta" x="387" y="355">РЕМИКС / 67%</text></g>
+              <g class="node" data-demo-node="ai" tabindex="0" role="button" aria-label="Событие лицензии для ИИ"><circle class="main" cx="423" cy="435" r="30"/><circle class="dot" cx="423" cy="435" r="7"/><text class="title" x="394" y="482">Использование ИИ</text><text class="meta" x="383" y="499">ЛИЦЕНЗИЯ</text></g>
+              <g class="node" data-demo-node="derivative" data-state="verified" tabindex="0" role="button" aria-label="Производное произведение Послеполуночный сигнал"><circle class="main" cx="700" cy="186" r="34"/><circle class="dot" cx="700" cy="186" r="7"/><text class="title" x="641" y="238">Послеполуночный сигнал</text><text class="meta" x="655" y="255">ПРОИЗВОДНОЕ / 42%</text></g>
+            </svg>
+          </div>
+          <aside class="demo-aside" aria-live="polite">
+            <p class="eyebrow" id="demo-type">ОРИГИНАЛ</p>
+            <h3 id="demo-title">Полуночный маршрут</h3>
+            <div class="id" id="demo-id">ND-84F2-19A7</div>
+            <div class="demo-tags"><span class="tag">ADNA ПОДТВЕРЖДЁН</span><span class="tag">NDT v1</span><span class="tag">ПРАВА АКТИВНЫ</span></div>
+            <dl class="demo-data">
+              <div><dt>Связь</dt><dd id="demo-relation">Исходная мастер-запись</dd></div>
+              <div><dt>Права</dt><dd id="demo-rights">4 участника</dd></div>
+              <div><dt>Доля источника</dt><dd id="demo-share">100%</dd></div>
+              <div><dt>Статус</dt><dd id="demo-status">Подтверждено</dd></div>
+            </dl>
+            <p class="aside-copy">Граф выступает не иллюстрацией, а интерфейсом к данным: узлы — объекты и события, линии — подтверждённые связи.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="royalties">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">05 / Поток роялти</p><h2>Деньги двигаются по тем же связям, что и права.</h2></div>
+          <p>Никаких летящих монет: поток средств визуально следует по технической цепочке разрешения прав и расчёта долей.</p>
+        </div>
+        <div class="flow-wrap">
+          <div class="flow-track">
+            <div class="flow-node"><span>Событие</span><h3>Использование обнаружено</h3><p>Трек B найден в медиапотоке.</p></div>
+            <div class="flow-node"><span>Совпадение</span><h3>Обнаружен сэмпл A</h3><p>Источник и доля связи подтверждены.</p></div>
+            <div class="flow-node"><span>Разрешение</span><h3>Граф прав</h3><p>Система проходит по владельцам и лицензиям.</p></div>
+            <div class="flow-node"><span>Расчёт</span><h3>Модуль распределения долей</h3><p>Доли пересчитываются по цепочке прав.</p></div>
+            <div class="flow-node"><span>Выплата</span><h3>Распределение роялти</h3><p>СБП сейчас, цифровой рубль — следующий контур.</p></div>
+          </div>
+          <div class="flow-rails" aria-hidden="true"><i class="rail"></i><i class="rail"></i><i class="rail"></i><i class="rail"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="ai">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">06 / Слой прав для ИИ</p><h2>Между правообладателем и ИИ появляется проверяемый протокол.</h2></div>
+          <p>NormalDance может давать внешней ИИ-системе не «файл без контекста», а машинно-читаемое разрешение с правилами использования и последующим событием учёта.</p>
+        </div>
+        <div class="ai-grid">
+          <div class="ai-copy"><h3>Разрешение становится частью инфраструктуры.</h3><p>Лицензия перестаёт быть документом, который нужно трактовать вручную. Она становится проверяемым условием доступа, связанным с идентичностью произведения и последующим событием роялти.</p></div>
+          <div class="ai-schema">
+            <div class="schema-row"><div class="schema-box"><span>Источник</span><strong>Правообладатель</strong></div><div class="schema-arrow">→</div><div class="schema-box"><span>Протокол</span><strong>NormalDance</strong></div><div class="schema-arrow">→</div><div class="schema-box"><span>Получатель</span><strong>ИИ-система</strong></div></div>
+            <div class="schema-return">ЛИЦЕНЗИЯ / РАЗРЕШЕНИЕ → ИСПОЛЬЗОВАНИЕ → АТРИБУЦИЯ → РОЯЛТИ</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="developers">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">07 / Технологическое ядро</p><h2>Три слоя продукта. Один общий язык идентичности.</h2></div>
+          <p>Архитектура визуально отделяет культурный слой бренда, интерфейсный слой данных и машинный слой протокола.</p>
+        </div>
+        <div class="tech-grid">
+          <article class="tech-card"><span class="tech-code">ИДЕНТИЧНОСТЬ / ADNA</span><h3>Аудиоотпечаток</h3><p>Перцептивная идентификация, поиск совпадений и производных произведений.</p><span class="tech-status"><i class="status-dot"></i> Прототип ядра</span></article>
+          <article class="tech-card"><span class="tech-code">ПРАВА / NDT</span><h3>Паспорт</h3><p>Авторы, правообладатели, сплиты, лицензии и цепочка происхождения в машиночитаемом формате.</p><span class="tech-status"><i class="status-dot"></i> Реестр готов</span></article>
+          <article class="tech-card"><span class="tech-code">ИНТЕРФЕЙС / MCP</span><h3>Машинный API</h3><p>Инструменты для артистов, реестра, ADNA, манифестов и внешних ИИ-систем.</p><span class="tech-status"><i class="status-dot"></i> Интеграционный слой</span></article>
+        </div>
+        <div class="architecture-flow" aria-label="Архитектура NormalDance" data-reveal>
+          <div class="architecture-node"><span>01</span><strong>Аудио</strong><small>произведение / фрагмент</small></div><i>→</i>
+          <div class="architecture-node"><span>02</span><strong>ADNA</strong><small>fingerprint engine</small></div><i>→</i>
+          <div class="architecture-node"><span>03</span><strong>Реестр прав</strong><small>NDT / NDP-ID</small></div><i>→</i>
+          <div class="architecture-node"><span>04</span><strong>Граф</strong><small>производные связи</small></div><i>→</i>
+          <div class="architecture-node"><span>05</span><strong>Royalty engine</strong><small>каскадный расчёт</small></div><i>→</i>
+          <div class="architecture-node"><span>06</span><strong>Payment layer</strong><small>СБП / цифровой рубль</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="cta-panel" data-reveal>
+          <div><p class="eyebrow">NormalDance Protocol</p><h2>У звука есть происхождение. Права должны уметь его подтверждать.</h2></div>
+          <div class="hero-actions"><a class="btn btn-primary" href="service/index.html" data-ndp-transition>Перейти в NormalDance <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="https://t.me/NormalDance" target="_blank" rel="noopener noreferrer">Телеграм</a></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-copy">NormalDance Protocol — технологическая платформа верификации происхождения, управления правами и монетизации музыкального контента. Реестр — без крипто-токеномики; архитектура рассчитана на российскую инфраструктуру и требования 152-ФЗ.</div>
+      <div class="footer-links"><a href="#technology">Технология</a><a href="#royalties">Роялти</a><a href="#ai">ИИ</a><a href="#developers">API</a></div>
+    </div>
+  </footer>
+  <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
+    <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
+      <img class="ndp-transition-logo" src="assets/ndp-logo.png" alt="NDP — NormalDance Protocol">
+      <div class="ndp-wave-window" aria-hidden="true">
+        <svg class="ndp-wave" viewBox="0 0 1000 180" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="ndpWaveGradientLanding" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#7c3cff"/>
+              <stop offset="0.5" stop-color="#50b7ff"/>
+              <stop offset="1" stop-color="#20ebc5"/>
+            </linearGradient>
+          </defs>
+          <path class="ndp-wave-path ndp-wave-path-ghost" d="M0 90 C35 90 42 35 75 90 S115 145 150 90 S190 22 225 90 S265 158 300 90 S340 42 375 90 S415 132 450 90 S490 14 525 90 S565 166 600 90 S640 48 675 90 S715 126 750 90 S790 28 825 90 S865 151 900 90 S955 54 1000 90"/>
+          <path class="ndp-wave-path" d="M0 90 C35 90 42 35 75 90 S115 145 150 90 S190 22 225 90 S265 158 300 90 S340 42 375 90 S415 132 450 90 S490 14 525 90 S565 166 600 90 S640 48 675 90 S715 126 750 90 S790 28 825 90 S865 151 900 90 S955 54 1000 90"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <script src="script.js" defer></script>
+  <script src="transition.js" defer></script>
+</body>
+</html>
