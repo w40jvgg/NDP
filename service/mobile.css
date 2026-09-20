@@ -82,3 +82,37 @@ html.ndp-theme-transition .button{
 
 @media(hover:none) and (pointer:coarse){.button:hover,.action-card:hover,.sample-card:hover,.messages-top-button:hover,.side-link:hover{transform:none!important}.button:active,.action-card:active,.sample-card:active{transform:scale(.985);opacity:.92}}
 @media(prefers-reduced-motion:reduce){.view.active{animation:none!important}.sidebar,.app-shell::before,.profile-menu,.button,.panel{transition-duration:180ms!important}.sample-card.playing .mini-wave i,.waveform.scanning:after,.scan-ring{animation:none!important}}
+
+
+/* NDP horizontal wordmark sizing on compact service layouts. */
+@media (max-width: 900px) {
+  .sidebar .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 182px !important;
+    height: auto !important;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #05070c;
+    box-shadow: none;
+  }
+  .auth-card-brand.ndp-wordmark-link {
+    min-height: 0;
+    width: min(270px, 100%);
+  }
+  .auth-card-brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 100% !important;
+    height: auto !important;
+    flex: 0 1 auto !important;
+    border-radius: 8px;
+    object-fit: contain;
+    background: #05070c;
+    box-shadow: none;
+  }
+}
+@media (max-width: 420px) {
+  .sidebar .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 168px !important;
+  }
+  .auth-card-brand.ndp-wordmark-link {
+    width: min(250px, 100%);
+  }
+}

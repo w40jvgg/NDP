@@ -65,3 +65,7 @@ python -m http.server 8080
 - Storytelling переведён с накопительного показа карточек на последовательный: предыдущая сцена сначала исчезает, затем проявляется следующая.
 - Визуальный прогресс имеет отдельное сглаживание через `requestAnimationFrame`, поэтому колесо мыши и трекпад не вызывают резких скачков между состояниями.
 - Граф происхождения сохраняется только как намеренно приглушённый контекст на этапах события, расчёта и роялти; остальные старые сцены не накладываются.
+
+
+## 2026-09-21 — Brand wordmark update
+Visible landing/service brand marks use the supplied horizontal NDP / NormalDance Protocol wordmark at increased display sizes. The 5-second transition icon remains unchanged.

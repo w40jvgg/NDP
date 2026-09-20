@@ -1,4 +1,4 @@
-/* NDP transition only. Landing and service styles are intentionally untouched. */
+/* NDP brand transition only. Product UI styles are intentionally untouched. */
 .ndp-transition {
   position: fixed;
   inset: 0;
@@ -6,17 +6,19 @@
   display: grid;
   place-items: center;
   overflow: hidden;
+  min-height: 100vh;
+  min-height: 100svh;
+  min-height: 100dvh;
   background: #000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   isolation: isolate;
   transition:
-    opacity .58s cubic-bezier(.22, .61, .36, 1),
+    opacity .58s cubic-bezier(.22, 1, .36, 1),
     visibility 0s linear .58s;
 }
 
-/* Pure black loading screen: no backdrop gradients, textures or ambient light. */
 .ndp-transition::before,
 .ndp-transition::after {
   content: none;
@@ -27,145 +29,181 @@
   visibility: visible;
   pointer-events: all;
   transition:
-    opacity .58s cubic-bezier(.22, .61, .36, 1),
+    opacity .58s cubic-bezier(.22, 1, .36, 1),
     visibility 0s;
 }
 
 .ndp-transition-stage {
   position: relative;
   z-index: 1;
-  width: min(90vmin, 1120px);
-  width: min(90svmin, 1120px);
+  width: min(62vmin, 760px);
+  width: min(62svmin, 760px);
   aspect-ratio: 1;
+  display: grid;
+  place-items: center;
   opacity: 0;
-  transform: scale(.992);
+  transform: translate3d(0, 8px, 0) scale(.965);
   will-change: opacity, transform;
   transition:
-    opacity .9s cubic-bezier(.22, .61, .36, 1) .28s,
-    transform 1.35s cubic-bezier(.16, 1, .3, 1) .22s;
+    opacity .92s cubic-bezier(.22, 1, .36, 1) .22s,
+    transform 1.24s cubic-bezier(.22, 1, .36, 1) .18s;
 }
 
 .ndp-transition.is-active .ndp-transition-stage {
   opacity: 1;
-  transform: scale(1);
+  transform: translate3d(0, 0, 0) scale(1);
 }
 
-/* 2508 px transition asset; no CSS blur or filter is applied to the logo. */
-.ndp-transition-logo {
+/* New rounded-square NDP icon. The source image is deliberately zoomed inside
+   an overflow clip so the original neon perimeter never appears on screen. */
+.ndp-transition-icon {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border: 0;
+  outline: 0;
+  border-radius: 23.5%;
+  background:
+    radial-gradient(circle at 30% 12%, rgba(74, 92, 210, .18), transparent 34%),
+    radial-gradient(circle at 79% 42%, rgba(0, 167, 192, .10), transparent 42%),
+    #050b18;
+  box-shadow: 0 26px 78px rgba(0, 0, 0, .46);
+  transform: translateZ(0);
+  isolation: isolate;
+}
+
+.ndp-transition-icon-base {
   position: absolute;
   inset: 0;
   z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
+  transform: scale(1.145);
+  transform-origin: 50% 50%;
   user-select: none;
   -webkit-user-drag: none;
-  image-rendering: auto;
-  filter: none;
-}
-
-.ndp-equalizer {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  opacity: 0;
   pointer-events: none;
-  transition: opacity .48s ease .58s;
+  image-rendering: auto;
 }
 
-.ndp-transition.is-active .ndp-equalizer {
-  opacity: 1;
-}
-
-.ndp-eq-bar {
+/* Five independent bars reproduce the supplied icon, but now act as a live
+   oscilloscope. Only transform/opacity animate for compositor-friendly motion. */
+.ndp-oscilloscope {
   position: absolute;
-  left: var(--x);
-  width: var(--w);
+  z-index: 3;
+  left: 50%;
+  top: 51.2%;
+  width: 66%;
+  height: 60%;
+  transform: translate3d(-50%, -50%, 0);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 5.2%;
+  padding: 0 2.2%;
+  pointer-events: none;
+}
+
+.ndp-osc-bar {
+  position: relative;
+  flex: 0 0 12.1%;
+  height: var(--bar-height);
+  min-width: 0;
   border-radius: 999px;
-  background: linear-gradient(180deg, var(--bar-hi), var(--bar));
-  box-shadow:
-    inset 0 1px 1px rgba(255,255,255,.36),
-    0 0 8px var(--glow),
-    0 0 18px color-mix(in srgb, var(--glow) 44%, transparent);
-  transform: translateX(-50%) scaleY(.32);
-  will-change: transform, filter;
-  animation: ndp-wave var(--dur) cubic-bezier(.45,.05,.55,.95) infinite;
+  transform: scaleY(var(--start-scale));
+  transform-origin: 50% 50%;
+  opacity: .98;
+  will-change: transform, opacity;
+  animation: ndp-oscilloscope-wave var(--duration) cubic-bezier(.65, 0, .35, 1) infinite;
   animation-delay: var(--delay);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, .42),
+    0 0 10px var(--bar-glow),
+    0 0 22px color-mix(in srgb, var(--bar-glow) 34%, transparent);
 }
 
-/* Bars above the D grow upward from the letter. */
-.ndp-equalizer--top .ndp-eq-bar {
-  bottom: 66.70%;
-  height: var(--ht);
-  transform-origin: 50% 100%;
+.ndp-osc-bar::after {
+  content: "";
+  position: absolute;
+  inset: 1px 10% auto;
+  height: 26%;
+  border-radius: 999px;
+  background: linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,0));
+  opacity: .58;
 }
 
-/* Bars below the D grow downward from the letter. */
-.ndp-equalizer--bottom .ndp-eq-bar {
-  top: 49.44%;
-  height: var(--hb);
-  transform-origin: 50% 0%;
+.ndp-osc-bar:nth-child(1) {
+  --bar-height: 32%;
+  --start-scale: .72;
+  --duration: 1.08s;
+  --delay: -.54s;
+  --bar-glow: rgba(139, 45, 255, .58);
+  background: linear-gradient(180deg, #bc58ff 0%, #8c2cff 46%, #653dff 100%);
 }
 
-/* Seven waveform columns centered on the D; each upper/lower pair shares a phase. */
-.ndp-eq-bar:nth-child(1) {
-  --x: 39.593%; --w: 1.356%; --ht: 3.90%; --hb: 3.55%;
-  --bar: #7556ff; --bar-hi: #a28cff; --glow: rgba(117,86,255,.58);
-  --dur: .92s; --delay: -.18s;
-}
-.ndp-eq-bar:nth-child(2) {
-  --x: 42.664%; --w: 1.635%; --ht: 6.70%; --hb: 6.50%;
-  --bar: #645ffb; --bar-hi: #8d8cff; --glow: rgba(100,95,251,.56);
-  --dur: .78s; --delay: -.49s;
-}
-.ndp-eq-bar:nth-child(3) {
-  --x: 46.093%; --w: 1.794%; --ht: 9.80%; --hb: 9.17%;
-  --bar: #4b9df8; --bar-hi: #82c8ff; --glow: rgba(75,157,248,.54);
-  --dur: 1.02s; --delay: -.31s;
-}
-.ndp-eq-bar:nth-child(4) {
-  --x: 50%; --w: 2.313%; --ht: 13.90%; --hb: 12.72%;
-  --bar: #34cad7; --bar-hi: #71ddff; --glow: rgba(52,202,215,.55);
-  --dur: .84s; --delay: -.62s;
-}
-.ndp-eq-bar:nth-child(5) {
-  --x: 53.947%; --w: 1.794%; --ht: 9.80%; --hb: 9.17%;
-  --bar: #27d7c4; --bar-hi: #65efda; --glow: rgba(39,215,196,.54);
-  --dur: .95s; --delay: -.36s;
-}
-.ndp-eq-bar:nth-child(6) {
-  --x: 57.376%; --w: 1.635%; --ht: 6.70%; --hb: 6.50%;
-  --bar: #20d9c1; --bar-hi: #63efd8; --glow: rgba(32,217,193,.54);
-  --dur: .76s; --delay: -.55s;
-}
-.ndp-eq-bar:nth-child(7) {
-  --x: 60.407%; --w: 1.356%; --ht: 3.90%; --hb: 3.55%;
-  --bar: #1de2c3; --bar-hi: #6af2dc; --glow: rgba(29,226,195,.56);
-  --dur: 1.05s; --delay: -.24s;
+.ndp-osc-bar:nth-child(2) {
+  --bar-height: 64%;
+  --start-scale: .84;
+  --duration: .93s;
+  --delay: -.21s;
+  --bar-glow: rgba(111, 76, 255, .58);
+  background: linear-gradient(180deg, #d078ff 0%, #9854ff 38%, #497dff 100%);
 }
 
-/* Final part of the five-second transition: logo dissolves into pure black. */
+.ndp-osc-bar:nth-child(3) {
+  --bar-height: 100%;
+  --start-scale: .76;
+  --duration: 1.17s;
+  --delay: -.76s;
+  --bar-glow: rgba(38, 190, 255, .62);
+  background: linear-gradient(180deg, #6ce8ff 0%, #28bfff 28%, #268cff 66%, #22dfe2 100%);
+}
+
+.ndp-osc-bar:nth-child(4) {
+  --bar-height: 64%;
+  --start-scale: .88;
+  --duration: 1.01s;
+  --delay: -.47s;
+  --bar-glow: rgba(21, 225, 211, .58);
+  background: linear-gradient(180deg, #57f2eb 0%, #11e2dc 42%, #15c7b7 100%);
+}
+
+.ndp-osc-bar:nth-child(5) {
+  --bar-height: 32%;
+  --start-scale: .68;
+  --duration: .86s;
+  --delay: -.69s;
+  --bar-glow: rgba(33, 231, 199, .56);
+  background: linear-gradient(180deg, #78f6df 0%, #29e5cc 44%, #0dc8ae 100%);
+}
+
+.ndp-transition.is-active .ndp-osc-bar {
+  animation-play-state: running;
+}
+
+/* Final phase of the existing five-second transition: icon dissolves into black
+   before navigation, so there is no image/DOM flash between landing and service. */
 .ndp-transition.is-exiting .ndp-transition-stage {
   opacity: 0;
-  transform: scale(1.006);
+  transform: translate3d(0, -4px, 0) scale(1.012);
   transition:
-    opacity .68s cubic-bezier(.4, 0, .2, 1),
-    transform .72s cubic-bezier(.4, 0, .2, 1);
+    opacity .70s cubic-bezier(.65, 0, .35, 1),
+    transform .78s cubic-bezier(.65, 0, .35, 1);
 }
 
-.ndp-transition.is-exiting .ndp-equalizer {
+.ndp-transition.is-exiting .ndp-oscilloscope {
   opacity: 0;
-  transition: opacity .42s ease;
+  transition: opacity .42s cubic-bezier(.65, 0, .35, 1);
 }
 
-/* Existing page quietly disappears behind the black overlay. */
 body.ndp-transitioning > *:not(.ndp-transition) {
   opacity: 0 !important;
   pointer-events: none !important;
-  transition: opacity .55s cubic-bezier(.22,.61,.36,1) !important;
+  transition: opacity .55s cubic-bezier(.22, 1, .36, 1) !important;
 }
 
-/* Destination is revealed from black; prevents a white/DOM flash between pages. */
 html.ndp-arrival-pending body > *:not(.ndp-transition) {
   opacity: 0 !important;
 }
@@ -187,52 +225,59 @@ html.ndp-arrival-pending .ndp-transition-stage,
 
 .ndp-transition.is-arrival.is-arrival-ready {
   opacity: 0;
-  transition: opacity .78s cubic-bezier(.22,.61,.36,1);
+  transition: opacity .78s cubic-bezier(.22, 1, .36, 1);
 }
 
-@keyframes ndp-wave {
-  0%   { transform: translateX(-50%) scaleY(.24); filter: brightness(.94); }
-  13%  { transform: translateX(-50%) scaleY(.74); filter: brightness(1.04); }
-  29%  { transform: translateX(-50%) scaleY(.42); filter: brightness(.98); }
-  47%  { transform: translateX(-50%) scaleY(1); filter: brightness(1.10); }
-  64%  { transform: translateX(-50%) scaleY(.57); filter: brightness(1.01); }
-  82%  { transform: translateX(-50%) scaleY(.86); filter: brightness(1.06); }
-  100% { transform: translateX(-50%) scaleY(.31); filter: brightness(.96); }
+@keyframes ndp-oscilloscope-wave {
+  0%   { transform: scaleY(.46); opacity: .92; }
+  13%  { transform: scaleY(.79); opacity: 1; }
+  28%  { transform: scaleY(.58); opacity: .95; }
+  45%  { transform: scaleY(1); opacity: 1; }
+  61%  { transform: scaleY(.67); opacity: .97; }
+  78%  { transform: scaleY(.89); opacity: 1; }
+  100% { transform: scaleY(.51); opacity: .93; }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 900px) {
   .ndp-transition-stage {
-    width: min(96vmin, 1120px);
-    width: min(96svmin, 1120px);
+    width: min(74vmin, 560px);
+    width: min(74svmin, 560px);
+  }
+
+  .ndp-transition-icon {
+    box-shadow: 0 18px 54px rgba(0,0,0,.42);
+  }
+
+  .ndp-osc-bar {
+    box-shadow:
+      inset 0 1px 1px rgba(255,255,255,.34),
+      0 0 9px var(--bar-glow);
+  }
+}
+
+@media (max-width: 430px) {
+  .ndp-transition-stage {
+    width: min(78vmin, 430px);
+    width: min(78svmin, 430px);
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .ndp-transition-stage {
+    width: min(72svh, 520px);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .ndp-transition,
   .ndp-transition-stage,
-  .ndp-equalizer,
   body.ndp-transitioning > *:not(.ndp-transition) {
     transition-duration: 180ms !important;
   }
-  .ndp-eq-bar {
+
+  .ndp-osc-bar {
     animation: none !important;
-    transform: translateX(-50%) scaleY(1);
+    transform: scaleY(.82);
+    opacity: 1;
   }
-}
-
-
-/* Mobile compositor path: keep the 5 s brand transition but avoid expensive per-frame filters. */
-@media (max-width:900px), (pointer:coarse) and (max-height:560px) {
-  .ndp-transition{min-height:100svh;min-height:100dvh}
-  .ndp-transition-stage{width:min(96svmin,1024px)}
-  .ndp-eq-bar{animation-name:ndp-wave-mobile;box-shadow:inset 0 1px 1px rgba(255,255,255,.28),0 0 9px var(--glow)}
-}
-@keyframes ndp-wave-mobile{
-  0%{transform:translateX(-50%) scaleY(.24)}
-  13%{transform:translateX(-50%) scaleY(.74)}
-  29%{transform:translateX(-50%) scaleY(.42)}
-  47%{transform:translateX(-50%) scaleY(1)}
-  64%{transform:translateX(-50%) scaleY(.57)}
-  82%{transform:translateX(-50%) scaleY(.86)}
-  100%{transform:translateX(-50%) scaleY(.31)}
 }

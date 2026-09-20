@@ -120,3 +120,26 @@ html.ndp-theme-transition .site-footer{
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto!important}.story-scroll{display:none!important}.story-section .story-mobile-summary{display:block!important}.story-section .story-mobile-summary strong,.story-section .story-mobile-summary span{font-size:12px!important}.story-section *,[data-reveal],.nav-links{animation:none!important;transition-duration:180ms!important;transform:none!important;filter:none!important}
 }
+
+
+/* NDP wordmark mobile override: loaded after desktop styles. */
+@media (max-width: 680px) {
+  .site-header .nav { min-height: 72px; }
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark,
+  .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: clamp(150px, 42vw, 180px) !important;
+    height: auto !important;
+    flex: 0 0 auto !important;
+    aspect-ratio: 1610 / 544;
+    object-fit: contain;
+    border-radius: 7px;
+    background: #05070c;
+    box-shadow: none;
+  }
+}
+@media (max-width: 360px) {
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark,
+  .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 148px !important;
+  }
+}
