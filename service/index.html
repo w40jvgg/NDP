@@ -2,7 +2,7 @@
 <html lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0a0c11">
   <meta name="description" content="NormalDance Protocol — демонстрационный интерфейс сервиса музыкальных прав, проверки произведений, реестра и цифровых паспортов.">
   <title>NDP — NormalDance Protocol</title>
@@ -19,14 +19,14 @@
 <link rel="icon" href="assets/ndp-favicon.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="../transition.css">
+  <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
   <div id="toast-root" class="toast-root" aria-live="polite"></div>
 
   <section id="auth-shell" class="auth-shell" aria-labelledby="auth-title">
-    <a class="landing-return auth-landing-return" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">← Вернуться на лэндинг</a>
     <div class="auth-visual">
-      <a class="brand brand-large" href="#" aria-label="NDP — NormalDance Protocol">
+      <a class="brand brand-large" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
         <img src="assets/ndp-logo-full.png" alt="NDP — NormalDance Protocol. Music Rights Infrastructure" width="190" height="190">
       </a>
       <div class="auth-copy">
@@ -54,10 +54,10 @@
 
     <div class="auth-panel">
       <div class="auth-card">
-        <div class="auth-card-brand" aria-label="NDP — NormalDance Protocol">
+        <a class="auth-card-brand" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
           <img src="assets/ndp-mark.png" alt="NDP" width="52" height="52">
           <div><strong>NDP</strong><span>NormalDance Protocol</span></div>
-        </div>
+        </a>
         <div class="auth-tabs" role="tablist" aria-label="Авторизация">
           <button type="button" class="auth-tab active" data-auth-tab="login" role="tab" aria-selected="true">Вход</button>
           <button type="button" class="auth-tab" data-auth-tab="register" role="tab" aria-selected="false">Регистрация</button>
@@ -98,7 +98,7 @@
   <div id="app-shell" class="app-shell hidden">
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
-        <a class="brand" href="#dashboard" data-view-link="dashboard">
+        <a class="brand" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
           <img src="assets/ndp-mark.png" alt="NDP" width="42" height="42">
           <span><strong>NormalDance</strong><small>Protocol / NDP</small></span>
         </a>
@@ -130,7 +130,6 @@
     <div class="app-main">
       <header class="topbar">
         <div class="topbar-left">
-          <a class="landing-return topbar-landing-return" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">← Вернуться на лэндинг</a>
           <button id="sidebar-open" class="icon-button mobile-menu" type="button" aria-label="Открыть меню">☰</button>
           <div class="topbar-title">
             <div class="crumb" id="view-kicker">NORMALDANCE / ОБЗОР</div>
@@ -535,6 +534,7 @@
     </div>
   </div>
   <script src="app.js"></script>
+  <script src="mobile.js" defer></script>
   <script src="../transition.js" defer></script>
 </body>
 </html>

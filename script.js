@@ -251,9 +251,9 @@
     }
 
     if (story && storyScroll) {
-      if (storyCompact?.matches || reduceMotion?.matches) {
+      if (reduceMotion?.matches) {
         setStoryStage(0, true);
-      } else {
+      } else if (!storyCompact?.matches) {
         const rect = storyScroll.getBoundingClientRect();
         const viewport = window.innerHeight;
         const travel = Math.max(1, rect.height - viewport);

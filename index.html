@@ -2,7 +2,7 @@
 <html lang="ru" data-theme="dark">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0a0c11">
   <meta name="description" content="NormalDance Protocol — инфраструктура верификации происхождения музыки, управления правами и автоматического распределения роялти.">
   <title>NormalDance Protocol — инфраструктура музыкальных прав</title>
@@ -19,11 +19,12 @@
 <link rel="icon" href="assets/ndp-logo.png" type="image/png">
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="transition.css">
+  <link rel="stylesheet" href="mobile.css">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav">
-      <a class="brand" href="#top" aria-label="NormalDance Protocol — на главную">
+      <a class="brand" href="service/index.html" data-ndp-transition aria-label="Открыть сервис NormalDance Protocol">
         <img src="assets/ndp-logo.png" alt="NDP — NormalDance Protocol" width="44" height="44">
         <span class="brand-copy"><strong>NormalDance</strong><span>Protocol / NDP</span></span>
       </a>
@@ -35,7 +36,6 @@
         <a href="#developers">Разработчикам</a>
       </nav>
       <div class="nav-actions">
-        <a class="service-link" href="service/index.html" data-ndp-transition>Открыть сервис <span aria-hidden="true">↗</span></a>
         <button class="icon-button" type="button" data-theme-toggle aria-label="Включить светлую тему" title="Сменить тему">
           <svg width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v2M12 19v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M3 12h2M19 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
         </button>
@@ -479,7 +479,7 @@
       <div class="container">
         <div class="cta-panel" data-reveal>
           <div><p class="eyebrow">NormalDance Protocol</p><h2>У звука есть происхождение. Права должны уметь его подтверждать.</h2></div>
-          <div class="hero-actions"><a class="btn btn-primary" href="service/index.html" data-ndp-transition>Перейти в NormalDance <span aria-hidden="true">↗</span></a><a class="btn btn-secondary" href="https://t.me/NormalDance" target="_blank" rel="noopener noreferrer">Телеграм</a></div>
+          <div class="hero-actions"><a class="btn btn-secondary" href="https://t.me/NormalDance" target="_blank" rel="noopener noreferrer">Телеграм</a></div>
         </div>
       </div>
     </section>
@@ -503,6 +503,7 @@
     </div>
   </div>
   <script src="script.js" defer></script>
+  <script src="mobile.js" defer></script>
   <script src="transition.js" defer></script>
 </body>
 </html>
