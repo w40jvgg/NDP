@@ -174,7 +174,7 @@
                   <p class="eyebrow">03 · ADNA / ИДЕНТИФИКАЦИЯ</p>
                   <h3>Звук получает устойчивый перцептивный отпечаток.</h3>
                   <p>ADNA используется для поиска того же произведения и его производных после перекодирования и других допустимых преобразований. Вердикт формируется по измеренному сходству.</p>
-                  <div class="story-fact"><span>ПОРОГИ ДЕМО</span><b>same ≥ 0,90 · derivative ≥ 0,75</b></div>
+                  <div class="story-fact"><span>ПОЛИТИКА СХОДСТВА</span><b>SAME · DERIVATIVE · DIFFERENT</b></div>
                 </article>
                 <article class="story-copy-panel" data-copy-stage="3" aria-hidden="true">
                   <p class="eyebrow">04 · ГРАФ ПРОИСХОЖДЕНИЯ</p>
@@ -277,7 +277,7 @@
                           <div><b>Другой трек</b><em class="low" style="--score:.31">0.31</em></div>
                         </div>
                       </div>
-                      <div class="thresholds"><span><i class="same"></i>same ≥ 0,90</span><span><i class="derivative"></i>derivative 0,75–0,90</span><span><i class="different"></i>different &lt; 0,75</span></div>
+                      <div class="thresholds"><span><i class="same"></i>SAME</span><span><i class="derivative"></i>DERIVATIVE</span><span><i class="different"></i>DIFFERENT</span></div>
                     </div>
                   </article>
 
@@ -390,7 +390,7 @@
           <article class="capability-card" style="--stack-i:2" data-reveal><span>03 / GRAPH</span><h3>Обнаружение производных</h3><p>Сэмпл, ремикс, edit и другое производное произведение фиксируются как проверяемые связи с источником.</p><b>ID → ПРОИСХОЖДЕНИЕ</b></article>
           <article class="capability-card" style="--stack-i:3" data-reveal><span>04 / RIGHTS</span><h3>Граф прав</h3><p>Система определяет не только совпадение звука, но и цепочку участников, лицензий и условий использования.</p><b>СВЯЗЬ → ПРАВА</b></article>
           <article class="capability-card" style="--stack-i:4" data-reveal><span>05 / ROYALTY</span><h3>Расчёт роялти</h3><p>При событии использования расчётный модуль проходит по графу происхождения и применяет зафиксированные сплиты.</p><b>СОБЫТИЕ → РАСЧЁТ</b></article>
-          <article class="capability-card" style="--stack-i:5" data-reveal><span>06 / PAYMENT</span><h3>Автоматизированные выплаты</h3><p>Рассчитанные суммы готовятся к распределению между всеми участниками цепочки: СБП сейчас, цифровой рубль — следующий контур.</p><b>РАСЧЁТ → ВЫПЛАТА</b></article>
+          <article class="capability-card" style="--stack-i:5" data-reveal><span>06 / PAYMENT</span><h3>Автоматизированные выплаты</h3><p>Рассчитанные суммы готовятся к распределению между всеми участниками цепочки: Расчёт отделён от платёжного провайдера; СБП и цифровой рубль — планируемые production-интеграции.</p><b>РАСЧЁТ → ВЫПЛАТА</b></article>
         </div>
 
         <div class="demo-heading" data-reveal><p class="eyebrow">04 / Интерактивный граф</p><h2>Паспорт трека раскрывается через его связи.</h2><p>Нажмите на узел и посмотрите тип связи, идентификатор, долю происхождения и статус верификации.</p></div>
@@ -434,7 +434,7 @@
             <div class="flow-node"><span>Совпадение</span><h3>Обнаружен сэмпл A</h3><p>Источник и доля связи подтверждены.</p></div>
             <div class="flow-node"><span>Разрешение</span><h3>Граф прав</h3><p>Система проходит по владельцам и лицензиям.</p></div>
             <div class="flow-node"><span>Расчёт</span><h3>Модуль распределения долей</h3><p>Доли пересчитываются по цепочке прав.</p></div>
-            <div class="flow-node"><span>Выплата</span><h3>Распределение роялти</h3><p>СБП сейчас, цифровой рубль — следующий контур.</p></div>
+            <div class="flow-node"><span>Выплата</span><h3>Распределение роялти</h3><p>Расчёт отделён от платёжного провайдера; СБП и цифровой рубль — планируемые production-интеграции.</p></div>
           </div>
           <div class="flow-rails" aria-hidden="true"><i class="rail"></i><i class="rail"></i><i class="rail"></i><i class="rail"></i></div>
         </div>
@@ -465,16 +465,18 @@
         </div>
         <div class="tech-grid">
           <article class="tech-card"><span class="tech-code">ИДЕНТИЧНОСТЬ / ADNA</span><h3>Аудиоотпечаток</h3><p>Перцептивная идентификация, поиск совпадений и производных произведений.</p><span class="tech-status"><i class="status-dot"></i> Прототип ядра</span></article>
-          <article class="tech-card"><span class="tech-code">ПРАВА / NDT</span><h3>Паспорт</h3><p>Авторы, правообладатели, сплиты, лицензии и цепочка происхождения в машиночитаемом формате.</p><span class="tech-status"><i class="status-dot"></i> Реестр готов</span></article>
+          <article class="tech-card"><span class="tech-code">ПРАВА / NDT</span><h3>Паспорт</h3><p>Авторы, правообладатели, сплиты, лицензии и цепочка происхождения в машиночитаемом формате.</p><span class="tech-status"><i class="status-dot"></i> Демо-реестр / NDT 1.0</span></article>
           <article class="tech-card"><span class="tech-code">ИНТЕРФЕЙС / MCP</span><h3>Машинный API</h3><p>Инструменты для артистов, реестра, ADNA, манифестов и внешних ИИ-систем.</p><span class="tech-status"><i class="status-dot"></i> Интеграционный слой</span></article>
         </div>
-        <div class="architecture-flow" aria-label="Архитектура NormalDance" data-reveal>
+        <div class="architecture-flow architecture-flow-v2" aria-label="Архитектура NormalDance" data-reveal>
           <div class="architecture-node"><span>01</span><strong>Аудио</strong><small>произведение / фрагмент</small></div><i>→</i>
-          <div class="architecture-node"><span>02</span><strong>ADNA</strong><small>fingerprint engine</small></div><i>→</i>
-          <div class="architecture-node"><span>03</span><strong>Реестр прав</strong><small>NDT / NDP-ID</small></div><i>→</i>
-          <div class="architecture-node"><span>04</span><strong>Граф</strong><small>производные связи</small></div><i>→</i>
-          <div class="architecture-node"><span>05</span><strong>Royalty engine</strong><small>каскадный расчёт</small></div><i>→</i>
-          <div class="architecture-node"><span>06</span><strong>Payment layer</strong><small>СБП / цифровой рубль</small></div>
+          <div class="architecture-node"><span>02</span><strong>ADNA</strong><small>Audio DNA / fingerprint</small></div><i>→</i>
+          <div class="architecture-node"><span>03</span><strong>NDP-ID</strong><small>внутренний идентификатор</small></div><i>→</i>
+          <div class="architecture-node"><span>04</span><strong>NDT</strong><small>машиночитаемый паспорт</small></div><i>→</i>
+          <div class="architecture-node"><span>05</span><strong>Graph</strong><small>происхождение</small></div><i>→</i>
+          <div class="architecture-node"><span>06</span><strong>Usage</strong><small>событие использования</small></div><i>→</i>
+          <div class="architecture-node"><span>07</span><strong>Royalty</strong><small>каскадный расчёт</small></div><i>→</i>
+          <div class="architecture-node"><span>08</span><strong>Payment</strong><small>отдельный provider layer</small></div>
         </div>
       </div>
     </section>

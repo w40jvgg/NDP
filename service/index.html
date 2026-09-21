@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="theme-color" content="#0a0c11">
   <meta name="description" content="NormalDance Protocol — демонстрационный интерфейс сервиса музыкальных прав, проверки произведений, реестра и цифровых паспортов.">
-  <title>NDP — NormalDance Protocol</title>
+  <title>NDP V2.0 — NormalDance Protocol</title>
     <script>
     (() => {
       try {
@@ -179,6 +179,8 @@
             <article class="metric-card"><span class="metric-label">Проверено</span><strong id="metric-verified">4</strong><small>цифровых паспортов</small></article>
             <article class="metric-card"><span class="metric-label">Производных</span><strong id="metric-derivatives">2</strong><small>связанных объектов</small></article>
             <article class="metric-card"><span class="metric-label">Начислено</span><strong id="metric-royalty">12 480 ₽</strong><small>демо-расчёт за период</small></article>
+            <article class="metric-card"><span class="metric-label">Сэмплов</span><strong id="metric-samples">0</strong><small>в локальной библиотеке</small></article>
+            <article class="metric-card"><span class="metric-label">Сообщения</span><strong id="metric-unread">0</strong><small>непрочитанных</small></article>
           </div>
 
           <div class="dashboard-grid">
@@ -209,7 +211,7 @@
         <section class="view" id="view-verify" data-view-section="verify">
           <div class="page-grid verify-layout">
             <section class="panel verify-panel">
-              <div class="panel-head stacked"><div><span class="panel-kicker">ADNA / проверка</span><h2>Проверить произведение</h2><p>Загрузите аудиофайл. В демо-режиме браузер создаст локальный хэш и покажет детерминированную имитацию результата.</p></div></div>
+              <div class="panel-head stacked"><div><span class="panel-kicker">ADNA / Audio DNA / DEMO</span><h2>Проверить произведение</h2><p>ADNA — перцептивный цифровой отпечаток звука. В этой сборке реальный fingerprint engine не подключён: браузер создаёт локальный хэш и показывает детерминированную техническую демонстрацию.</p></div></div>
               <div class="verify-tabs" role="tablist">
                 <button class="verify-tab active" data-verify-tab="file" type="button">Аудиофайл</button>
                 <button class="verify-tab" data-verify-tab="fingerprint" type="button">ADNA-отпечаток</button>
@@ -260,6 +262,10 @@
             </section>
             <aside class="panel passport-panel" id="passport-panel"></aside>
           </div>
+          <section class="panel provenance-live-panel" id="provenance-live-panel">
+            <div class="panel-head"><div><span class="panel-kicker">PROVENANCE GRAPH</span><h3>Граф происхождения</h3><p>Вертикальное представление связей. Выберите узел, чтобы открыть его NDT.</p></div><span class="badge neutral">DEMO</span></div>
+            <div id="provenance-live-graph" class="provenance-live-graph"></div>
+          </section>
         </section>
 
         <section class="view" id="view-register-track" data-view-section="register-track">
@@ -282,7 +288,9 @@
                     <label class="field"><span>Тип объекта</span><select id="track-type"><option>Оригинал</option><option>Ремикс</option><option>Производное</option><option>Сэмпл</option></select></label>
                     <label class="field"><span>Жанр</span><input id="track-genre" placeholder="Drum & Bass"></label>
                     <label class="field"><span>BPM</span><input id="track-bpm" type="number" min="1" max="300" placeholder="174"></label>
-                    <label class="field full-span"><span>Родительское произведение</span><select id="track-parent"><option value="">Нет / исходное произведение</option></select></label>
+                    <label class="field full-span"><span>Источник / родительское произведение</span><select id="track-parent"><option value="">Нет / исходное произведение</option></select></label>
+                    <label class="field"><span>Тип связи</span><select id="track-relation-type"><option value="remix">Remix</option><option value="sample">Sample</option><option value="edit">Edit</option><option value="cover">Cover</option><option value="stem">Stem</option><option value="interpolation">Interpolation</option><option value="other">Other</option></select></label>
+                    <label class="field"><span>Downstream источника, %</span><input id="track-relation-share" type="number" min="0" max="100" step="0.1" value="0"></label>
                   </div>
                 </div>
 
@@ -299,6 +307,14 @@
                     <label class="option-card"><input type="radio" name="ai-license" value="Запрещено"><span class="option-icon">×</span><strong>Запрещено</strong><small>Машиночитаемое ограничение использования произведения ИИ.</small></label>
                   </div>
                   <label class="field"><span>Комментарий к лицензии</span><textarea id="track-license-note" rows="4" placeholder="Например: разрешено только для поиска и атрибуции"></textarea></label>
+                  <div class="ai-policy-grid" aria-label="Машиночитаемая AI policy">
+                    <label class="check"><input id="ai-training" type="checkbox" checked><span>Обучение (training)</span></label>
+                    <label class="check"><input id="ai-generation" type="checkbox" checked><span>Генерация (generation)</span></label>
+                    <label class="check"><input id="ai-embedding" type="checkbox" checked><span>Embedding / поиск</span></label>
+                    <label class="check"><input id="ai-attribution" type="checkbox" checked><span>Атрибуция обязательна</span></label>
+                    <label class="check"><input id="ai-commercial" type="checkbox" checked><span>Коммерческое использование</span></label>
+                    <label class="check"><input id="ai-license-required" type="checkbox"><span>Требуется отдельная лицензия</span></label>
+                  </div>
                 </div>
 
                 <div class="wizard-pane" data-wizard-pane="4">
@@ -338,7 +354,9 @@
               <div class="flow-line"></div>
               <div class="flow-step active"><span>04</span><div><strong>Рассчитаны доли</strong><small>Событие готово к выплате</small></div></div>
               <div class="distribution-bar"><i style="width:40%"></i><i style="width:30%"></i><i style="width:20%"></i><i style="width:10%"></i></div>
-              <div class="distribution-list"><span><i></i>Автор 40%</span><span><i></i>Продюсер 30%</span><span><i></i>Артист 20%</span><span><i></i>Источник сэмпла 10%</span></div>
+              <div class="distribution-list" id="royalty-breakdown"><span><i></i>Запустите расчёт, чтобы увидеть детерминированный breakdown.</span></div>
+              <div class="royalty-payment-state"><span>Payment layer</span><strong id="royalty-payment-state">DEMO · не подготовлено</strong></div>
+              <button class="button secondary full" id="calculate-royalty-demo" type="button">Рассчитать событие 1 000 ₽</button>
             </aside>
           </div>
         </section>
@@ -360,15 +378,15 @@
             <div class="how-copy panel">
               <span class="panel-kicker">01 / идентификация</span>
               <h2>Перцептивный отпечаток ADNA</h2>
-              <p>Алгоритм строит компактный отпечаток спектрограммы размером 256 байт, устойчивый к сжатию, конвертации форматов и изменению громкости. В тестовой выборке перекодированные копии дают сходство ≥ 0,95, а чужие треки — ≤ 0,44. По назначению это автоматический Content ID для правообладателей.</p>
-              <div class="fact-row"><span><strong>256 байт</strong><small>компактный отпечаток</small></span><span><strong>≥ 0,95</strong><small>перекодированная копия</small></span><span><strong>≤ 0,44</strong><small>чужой материал</small></span></div>
+              <p>ADNA v1 в целевой модели представляет компактный 256-байтный перцептивный отпечаток. В этой сборке движок демонстрационный: актуальные пороги NDP Demo берутся из единой SimilarityPolicy. Они не являются международным стандартом и не дают юридического вывода о нарушении прав.</p>
+              <div class="fact-row"><span><strong>256 байт</strong><small>целевая модель ADNA v1</small></span><span><strong data-threshold-same>—</strong><small>SAME · demo policy</small></span><span><strong data-threshold-derivative>—</strong><small>DERIVATIVE · demo policy</small></span></div>
             </div>
             <div class="panel adna-lab">
               <div class="lab-head"><span class="panel-kicker">ADNA / LIVE DEMO</span><span class="demo-state" id="adna-demo-state">ГОТОВО</span></div>
               <div class="audio-source"><div><strong>metro_break_172.wav</strong><small>WAV · 44.1 kHz · 00:12</small></div><span>12.4 MB</span></div>
               <div class="waveform" id="adna-waveform" aria-hidden="true"></div>
               <div class="fingerprint-output"><span>ADNA-V1 / 256 B</span><code id="demo-fingerprint">—</code></div>
-              <div class="similarity-meter"><div><span>Сходство с реестром</span><strong id="demo-similarity">0,00</strong></div><div class="meter"><i id="demo-similarity-bar"></i><b class="threshold t44">0,44</b><b class="threshold t95">0,95</b></div></div>
+              <div class="similarity-meter"><div><span>Сходство с реестром</span><strong id="demo-similarity">0,00</strong></div><div class="meter"><i id="demo-similarity-bar"></i><b class="threshold derivative-threshold" data-threshold-derivative>—</b><b class="threshold same-threshold" data-threshold-same>—</b></div></div>
               <div class="adna-result" id="adna-demo-result"><span>◎</span><div><strong>Анализ не запущен</strong><small>Запустите сценарий или этот этап отдельно.</small></div></div>
               <button class="button secondary full" id="run-adna-demo" type="button">Проверить отпечаток</button>
             </div>
@@ -397,8 +415,8 @@
             <div class="how-copy panel">
               <span class="panel-kicker">03 / расчёт и выплата</span>
               <h2>Автоматическое распределение выплат</h2>
-              <p>Событие использования → проверка отпечатка реестром → распределение вознаграждения между правообладателями по сплитам и связям происхождения. Расчётный слой не зависит от платёжного рельса: СБП — сейчас, цифровой рубль — по мере готовности банковских API. Данные и инфраструктура предполагаются на территории РФ.</p>
-              <div class="payment-rail"><span class="active">СБП</span><i>→</i><span>Расчётный слой NDP</span><i>→</i><span>Цифровой рубль</span></div>
+              <p>Событие использования → разрешение прав → каскадный расчёт по сплитам и связям происхождения → платёжная инструкция. В V2.0 расчётный слой отделён от PaymentProvider. СБП и цифровой рубль представлены только как production adapters до реальной интеграции; демо не выполняет денежных переводов.</p>
+              <div class="payment-rail"><span class="active">Royalty Engine</span><i>→</i><span>Payment Prepared · DEMO</span><i>→</i><span>СБП / цифровой рубль · planned</span></div>
             </div>
             <div class="panel payout-demo">
               <div class="lab-head"><span class="panel-kicker">СОБЫТИЕ USAGE-74291</span><span class="demo-state" id="payout-demo-state">ОЖИДАЕТ ПРАВА</span></div>
@@ -496,10 +514,14 @@
           </div>
           <div class="developer-grid">
             <section class="panel endpoint-list">
-              <button class="endpoint active" data-endpoint="identify"><span class="method post">POST</span><code>/oracle/identify</code><small>Идентификация ADNA</small></button>
-              <button class="endpoint" data-endpoint="track"><span class="method get">GET</span><code>/registry/tracks/{isrc}</code><small>Карточка прав</small></button>
-              <button class="endpoint" data-endpoint="usage"><span class="method post">POST</span><code>/usage/events</code><small>Событие использования</small></button>
-              <button class="endpoint" data-endpoint="mcp"><span class="method mcp">MCP</span><code>register_track</code><small>Регистрация произведения</small></button>
+              <button class="endpoint active" data-endpoint="identify"><span class="method post">POST</span><code>/api/v1/adna/identify</code><small>Идентификация ADNA</small></button>
+              <button class="endpoint" data-endpoint="compare"><span class="method post">POST</span><code>/api/v1/adna/compare</code><small>Сравнение отпечатков</small></button>
+              <button class="endpoint" data-endpoint="track"><span class="method get">GET</span><code>/api/v1/registry/tracks/{id}</code><small>NDT / карточка прав</small></button>
+              <button class="endpoint" data-endpoint="rights"><span class="method get">GET</span><code>/api/v1/rights/{id}</code><small>Сплиты и лицензии</small></button>
+              <button class="endpoint" data-endpoint="graph"><span class="method get">GET</span><code>/api/v1/graph/{id}</code><small>Граф происхождения</small></button>
+              <button class="endpoint" data-endpoint="royalty"><span class="method post">POST</span><code>/api/v1/royalties/calculate</code><small>Расчёт роялти</small></button>
+              <button class="endpoint" data-endpoint="usage"><span class="method post">POST</span><code>/usage/events</code><small>Compatibility route</small></button>
+              <button class="endpoint" data-endpoint="mcp"><span class="method mcp">MCP</span><code>register_track</code><small>Тот же application layer</small></button>
             </section>
             <section class="panel code-panel"><div class="code-top"><span id="code-title">POST /oracle/identify</span><button id="copy-code" class="text-button" type="button">Копировать</button></div><pre><code id="code-example"></code></pre></section>
           </div>
@@ -520,6 +542,8 @@
         <section class="view" id="view-settings" data-view-section="settings">
           <div class="settings-grid">
             <section class="panel setting-section"><span class="panel-kicker">Интерфейс</span><h2>Настройки</h2><div class="setting-row"><div><strong>Тема</strong><small>Переключение между тёмным и светлым интерфейсом.</small></div><button id="settings-theme" class="button secondary small">Сменить тему</button></div><div class="setting-row"><div><strong>Демонстрационные уведомления</strong><small>Показывать системные сообщения внутри интерфейса.</small></div><label class="switch"><input id="notifications-toggle" type="checkbox" checked><span></span></label></div></section>
+            <section class="panel setting-section"><span class="panel-kicker">NDP Backup / schema v2</span><h3>Экспорт и импорт</h3><p>Резервная копия включает профиль, произведения/NDT, библиотеку, сообщения, настройки и demo-историю роялти. Перед импортом выполняется проверка формата.</p><div class="settings-actions"><button id="export-backup" class="button secondary" type="button">Экспорт NDP Backup</button><button id="import-backup" class="button secondary" type="button">Импорт backup</button><input id="import-backup-file" type="file" accept="application/json,.json" hidden></div></section>
+            <section class="panel setting-section"><span class="panel-kicker">Текущий контур</span><h3>Demo / Server separation</h3><div class="runtime-truth" id="runtime-truth"></div></section>
             <section class="panel setting-section danger-section"><span class="panel-kicker">Локальные данные</span><h3>Сброс демонстрации</h3><p>Удалит созданные вами локальные произведения, события и профиль. Демо-профиль будет восстановлен при следующем входе.</p><button id="reset-demo" class="button danger">Сбросить локальные данные</button></section>
           </div>
         </section>
@@ -541,6 +565,12 @@
       </div>
     </div>
   </div>
+  <script src="runtime-config.js"></script>
+  <script src="core/config.js"></script>
+  <script src="core/domain.js"></script>
+  <script src="core/storage.js"></script>
+  <script src="core/api-demo.js"></script>
+  <script src="core/api-client.js"></script>
   <script src="app.js"></script>
   <script src="mobile.js" defer></script>
   <script src="../transition.js" defer></script>

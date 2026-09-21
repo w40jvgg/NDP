@@ -1,0 +1,12 @@
+{
+  "name": "ndp-v2-static-demo",
+  "version": "2.0.0",
+  "private": true,
+  "description": "NormalDance Protocol V2.0 static demo / GitHub Pages contour",
+  "scripts": {
+    "lint": "node --check service/app.js && node --check service/core/config.js && node --check service/core/domain.js && node --check service/core/storage.js && node --check service/core/api-demo.js && node --check service/core/api-client.js && node --check transition.js",
+    "test": "node service/tests/domain.test.js",
+    "verify": "python scripts/verify_project.py",
+    "qa": "npm run lint && npm test && npm run verify"
+  }
+}

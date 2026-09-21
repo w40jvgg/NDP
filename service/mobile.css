@@ -266,3 +266,13 @@ html.ndp-theme-transition .button{
   .how-progress{display:grid!important;overflow:visible!important;scroll-snap-type:none!important}
   .how-step{flex:none!important;width:100%!important;min-width:0!important;scroll-snap-align:none!important}
 }
+
+/* NDP V2.0 mobile: all new domain data remains vertical-only */
+@media(max-width:780px){
+  .provenance-live-graph{width:100%;overflow:visible}
+  .provenance-node{width:100%;max-width:100%;min-width:0}
+  .policy-grid,.ai-policy-grid,.runtime-truth{grid-template-columns:minmax(0,1fr)!important}
+  .runtime-truth>div{grid-template-columns:minmax(0,1fr)!important}
+  .settings-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
+  .settings-actions .button{width:100%}
+}

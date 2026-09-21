@@ -6,9 +6,9 @@
 
   const ARRIVAL_KEY = 'ndp-transition-arrival';
   const ARRIVAL_PARAM = 'ndp-transition';
-  const TRANSITION_MS = 5000;
-  const EXIT_PHASE_MS = 4680;
-  const PROGRESS_MS = 4580;
+  const TRANSITION_MS = 1800;
+  const EXIT_PHASE_MS = 1480;
+  const PROGRESS_MS = 1580;
 
   const canvas = overlay.querySelector('[data-ndp-wave]');
   const progressFill = overlay.querySelector('.ndp-progress-fill');

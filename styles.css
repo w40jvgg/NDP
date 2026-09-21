@@ -1573,3 +1573,9 @@ html[data-theme="dark"] .story-section .story-copy-panel h3 { color:#f8fafc !imp
   .brand.ndp-wordmark-link img.ndp-wordmark { width: 126px !important; }
   .ndp-logo-hint { max-width: 90px; flex-basis: 90px; font-size: 12px; margin-left: 6px; }
 }
+
+/* NDP V2.0 architecture chain */
+.architecture-flow-v2{grid-template-columns:repeat(15,minmax(0,auto));overflow:visible}
+.architecture-flow-v2 .architecture-node{min-width:0}
+@media(max-width:1180px){.architecture-flow-v2{grid-template-columns:repeat(4,minmax(0,1fr))}.architecture-flow-v2>i{display:none}}
+@media(max-width:780px){.architecture-flow-v2{grid-template-columns:minmax(0,1fr)!important}.architecture-flow-v2>i{display:none!important}}

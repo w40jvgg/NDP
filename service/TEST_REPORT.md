@@ -1,17 +1,36 @@
-# Проверка NormalDance Service
+# NDP V2.0 — Test Report
 
-Дата проверки: 20.09.2026
+## PASS — automated
 
-## Результат
+Команда: `npm run qa`
 
-- `app.js`: синтаксическая проверка Node.js — успешно.
-- Дублирующиеся HTML `id` — не обнаружены.
-- Отсутствующие локальные ресурсы — не обнаружены.
-- Основной автоматизированный UI-прогон Chromium: 65 проверок, ошибок 0.
-- Расширенный UI-прогон Chromium: 37 проверок, ошибок 0.
+Проверено:
 
-## Проверенные сценарии
+- JavaScript syntax: app/core/transition;
+- ADNA boundary policy относительно значений из единого `core/config.js`;
+- rights totals: 70+30, 50+50, invalid 101/90/negative;
+- provenance graph cycle rejection;
+- provenance configured max-depth rejection, включая новый ещё не сохранённый node;
+- NDT 1.0 validation;
+- RoyaltyEngine total preservation;
+- local asset/link existence;
+- duplicate HTML IDs;
+- V2 core/document files;
+- отсутствие дублирования исполняемых ADNA thresholds в `service/app.js`.
 
-Авторизация демо-аккаунтом, регистрация нового локального аккаунта, выход, переходы бокового меню и верхней панели, переходы с главной страницы, карточки реестра, поиск и фильтрация, проверка по ADNA/ISRC/NDP-ID и аудиофайлу, очистка выбранного файла, мастер регистрации произведения, добавление/удаление участников сплита, регистрация нового произведения, библиотека сэмплов, фильтры, поиск и демо-прослушивание, переход из сэмпла в переписку, три диалога, отправка и получение демо-сообщений, три публичных профиля собеседников, переход в профиль по имени/аватару и кнопке, возврат в диалог, копирование NDP-ID, раздел «Как работает» по этапам и целиком, API/MCP, переключение темы, редактирование профиля, сброс локальных данных и мобильное меню.
+## PASS — HTTP static smoke
 
-Дополнительно всплывающие уведомления переведены в `pointer-events: none`, поэтому они больше не могут перекрывать кнопки. Для локального открытия `index.html` добавлен резервный алгоритм демо-хэша аудиофайла на случай недоступности `crypto.subtle`.
+Локальный `python -m http.server` вернул HTTP 200 для:
+
+- `/`;
+- `/service/`;
+- `/service/core/config.js`;
+- `/transition.js`.
+
+## Browser smoke test
+
+Попытка запуска системного Chromium выполнена. В build-контейнере Chromium зависает даже на минимальном `data:` HTML, поэтому browser automation недоступна в этой среде. Статическая, domain и HTTP-проверка проекта проходит.
+
+## Production tests still required
+
+Реальный ADNA benchmark, malformed audio/decoder crash, server upload timeout/CPU/rate limits, SQL injection, server-side path traversal, real PostgreSQL migrations, CORS/CSP/HSTS и payment-provider integration относятся к production backend и не могут быть подтверждены статическим GitHub Pages demo.

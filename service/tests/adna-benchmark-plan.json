@@ -1,0 +1,21 @@
+{
+  "suite": "ADNA benchmark plan",
+  "status": "requires-real-fingerprint-engine",
+  "threshold_source": "service/core/config.js → adna.thresholds",
+  "groups": [
+    "original vs original",
+    "WAV vs MP3",
+    "MP3 320 vs MP3 128",
+    "volume changed",
+    "EQ",
+    "compression",
+    "short fragment",
+    "pitch changed",
+    "tempo changed",
+    "different track",
+    "similar genre",
+    "remix",
+    "sample"
+  ],
+  "metrics": ["true positives","false positives","true negatives","false negatives","precision","recall","threshold behavior"]
+}
