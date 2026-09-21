@@ -7,14 +7,6 @@
     user: 'ndp_demo_user', session: 'ndp_demo_session', tracks: 'ndp_demo_tracks', events: 'ndp_demo_events', samples: 'ndp_demo_samples', conversations: 'ndp_demo_conversations', theme: 'nd-theme', notifications: 'ndp_demo_notifications'
   };
 
-  const CORE = window.NDPV2;
-  if (!CORE?.config || !CORE?.LocalRepository) throw new Error('NDP_V2_CORE_NOT_LOADED');
-  const repository = new CORE.LocalRepository(window.localStorage);
-  const similarityPolicy = new CORE.SimilarityPolicy(CORE.config.adna.thresholds);
-  const fingerprintEngine = new CORE.DemoFingerprintEngine(similarityPolicy);
-  const royaltyEngine = new CORE.RoyaltyEngine();
-  const demoPaymentProvider = new CORE.DemoPaymentProvider();
-
   const seedTracks = [
     {
       id:'ND-84F2-19A7', isrc:'RU-NDP-26-91752', title:'Полуночный маршрут', artist:'ÆNDYΞ', type:'Оригинал', genre:'Neurofunk', bpm:175, key:'D minor', duration:'03:42', label:'DNB1ST', parent:null, status:'Подтверждено', aiLicense:'С условиями', created:'07.09.2026',
@@ -37,16 +29,6 @@
       splits:[{role:'Автор',name:'Signal Unit',share:58},{role:'Источник',name:'ÆNDYΞ & KERA',share:42}]
     }
   ];
-
-  // V2 provenance is first-class. Legacy `parent` is retained for compatibility.
-  seedTracks[0].ndtVersion = '1.0';
-  seedTracks[1].provenance = [
-    {source_track:'ND-84F2-19A7',derived_track:'ND-1AA3-8C71',relation_type:'remix',share:0,license:'Remix relation · demo',verification:'demo'},
-    {source_track:'ND-43BC-0201',derived_track:'ND-1AA3-8C71',relation_type:'sample',share:10,license:'10% downstream · demo',verification:'demo'}
-  ];
-  seedTracks[2].provenance = [{source_track:'ND-84F2-19A7',derived_track:'ND-43BC-0201',relation_type:'sample',share:0,license:'Source relation · demo',verification:'demo'}];
-  seedTracks[3].provenance = [{source_track:'ND-1AA3-8C71',derived_track:'ND-991C-72D0',relation_type:'derivative',share:42,license:'42% upstream · demo',verification:'demo'}];
-  seedTracks.forEach(track=>{track.ndtVersion='1.0';track.fingerprintVersion='v1';track.aiPolicy=CORE.aiPolicyFromLegacy(track.aiLicense);});
 
   const seedEvents = [
     {date:'20.09 · 19:42',kind:'Идентификация',text:'«Полуночный / Сдвиг» найден в медиапотоке',amount:'84 ₽',status:'Рассчитано'},
@@ -142,115 +124,14 @@
   };
 
   const endpointExamples = {
-    identify:{title:'POST /api/v1/adna/identify',code:`POST /api/v1/adna/identify
-Content-Type: application/json
-
-{
-  "fingerprint_version": "v1",
-  "adna": "<base64 fingerprint>"
-}
-
-// DEMO response
-{
-  "registry_size": 4,
-  "fingerprint_version": "v1",
-  "match": {
-    "verdict": "same",
-    "similarity": 0.967,
-    "ndp_id": "ND-84F2-19A7"
-  }
-}`},
-    compare:{title:'POST /api/v1/adna/compare',code:`POST /api/v1/adna/compare
-
-{
-  "left": "<base64>",
-  "right": "<base64>",
-  "version": "v1"
-}
-
-// Policy is returned by API, not hard-coded in UI
-{
-  "similarity": 0.83,
-  "verdict": "derivative",
-  "thresholds": ${JSON.stringify(similarityPolicy.toJSON())}
-}`},
-    track:{title:'GET /api/v1/registry/tracks/{id}',code:`GET /api/v1/registry/tracks/ND-84F2-19A7
-
-{
-  "ndt_version": "1.0",
-  "identity": {
-    "ndp_id": "ND-84F2-19A7",
-    "isrc": "RU-NDP-26-91752",
-    "title": "Полуночный маршрут"
-  },
-  "rights": {"splits": [...]},
-  "provenance": [],
-  "ai_policy": {...}
-}`},
-    rights:{title:'GET /api/v1/rights/{id}',code:`GET /api/v1/rights/ND-1AA3-8C71
-
-{
-  "splits": [
-    {"party_id":"party-1","role":"remixer","share":40},
-    {"party_id":"party-2","role":"source_author","share":40},
-    {"party_id":"party-3","role":"producer","share":20}
-  ],
-  "validation": {"sum":100,"valid":true}
-}`},
-    graph:{title:'GET /api/v1/graph/{id}',code:`GET /api/v1/graph/ND-1AA3-8C71
-
-{
-  "nodes": ["ND-84F2-19A7","ND-43BC-0201","ND-1AA3-8C71"],
-  "edges": [
-    {"source_track":"ND-43BC-0201","derived_track":"ND-1AA3-8C71","relation_type":"sample","share":10}
-  ],
-  "max_depth": 10
-}`},
-    royalty:{title:'POST /api/v1/royalties/calculate',code:`POST /api/v1/royalties/calculate
-
-{
-  "event_id": "EV-2026-74291",
-  "track_id": "ND-1AA3-8C71",
-  "gross_amount": 1000,
-  "currency": "RUB"
-}
-
-// Calculation only. Payment is a separate adapter.
-{
-  "status": "Calculated",
-  "statement_id": "RST-EV-2026-74291",
-  "breakdown": [...]
-}`},
-    usage:{title:'POST /usage/events · compatibility',code:`POST /usage/events
-Content-Type: application/json
-
-{
-  "track_id": "ND-84F2-19A7",
-  "source": "media-platform",
-  "usage_type": "playback",
-  "quantity": 1,
-  "gross_amount": 126,
-  "currency": "RUB"
-}
-
-// Legacy route is kept as a compatibility layer.`},
-    mcp:{title:'MCP · register_track',code:`tool: register_track
-
-input:
-{
-  "title": "New Work",
-  "artist": "Artist Name",
-  "splits": [
-    { "role": "author", "share": 60 },
-    { "role": "producer", "share": 40 }
-  ]
-}
-
-// MCP calls the same application/domain services as REST.`}
+    identify:{title:'POST /oracle/identify',code:`POST /oracle/identify\nContent-Type: application/json\n\n{\n  "adna": "<base64 fingerprint>"\n}\n\n// Ответ\n{\n  "registry_size": 4,\n  "match": {\n    "verdict": "same",\n    "similarity": 0.971,\n    "artist": "ÆNDYΞ",\n    "title": "Полуночный маршрут",\n    "isrc": "RU-NDP-26-91752",\n    "version": "v1"\n  }\n}`},
+    track:{title:'GET /registry/tracks/{isrc}',code:`GET /registry/tracks/RU-NDP-26-91752\n\n// Ответ\n{\n  "isrc": "RU-NDP-26-91752",\n  "ndp_id": "ND-84F2-19A7",\n  "title": "Полуночный маршрут",\n  "artist": "ÆNDYΞ",\n  "rights": {\n    "splits": [\n      { "role": "producer", "share": 70 },\n      { "role": "coauthor", "share": 30 }\n    ]\n  },\n  "verification": "verified"\n}`},
+    usage:{title:'POST /usage/events',code:`POST /usage/events\nContent-Type: application/json\n\n{\n  "isrc": "RU-NDP-26-91752",\n  "source": "media-platform",\n  "event_type": "playback",\n  "units": 1\n}\n\n// Ответ\n{\n  "event_id": "EV-2026-74291",\n  "rights_graph": "resolved",\n  "royalty_status": "calculated"\n}`},
+    mcp:{title:'MCP · register_track',code:`tool: register_track\n\ninput:\n{\n  "title": "New Work",\n  "artist": "Artist Name",\n  "isrc": "RU-NDP-26-00001",\n  "splits": [\n    { "role": "author", "share": 60 },\n    { "role": "producer", "share": 40 }\n  ]\n}\n\nresult:\n{\n  "ndp_id": "ND-....",\n  "status": "registered"\n}`}
   };
 
-  function load(key, fallback) { return repository.getRaw(key, fallback); }
-  function save(key, value) { return repository.setRaw(key, value); }
+  function load(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } }
+  function save(key, value) { localStorage.setItem(key, JSON.stringify(value)); }
   function ensureSeed() {
     if (!localStorage.getItem(STORAGE.tracks)) save(STORAGE.tracks, seedTracks);
     if (!localStorage.getItem(STORAGE.events)) save(STORAGE.events, seedEvents);
@@ -259,17 +140,6 @@ input:
     if (!localStorage.getItem(STORAGE.notifications)) localStorage.setItem(STORAGE.notifications,'1');
   }
   ensureSeed();
-  repository.migrateLegacy(STORAGE);
-
-  function syncSimilarityPolicyUI() {
-    const format = value => Number(value).toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const root = document.documentElement;
-    root.style.setProperty('--adna-same-percent', `${similarityPolicy.same * 100}%`);
-    root.style.setProperty('--adna-derivative-percent', `${similarityPolicy.derivative * 100}%`);
-    $$('[data-threshold-same]').forEach(el => { el.textContent = `≥ ${format(similarityPolicy.same)}`; });
-    $$('[data-threshold-derivative]').forEach(el => { el.textContent = `≥ ${format(similarityPolicy.derivative)}`; });
-  }
-  syncSimilarityPolicyUI();
 
   let currentUser = load(STORAGE.user, null);
   let currentView = 'dashboard';
@@ -373,7 +243,6 @@ input:
   function getEvents(){return load(STORAGE.events,seedEvents)}
   function getSamples(){return load(STORAGE.samples,seedSamples)}
   function getConversations(){return load(STORAGE.conversations,seedConversations)}
-  const demoApi = new CORE.DemoApi({getTracks});
   function profileIdForConversation(c){
     if(c?.user?.profileId && seedPublicProfiles[c.user.profileId]) return c.user.profileId;
     const byName={KERA:'kera','Sample Lab':'samplelab',MIRA:'mira'};
@@ -384,10 +253,9 @@ input:
     if(profile?.avatar) return `<img class="avatar avatar-photo ${extra}" src="${escapeHtml(profile.avatar)}" alt="Аватар ${escapeHtml(profile.name)}">`;
     return `<span class="avatar ${extra}">${escapeHtml(initials(profile?.name||'ND'))}</span>`;
   }
-  function renderAll(){renderDashboard();renderRegistry();renderRoyalties();renderActivity();renderDeveloper();renderSamples();renderMessages();updateMessageBadge();resetHowDemo(false);updateTrackForm();renderRuntimeTruth();}
+  function renderAll(){renderDashboard();renderRegistry();renderRoyalties();renderActivity();renderDeveloper();renderSamples();renderMessages();updateMessageBadge();resetHowDemo(false);updateTrackForm();}
   function renderDashboard(){
-    const tracks=getTracks(); $('#metric-tracks').textContent=tracks.length;$('#metric-verified').textContent=tracks.filter(t=>t.status==='Подтверждено').length;$('#metric-derivatives').textContent=tracks.filter(t=>(t.provenance?.length||t.parent)).length;
-    $('#metric-samples').textContent=getSamples().length; $('#metric-unread').textContent=getConversations().reduce((n,c)=>n+(Number(c.unread)||0),0);
+    const tracks=getTracks(); $('#metric-tracks').textContent=tracks.length;$('#metric-verified').textContent=tracks.filter(t=>t.status==='Подтверждено').length;$('#metric-derivatives').textContent=tracks.filter(t=>t.parent).length;
     $('#dashboard-track-table').innerHTML=tracks.slice(0,5).map(t=>`<tr><td><strong>${escapeHtml(t.title)}</strong><small>${escapeHtml(t.artist)}</small></td><td><code>${escapeHtml(t.id)}</code></td><td>${escapeHtml(t.type)}</td><td>${statusBadge(t.status)}</td><td><button class="row-action" data-open-track="${escapeHtml(t.id)}">Открыть</button></td></tr>`).join('');
     $$('[data-open-track]').forEach(btn=>btn.addEventListener('click',()=>{selectedRegistryId=btn.dataset.openTrack;navigate('registry');renderRegistry();}));
   }
@@ -400,32 +268,19 @@ input:
     $('#registry-count').textContent=filtered.length;
     $('#registry-list').innerHTML=filtered.length?filtered.map(t=>`<button class="registry-item ${selectedRegistryId===t.id?'active':''}" data-registry-id="${escapeHtml(t.id)}"><div><h3>${escapeHtml(t.title)}</h3><p>${escapeHtml(t.artist)} · ${escapeHtml(t.type)}</p><code>${escapeHtml(t.id)} · ${escapeHtml(t.isrc||'ISRC не указан')}</code></div>${statusBadge(t.status)}</button>`).join(''):`<div class="empty-state"><h3>Ничего не найдено</h3><p>Измените запрос или фильтр.</p></div>`;
     $$('[data-registry-id]').forEach(btn=>btn.addEventListener('click',()=>{selectedRegistryId=btn.dataset.registryId;renderRegistry();}));
-    const selected=tracks.find(t=>t.id===selectedRegistryId)||filtered[0]; if(selected){selectedRegistryId=selected.id;renderPassport(selected);renderProvenanceGraph(selected);} else {$('#passport-panel').innerHTML='<div class="passport-empty"><div><strong>Выберите произведение</strong><p>Карточка цифрового паспорта появится здесь.</p></div></div>';$('#provenance-live-graph').innerHTML='<div class="empty-state"><h3>Нет выбранного объекта</h3></div>';}
+    const selected=tracks.find(t=>t.id===selectedRegistryId)||filtered[0]; if(selected){selectedRegistryId=selected.id;renderPassport(selected);} else $('#passport-panel').innerHTML='<div class="passport-empty"><div><strong>Выберите произведение</strong><p>Карточка цифрового паспорта появится здесь.</p></div></div>';
     populateParentSelect();
   }
   $('#registry-search').addEventListener('input',renderRegistry); $('#registry-filter').addEventListener('change',renderRegistry);
 
   function renderPassport(t){
-    const ndt=CORE.NDTFactory.fromTrack(t),validation=CORE.NDTValidator.validate(ndt);
-    const parentIds=ndt.provenance.map(edge=>edge.source_track);
-    const parents=getTracks().filter(x=>parentIds.includes(x.id));
-    const ai=ndt.ai_policy||{};
-    $('#passport-panel').innerHTML=`<div class="passport-header"><div class="passport-mark"><div><span class="panel-kicker">NDT ${escapeHtml(ndt.ndt_version)} / МАШИНОЧИТАЕМЫЙ ПАСПОРТ</span><h2>${escapeHtml(t.title)}</h2><p>${escapeHtml(t.artist)}</p></div><span class="verify-mark">${validation.valid?'✓':'!'}</span></div><div class="passport-chips"><span class="chip">${escapeHtml(t.type)}</span><span class="chip">${escapeHtml(t.genre||'Жанр не указан')}</span><span class="chip">${escapeHtml(String(t.bpm||'—'))} BPM</span><span class="chip">${validation.valid?'NDT VALID':'NDT ERROR'}</span></div></div>
-      <div class="passport-section"><h3>Идентичность</h3><div class="passport-data"><div><span>NDP-ID</span><strong>${escapeHtml(ndt.identity.ndp_id)}</strong></div><div><span>ISRC</span><strong>${escapeHtml(ndt.identity.isrc||'—')}</strong></div><div><span>Статус</span><strong>${escapeHtml(t.status)}</strong></div><div><span>Дата регистрации</span><strong>${escapeHtml(t.created||'—')}</strong></div><div><span>Тональность</span><strong>${escapeHtml(ndt.music.key||'—')}</strong></div><div><span>Хронометраж</span><strong>${escapeHtml(ndt.music.duration||'—')}</strong></div></div></div>
-      <div class="passport-section"><h3>Происхождение</h3><div class="passport-data"><div><span>Источники</span><strong>${parents.length?parents.map(x=>escapeHtml(x.title)).join(' · '):'Исходное произведение'}</strong></div><div><span>Связей</span><strong>${ndt.provenance.length}</strong></div></div></div>
-      <div class="passport-section"><h3>Распределение прав · ${validation.rightsTotal}%</h3><div class="splitbar">${ndt.rights.splits.map(x=>`<i style="width:${Number(x.share)||0}%"></i>`).join('')}</div><div class="split-list">${ndt.rights.splits.map(x=>`<div class="split-line"><span>${escapeHtml(x.role)} · ${escapeHtml(x.name||x.party_id)}</span><strong>${Number(x.share)||0}%</strong></div>`).join('')}</div></div>
-      <div class="passport-section"><h3>ADNA / integrity</h3><div class="mono-value">${escapeHtml(ndt.integrity.fingerprint||'ADNA · будет вычислен после подключения ядра')}</div><small class="passport-note">Статус: ${escapeHtml(ndt.integrity.fingerprint_status)} · ${escapeHtml(ndt.integrity.fingerprint_version)}</small></div>
-      <div class="passport-section"><h3>AI policy</h3><div class="policy-grid"><span>Training <b>${ai.training_allowed?'YES':'NO'}</b></span><span>Generation <b>${ai.generation_allowed?'YES':'NO'}</b></span><span>Embedding <b>${ai.embedding_allowed?'YES':'NO'}</b></span><span>Attribution <b>${ai.attribution_required?'REQUIRED':'OPTIONAL'}</b></span><span>Commercial <b>${ai.commercial_allowed?'YES':'NO'}</b></span><span>License <b>${ai.license_required?'REQUIRED':'NOT REQUIRED'}</b></span></div></div>
-      <div class="passport-section passport-actions"><button class="button secondary small" id="copy-ndt-json" type="button">Копировать NDT JSON</button></div>`;
-    $('#copy-ndt-json')?.addEventListener('click',async()=>{const text=JSON.stringify(ndt,null,2);try{await navigator.clipboard?.writeText(text);notify('NDT скопирован','JSON-представление помещено в буфер обмена.');}catch{notify('NDT JSON готов','Буфер обмена недоступен в этом контексте.');}});
-  }
-
-  function renderProvenanceGraph(selected){
-    const root=$('#provenance-live-graph'); if(!root||!selected)return;
-    const graph=new CORE.ProvenanceGraphService(getTracks());
-    const lineage=graph.lineage(selected.id);
-    root.innerHTML=lineage.map((item,index)=>{const t=item.track;if(!t)return'';const edge=item.edge;const cls=item.direction==='selected'?'selected':item.direction;return `${index?'<div class="provenance-connector" aria-hidden="true">↓</div>':''}<button type="button" class="provenance-node ${cls}" data-graph-track="${escapeHtml(t.id)}"><span>${item.direction==='ancestor'?'ИСТОЧНИК':item.direction==='descendant'?'ПРОИЗВОДНОЕ':'ВЫБРАНО'}</span><strong>${escapeHtml(t.title)}</strong><small>${escapeHtml(t.artist)} · ${escapeHtml(t.id)}</small>${edge?`<em>${escapeHtml(edge.relation_type||'other')}${Number(edge.share)>0?` · ${Number(edge.share)}% downstream`:''}</em>`:''}</button>`;}).join('');
-    $$('[data-graph-track]',root).forEach(btn=>btn.addEventListener('click',()=>{selectedRegistryId=btn.dataset.graphTrack;renderRegistry();$('#passport-panel').scrollIntoView({behavior:'smooth',block:'start'});}));
+    const parent=getTracks().find(x=>x.id===t.parent);
+    $('#passport-panel').innerHTML=`<div class="passport-header"><div class="passport-mark"><div><span class="panel-kicker">ЦИФРОВОЙ ПАСПОРТ ПРАВ NORMALDANCE</span><h2>${escapeHtml(t.title)}</h2><p>${escapeHtml(t.artist)}</p></div><span class="verify-mark">✓</span></div><div class="passport-chips"><span class="chip">${escapeHtml(t.type)}</span><span class="chip">${escapeHtml(t.genre||'Жанр не указан')}</span><span class="chip">${escapeHtml(String(t.bpm||'—'))} BPM</span><span class="chip">AI: ${escapeHtml(t.aiLicense||'не задано')}</span></div></div>
+      <div class="passport-section"><h3>Идентичность</h3><div class="passport-data"><div><span>NDP-ID</span><strong>${escapeHtml(t.id)}</strong></div><div><span>ISRC</span><strong>${escapeHtml(t.isrc||'—')}</strong></div><div><span>Статус</span><strong>${escapeHtml(t.status)}</strong></div><div><span>Дата регистрации</span><strong>${escapeHtml(t.created||'—')}</strong></div><div><span>Тональность</span><strong>${escapeHtml(t.key||'—')}</strong></div><div><span>Хронометраж</span><strong>${escapeHtml(t.duration||'—')}</strong></div></div></div>
+      <div class="passport-section"><h3>Происхождение</h3><div class="passport-data"><div><span>Тип объекта</span><strong>${escapeHtml(t.type)}</strong></div><div><span>Родитель</span><strong>${parent?escapeHtml(parent.title):'Исходное произведение'}</strong></div></div></div>
+      <div class="passport-section"><h3>Распределение прав</h3><div class="splitbar">${t.splits.map(s=>`<i style="width:${Number(s.share)||0}%"></i>`).join('')}</div><div class="split-list">${t.splits.map(s=>`<div class="split-line"><span>${escapeHtml(s.role)} · ${escapeHtml(s.name)}</span><strong>${Number(s.share)||0}%</strong></div>`).join('')}</div></div>
+      <div class="passport-section"><h3>Перцептивная идентичность</h3><div class="mono-value">${escapeHtml(t.fingerprint||'ADNA · будет вычислен после подключения ядра')}</div></div>
+      <div class="passport-section"><h3>Лицензирование ИИ</h3><div class="passport-data"><div><span>Политика</span><strong>${escapeHtml(t.aiLicense||'Не задана')}</strong></div><div><span>NDT</span><strong>v1 / демонстрация</strong></div></div></div>`;
   }
 
   // Verify
@@ -433,12 +288,7 @@ input:
   const uploadZone=$('#upload-zone'), fileInput=$('#verify-file');
   uploadZone.addEventListener('dragover',e=>{e.preventDefault();uploadZone.classList.add('drag')});uploadZone.addEventListener('dragleave',()=>uploadZone.classList.remove('drag'));uploadZone.addEventListener('drop',e=>{e.preventDefault();uploadZone.classList.remove('drag');if(e.dataTransfer.files[0])selectFile(e.dataTransfer.files[0])});
   fileInput.addEventListener('change',()=>fileInput.files[0]&&selectFile(fileInput.files[0]));
-  function selectFile(file){
-    const allowed=/\.(mp3|wav|flac|ogg|m4a|aac)$/i.test(file.name||'') && (!file.type || file.type.startsWith('audio/'));
-    if(file.size>CORE.config.adna.upload.maxBytes){notify('Файл слишком большой','Максимальный размер — 32 MiB.','error');return;}
-    if(!allowed){notify('Неподдерживаемый файл','В демо допускаются аудиофайлы MP3, WAV, FLAC, OGG, M4A и AAC. Production API дополнительно проверяет сигнатуру и decoder validation.','error');return;}
-    selectedFile=file;$('#selected-file').classList.remove('hidden');$('#selected-file-name').textContent=file.name;$('#selected-file-size').textContent=formatBytes(file.size);$('#verify-file-button').disabled=false;resetVerifyResult();
-  }
+  function selectFile(file){if(file.size>32*1024*1024){notify('Файл слишком большой','Максимальный размер — 32 МБ.','error');return;}selectedFile=file;$('#selected-file').classList.remove('hidden');$('#selected-file-name').textContent=file.name;$('#selected-file-size').textContent=formatBytes(file.size);$('#verify-file-button').disabled=false;resetVerifyResult();}
   $('#clear-file').addEventListener('click',()=>{selectedFile=null;fileInput.value='';$('#selected-file').classList.add('hidden');$('#verify-file-button').disabled=true;resetVerifyResult();});
   function resetVerifyResult(){ $('#verify-empty').classList.remove('hidden');$('#analysis-state').classList.add('hidden');$('#verify-result').classList.add('hidden');$('#verify-result').innerHTML=''; }
   async function demoHashFile(file){
@@ -450,13 +300,13 @@ input:
     $('#verify-empty').classList.add('hidden');$('#verify-result').classList.add('hidden');$('#analysis-state').classList.remove('hidden');const progress=$('#analysis-progress');progress.style.width='0';$$('.analysis-steps span').forEach(s=>s.classList.remove('done'));let step=0;
     const timer=setInterval(()=>{step++;progress.style.width=`${step*25}%`;const el=$(`.analysis-steps span[data-step="${step}"]`);el?.classList.add('done');if(step>=4){clearInterval(timer);setTimeout(async()=>{try{const r=await resultFactory();showVerifyResult(r);}catch{notify('Не удалось выполнить демонстрацию','Проверьте введённые данные.','error');resetVerifyResult();}},220)}},320);
   }
-  function demoMatch(seed){return fingerprintEngine.resultForSeed(seed,getTracks());}
+  function demoMatch(seed){const tracks=getTracks();const idx=seed%tracks.length;const t=tracks[idx];const similarity=seed%5===0?0.68:(seed%3===0?0.83:0.93+(seed%6)/100);const verdict=similarity>=.90?'same':similarity>=.75?'derivative':'different';return {track:t,similarity:Math.min(similarity,.99),verdict};}
   $('#verify-file-button').addEventListener('click',()=>{if(!selectedFile)return;runAnalysis(async()=>{const hash=await demoHashFile(selectedFile);const seed=parseInt(hash.slice(0,2),16);return {...demoMatch(seed),fingerprint:`ADNA-DEMO · ${hash.slice(0,4)}:${hash.slice(4,8)}:${hash.slice(8,12)}:${hash.slice(12,16)}`,source:selectedFile.name};});});
   $('#verify-fingerprint-button').addEventListener('click',()=>{const v=$('#fingerprint-input').value.replace(/\s+/g,'');if(v.length<20){notify('Недостаточно данных','Введите демонстрационный отпечаток длиной не менее 20 символов.','error');return;}runAnalysis(async()=>({...demoMatch([...v].reduce((a,c)=>a+c.charCodeAt(0),0)%256),fingerprint:`${v.startsWith('QTI')?'ADNA v2':'ADNA v1'} · входные данные`,source:'введённый отпечаток'}));});
   $('#verify-id-button').addEventListener('click',()=>{const v=$('#verify-id-input').value.trim().toUpperCase();const t=getTracks().find(x=>(x.isrc||'').toUpperCase()===v||x.id.toUpperCase()===v);runAnalysis(async()=>t?{track:t,similarity:1,verdict:'same',fingerprint:t.fingerprint,source:v}:{track:null,similarity:0,verdict:'different',fingerprint:'—',source:v});});
   function showVerifyResult(r){
-    $('#analysis-state').classList.add('hidden');$('#verify-result').classList.remove('hidden');const same=r.verdict==='same',derivative=r.verdict==='derivative';const label=same?'SAME':derivative?'DERIVATIVE':'DIFFERENT';const technicalExplanation=similarityPolicy.explain(r.verdict);
-    $('#verify-result').innerHTML=r.track?`<div class="result-status">${statusBadge(label)}<strong>${Math.round(r.similarity*100)}%</strong></div><h3 class="result-title">${escapeHtml(r.track.title)}</h3><p class="result-artist">${escapeHtml(r.track.artist)}</p><div class="result-data"><div class="result-cell"><span>Технический вердикт</span><strong>${escapeHtml(label)}</strong></div><div class="result-cell"><span>Тип объекта</span><strong>${escapeHtml(r.track.type)}</strong></div><div class="result-cell"><span>NDP-ID</span><strong>${escapeHtml(r.track.id)}</strong></div><div class="result-cell"><span>ISRC</span><strong>${escapeHtml(r.track.isrc||'—')}</strong></div></div><div class="similarity"><div class="similarity-head"><span>Сходство</span><strong>${(r.similarity*100).toFixed(1)}%</strong></div><div class="similarity-bar"><i style="width:${r.similarity*100}%"></i></div></div><div class="result-cell"><span>Интерпретация</span><strong>${escapeHtml(technicalExplanation)}</strong></div><div class="result-cell"><span>Демо-отпечаток</span><strong class="mono-value">${escapeHtml(r.fingerprint)}</strong></div><p class="microcopy">ADNA измеряет техническое сходство и не является автоматическим юридическим выводом о плагиате или нарушении авторских прав.</p><div class="result-actions"><button class="button primary" id="open-result-track">Открыть паспорт</button><button class="button secondary" id="repeat-check">Новая проверка</button></div>`:`<div class="result-status">${statusBadge('Не найдено')}</div><h3 class="result-title">В реестре нет похожего произведения</h3><p class="result-artist">Демонстрационный результат. В реальном сервисе решение принимает движок ADNA.</p><div class="result-data"><div class="result-cell"><span>Максимальное сходство</span><strong>ниже 75%</strong></div><div class="result-cell"><span>Решение</span><strong>Можно продолжить регистрацию</strong></div></div><div class="result-actions"><button class="button primary" id="register-result-track">Зарегистрировать</button><button class="button secondary" id="repeat-check">Новая проверка</button></div>`;
+    $('#analysis-state').classList.add('hidden');$('#verify-result').classList.remove('hidden');const same=r.verdict==='same',derivative=r.verdict==='derivative';const label=same?'Совпадение':derivative?'Вероятное производное':'Совпадений нет';const badge=same?'success':derivative?'warning':'neutral';
+    $('#verify-result').innerHTML=r.track?`<div class="result-status">${statusBadge(label)}<strong>${Math.round(r.similarity*100)}%</strong></div><h3 class="result-title">${escapeHtml(r.track.title)}</h3><p class="result-artist">${escapeHtml(r.track.artist)}</p><div class="result-data"><div class="result-cell"><span>Вердикт</span><strong>${escapeHtml(label)}</strong></div><div class="result-cell"><span>Тип объекта</span><strong>${escapeHtml(r.track.type)}</strong></div><div class="result-cell"><span>NDP-ID</span><strong>${escapeHtml(r.track.id)}</strong></div><div class="result-cell"><span>ISRC</span><strong>${escapeHtml(r.track.isrc||'—')}</strong></div></div><div class="similarity"><div class="similarity-head"><span>Сходство</span><strong>${(r.similarity*100).toFixed(1)}%</strong></div><div class="similarity-bar"><i style="width:${r.similarity*100}%"></i></div></div><div class="result-cell"><span>Демо-отпечаток</span><strong class="mono-value">${escapeHtml(r.fingerprint)}</strong></div><div class="result-actions"><button class="button primary" id="open-result-track">Открыть паспорт</button><button class="button secondary" id="repeat-check">Новая проверка</button></div>`:`<div class="result-status">${statusBadge('Не найдено')}</div><h3 class="result-title">В реестре нет похожего произведения</h3><p class="result-artist">Демонстрационный результат. В реальном сервисе решение принимает движок ADNA.</p><div class="result-data"><div class="result-cell"><span>Максимальное сходство</span><strong>ниже 75%</strong></div><div class="result-cell"><span>Решение</span><strong>Можно продолжить регистрацию</strong></div></div><div class="result-actions"><button class="button primary" id="register-result-track">Зарегистрировать</button><button class="button secondary" id="repeat-check">Новая проверка</button></div>`;
     $('#open-result-track')?.addEventListener('click',()=>{selectedRegistryId=r.track.id;navigate('registry');renderRegistry();});$('#register-result-track')?.addEventListener('click',()=>navigate('register-track'));$('#repeat-check')?.addEventListener('click',resetVerifyResult);
   }
 
@@ -471,40 +321,25 @@ input:
   function updateSplitTotal(){const total=splitRows.reduce((a,s)=>a+(Number(s.share)||0),0);const el=$('#split-total-value');el.textContent=`${total}%`;el.className=total===100?'ok':'bad';}
   $('#add-split').addEventListener('click',()=>{splitRows.push({role:'Автор',name:'',share:0});renderSplits();renderPreview();});
   $$('input[name="ai-license"]').forEach(r=>r.addEventListener('change',()=>{$$('.option-card').forEach(c=>c.classList.toggle('selected',c.contains(r)&&r.checked));renderPreview();}));
-  ['track-title','track-artist','track-isrc','track-type','track-genre','track-bpm','track-parent','track-relation-type','track-relation-share','track-license-note'].forEach(id=>$('#'+id).addEventListener('input',renderPreview));
-  ['ai-training','ai-generation','ai-embedding','ai-attribution','ai-commercial','ai-license-required'].forEach(id=>$('#'+id)?.addEventListener('change',renderPreview));
-  function registrationData(){return{title:$('#track-title').value.trim()||'Без названия',artist:$('#track-artist').value.trim()||'Исполнитель не указан',isrc:$('#track-isrc').value.trim().toUpperCase(),type:$('#track-type').value,genre:$('#track-genre').value.trim()||'—',bpm:$('#track-bpm').value||'—',parent:$('#track-parent').value||null,relationType:$('#track-relation-type').value,relationShare:Number($('#track-relation-share').value)||0,aiLicense:$('input[name="ai-license"]:checked')?.value||'Не задано',licenseNote:$('#track-license-note').value.trim(),aiPolicy:{training_allowed:$('#ai-training').checked,generation_allowed:$('#ai-generation').checked,embedding_allowed:$('#ai-embedding').checked,attribution_required:$('#ai-attribution').checked,commercial_allowed:$('#ai-commercial').checked,license_required:$('#ai-license-required').checked},splits:splitRows};}
-  function renderPreview(){const d=registrationData(),total=splitRows.reduce((a,s)=>a+(Number(s.share)||0),0);$('#preview-passport').innerHTML=`<span class="panel-kicker">NDT 1.0 / ПРЕДПРОСМОТР</span><h3>${escapeHtml(d.title)}</h3><p>${escapeHtml(d.artist)}</p><div class="preview-id">NDP-ID · БУДЕТ СОЗДАН ПОСЛЕ РЕГИСТРАЦИИ</div><div class="passport-chips"><span class="chip">${escapeHtml(d.type)}</span><span class="chip">${escapeHtml(d.genre)}</span><span class="chip">${escapeHtml(String(d.bpm))} BPM</span></div><div class="passport-section"><h3>Права · ${total}%</h3><div class="splitbar">${d.splits.map(s=>`<i style="width:${Number(s.share)||0}%"></i>`).join('')}</div>${d.splits.map(s=>`<div class="split-line"><span>${escapeHtml(s.role)} · ${escapeHtml(s.name||'не указан')}</span><strong>${Number(s.share)||0}%</strong></div>`).join('')}</div><div class="passport-section"><h3>Provenance</h3><strong>${d.parent?`${escapeHtml(d.relationType)} · ${d.relationShare}% downstream`:'Исходное произведение'}</strong></div><div class="passport-section"><h3>AI policy</h3><small>training ${d.aiPolicy.training_allowed?'YES':'NO'} · generation ${d.aiPolicy.generation_allowed?'YES':'NO'} · attribution ${d.aiPolicy.attribution_required?'REQUIRED':'OPTIONAL'}</small></div>`;if(wizardStep===4)renderReview();}
+  ['track-title','track-artist','track-isrc','track-type','track-genre','track-bpm','track-parent','track-license-note'].forEach(id=>$('#'+id).addEventListener('input',renderPreview));
+  function registrationData(){return{title:$('#track-title').value.trim()||'Без названия',artist:$('#track-artist').value.trim()||'Исполнитель не указан',isrc:$('#track-isrc').value.trim().toUpperCase(),type:$('#track-type').value,genre:$('#track-genre').value.trim()||'—',bpm:$('#track-bpm').value||'—',parent:$('#track-parent').value||null,aiLicense:$('input[name="ai-license"]:checked')?.value||'Не задано',licenseNote:$('#track-license-note').value.trim(),splits:splitRows};}
+  function renderPreview(){const d=registrationData(),total=splitRows.reduce((a,s)=>a+(Number(s.share)||0),0);$('#preview-passport').innerHTML=`<span class="panel-kicker">ЦИФРОВОЙ ПАСПОРТ ПРАВ NORMALDANCE</span><h3>${escapeHtml(d.title)}</h3><p>${escapeHtml(d.artist)}</p><div class="preview-id">NDP-ID · БУДЕТ СОЗДАН ПОСЛЕ РЕГИСТРАЦИИ</div><div class="passport-chips"><span class="chip">${escapeHtml(d.type)}</span><span class="chip">${escapeHtml(d.genre)}</span><span class="chip">${escapeHtml(String(d.bpm))} BPM</span></div><div class="passport-section"><h3>Права · ${total}%</h3><div class="splitbar">${d.splits.map(s=>`<i style="width:${Number(s.share)||0}%"></i>`).join('')}</div>${d.splits.map(s=>`<div class="split-line"><span>${escapeHtml(s.role)} · ${escapeHtml(s.name||'не указан')}</span><strong>${Number(s.share)||0}%</strong></div>`).join('')}</div><div class="passport-section"><h3>Лицензия ИИ</h3><strong>${escapeHtml(d.aiLicense)}</strong></div>`;if(wizardStep===4)renderReview();}
   function updateWizard(){ $$('.wizard-step').forEach(b=>{const n=Number(b.dataset.wizardStep);b.classList.toggle('active',n===wizardStep);b.classList.toggle('done',n<wizardStep)});$$('[data-wizard-pane]').forEach(p=>p.classList.toggle('active',Number(p.dataset.wizardPane)===wizardStep));$('#wizard-back').disabled=wizardStep===1;$('#wizard-next').textContent=wizardStep===4?'Зарегистрировать произведение':'Продолжить';if(wizardStep===4)renderReview(); }
   $$('.wizard-step').forEach(b=>b.addEventListener('click',()=>{const n=Number(b.dataset.wizardStep);if(n<=wizardStep){wizardStep=n;updateWizard();}}));
   $('#wizard-back').addEventListener('click',()=>{if(wizardStep>1){wizardStep--;updateWizard();}});
   $('#wizard-next').addEventListener('click',()=>{
     const err=$('#track-form-error');err.textContent='';const d=registrationData();
     if(wizardStep===1 && (!$('#track-title').value.trim()||!$('#track-artist').value.trim())){err.textContent='Укажите название произведения и исполнителя.';return;}
-    if(wizardStep===1 && (d.relationShare<0||d.relationShare>100)){err.textContent='Downstream-доля источника должна быть от 0 до 100%.';return;}
     if(wizardStep===2){const total=splitRows.reduce((a,s)=>a+(Number(s.share)||0),0);if(total!==100||splitRows.some(s=>!s.name.trim())){err.textContent='Заполните всех участников. Сумма долей должна быть ровно 100%.';return;}}
     if(wizardStep<4){wizardStep++;updateWizard();return;}
     if(!$('#track-confirm').checked){err.textContent='Подтвердите корректность сведений.';return;}
     registerNewTrack(d);
   });
-  function renderReview(){const d=registrationData(),parent=getTracks().find(t=>t.id===d.parent),rights=CORE.RightsValidator.validate(d.splits);$('#registration-review').innerHTML=`<div class="review-title"><div><span class="panel-kicker">NDT 1.0 · ГОТОВО К РЕГИСТРАЦИИ</span><h3>${escapeHtml(d.title)}</h3><p>${escapeHtml(d.artist)}</p></div>${statusBadge('Черновик')}</div><div class="review-grid"><div><span>Тип</span><strong>${escapeHtml(d.type)}</strong></div><div><span>ISRC</span><strong>${escapeHtml(d.isrc||'будет добавлен позже')}</strong></div><div><span>Происхождение</span><strong>${escapeHtml(parent?`${parent.title} · ${d.relationType} · ${d.relationShare}%`:'Исходное')}</strong></div><div><span>AI policy</span><strong>${d.aiPolicy.license_required?'License required':'Policy embedded'}</strong></div><div><span>Участников</span><strong>${d.splits.length}</strong></div><div><span>Сумма долей</span><strong>${rights.total}% · ${rights.valid?'VALID':'ERROR'}</strong></div></div>`;}
-  function registerNewTrack(d){const tracks=getTracks();const id=randomId();const provenance=d.parent?[{source_track:d.parent,derived_track:id,relation_type:d.relationType,share:d.relationShare,license:d.licenseNote||null,created_at:new Date().toISOString(),verification:'demo'}]:[];const proposed={id,isrc:d.isrc||`RU-NDP-${String(new Date().getFullYear()).slice(-2)}-${String(90000+tracks.length+1)}`,title:d.title,artist:d.artist,type:d.type,genre:d.genre,bpm:Number(d.bpm)||null,key:'—',duration:'—',label:'Независимый',parent:d.parent,provenance,relationType:d.relationType,relationShare:d.relationShare,status:'Подтверждено',aiLicense:d.aiLicense,aiPolicy:d.aiPolicy,licenseNote:d.licenseNote,created:today(),ndtVersion:'1.0',fingerprintVersion:'v1',fingerprint:'ADNA-DEMO · ожидает подключения реального движка',splits:d.splits.map(s=>({...s}))};if(d.parent){const graph=new CORE.ProvenanceGraphService(tracks);const check=graph.canAddEdge(provenance[0]);if(!check.ok){notify('Связь происхождения отклонена',check.reason,'error');return;}}const validation=CORE.NDTValidator.validate(CORE.NDTFactory.fromTrack(proposed));if(!validation.valid){notify('NDT не прошёл валидацию',validation.errors.join(', '),'error');return;}tracks.unshift(proposed);save(STORAGE.tracks,tracks);repository.audit('TrackRegistered',{track_id:id,ndt_version:'1.0',demo:true});selectedRegistryId=id;wizardStep=1;splitRows=[{role:'Автор',name:'',share:70},{role:'Продюсер',name:'',share:30}];$('#track-form').reset();$('#track-relation-share').value='0';$('#track-confirm').checked=false;renderAll();navigate('registry');notify('Произведение зарегистрировано',`${d.title} добавлено в локальный реестр как NDT 1.0.`);}
+  function renderReview(){const d=registrationData(),parent=getTracks().find(t=>t.id===d.parent);$('#registration-review').innerHTML=`<div class="review-title"><div><span class="panel-kicker">Готово к регистрации</span><h3>${escapeHtml(d.title)}</h3><p>${escapeHtml(d.artist)}</p></div>${statusBadge('Черновик')}</div><div class="review-grid"><div><span>Тип</span><strong>${escapeHtml(d.type)}</strong></div><div><span>ISRC</span><strong>${escapeHtml(d.isrc||'будет добавлен позже')}</strong></div><div><span>Происхождение</span><strong>${escapeHtml(parent?parent.title:'Исходное')}</strong></div><div><span>Лицензия ИИ</span><strong>${escapeHtml(d.aiLicense)}</strong></div><div><span>Участников</span><strong>${d.splits.length}</strong></div><div><span>Сумма долей</span><strong>${d.splits.reduce((a,s)=>a+(Number(s.share)||0),0)}%</strong></div></div>`;}
+  function registerNewTrack(d){const tracks=getTracks();const id=randomId();const track={id,isrc:d.isrc||`RU-NDP-${String(new Date().getFullYear()).slice(-2)}-${String(90000+tracks.length+1)}`,title:d.title,artist:d.artist,type:d.type,genre:d.genre,bpm:Number(d.bpm)||null,key:'—',duration:'—',label:'Независимый',parent:d.parent,status:'Подтверждено',aiLicense:d.aiLicense,created:today(),fingerprint:'ADNA-ДЕМО · ожидает подключения реального движка',splits:d.splits.map(s=>({...s}))};tracks.unshift(track);save(STORAGE.tracks,tracks);selectedRegistryId=id;wizardStep=1;splitRows=[{role:'Автор',name:'',share:70},{role:'Продюсер',name:'',share:30}];$('#track-form').reset();$('#track-confirm').checked=false;renderAll();navigate('registry');notify('Произведение зарегистрировано',`${d.title} добавлено в локальный реестр.`);}
 
   // Royalties
   function renderRoyalties(){const events=getEvents();$('#royalty-events').innerHTML=events.map(e=>`<div class="royalty-event"><span class="royalty-date">${escapeHtml(e.date)}</span><i class="event-dot"></i><div><h3>${escapeHtml(e.kind)}</h3><p>${escapeHtml(e.text)}</p></div><div class="royalty-amount"><strong>${escapeHtml(e.amount)}</strong><small>${escapeHtml(e.status)}</small></div></div>`).join('');}
-
-  $('#calculate-royalty-demo')?.addEventListener('click',()=>{
-    try{
-      const tracks=getTracks(),track=tracks.find(t=>t.id==='ND-1AA3-8C71')||tracks[0];
-      const event={event_id:'EV-2026-74291',track_id:track.id,source:'demo',timestamp:new Date().toISOString(),territory:'RU',usage_type:'playback',quantity:1,gross_amount:1000,currency:'RUB'};
-      const statement=royaltyEngine.calculate({event,track,tracks}),payment=demoPaymentProvider.prepare(statement);
-      $('#royalty-breakdown').innerHTML=statement.breakdown.map(row=>`<span><i></i>${escapeHtml(row.party||'Участник')} · ${escapeHtml(row.role||row.level)} <b>${(row.amount_cents/100).toLocaleString('ru-RU')} ₽</b></span>`).join('');
-      $('#royalty-payment-state').textContent=`${payment.status} · DEMO`;
-      repository.audit('RoyaltyCalculated',{event_id:event.event_id,statement_id:statement.statement_id,gross_amount:event.gross_amount,currency:event.currency,demo:true});
-      repository.audit('PaymentPrepared',{statement_id:statement.statement_id,provider:'demo',demo:true});
-      notify('Роялти рассчитаны','Создан детерминированный breakdown. Реальный платёж не выполнялся.');
-    }catch(error){notify('Ошибка расчёта',error.message,'error');}
-  });
 
 
   // Sample library
@@ -551,7 +386,7 @@ input:
   function currentConversation(){return getConversations().find(c=>c.id===selectedConversationId)}
   function saveConversationMessage(from,text){const conversations=getConversations(),c=conversations.find(x=>x.id===selectedConversationId);if(!c)return;c.messages.push({from,time:'сейчас',text});if(from==='them')c.unread=currentView==='messages'?0:(c.unread||0)+1;save(STORAGE.conversations,conversations);renderMessages();}
   $('#conversation-search')?.addEventListener('input',renderMessages);
-  $('#message-form')?.addEventListener('submit',e=>{e.preventDefault();const input=$('#message-input'),text=input.value.trim();if(!text)return;saveConversationMessage('me',text);repository.audit('MessageSent',{conversation_id:selectedConversationId,demo:true});input.value='';notify('Сообщение отправлено','Диалог сохранён локально.');});
+  $('#message-form')?.addEventListener('submit',e=>{e.preventDefault();const input=$('#message-input'),text=input.value.trim();if(!text)return;saveConversationMessage('me',text);input.value='';notify('Сообщение отправлено','Диалог сохранён локально.');});
   const incomingReplies={
     'conv-kera':['Да, фиксируем 4 500 ₽ и 10% downstream. Можешь сформировать предложение.','Проверил NDP-ID — источник и доли отображаются корректно. Готов принять лицензию.'],
     'conv-samplelab':['Манифест посмотрел. 5% downstream устраивает, покупку подтверждаю.','Пришли финальную версию лицензии — после этого можем закрывать сделку.'],
@@ -595,7 +430,7 @@ input:
   function resetHowDemo(writeLog=true){
     howDemoStep=1;showHowStep(1);if($('#demo-fingerprint'))$('#demo-fingerprint').textContent='—';if($('#demo-similarity'))$('#demo-similarity').textContent='0,00';if($('#demo-similarity-bar'))$('#demo-similarity-bar').style.width='0%';if($('#adna-demo-state'))$('#adna-demo-state').textContent='ГОТОВО';if($('#adna-demo-result'))$('#adna-demo-result').innerHTML='<span>◎</span><div><strong>Анализ не запущен</strong><small>Запустите сценарий или этот этап отдельно.</small></div>';if($('#registry-demo-state'))$('#registry-demo-state').textContent='ОЖИДАЕТ ADNA';if($('#graph-resolve'))$('#graph-resolve').innerHTML='<strong>0 / 3</strong><small>узлов прав разрешено</small>';$$('[data-rights-node]').forEach(n=>n.classList.remove('resolved'));if($('#payout-demo-state'))$('#payout-demo-state').textContent='ОЖИДАЕТ ПРАВА';$$('[data-payout]').forEach(x=>x.textContent='0 ₽');if($('#payout-total'))$('#payout-total').textContent='0 ₽ / 1 000 ₽';if(writeLog)logHow('Демонстрация сброшена.',true);
   }
-  async function runAdnaDemo(){showHowStep(1);$('#adna-demo-state').textContent='АНАЛИЗ';$('#adna-waveform').classList.add('scanning');$('#demo-fingerprint').textContent='вычисление спектрограммы…';logHow('Получен аудиофрагмент metro_break_172.wav. Строится 256-байтный ADNA-отпечаток.');await delay(650);$('#demo-fingerprint').textContent='8f4c91aa02de…43bc020178ca';$('#demo-similarity').textContent='0,97';$('#demo-similarity-bar').style.width='97%';await delay(550);$('#adna-waveform').classList.remove('scanning');$('#adna-demo-state').textContent='MATCH';$('#adna-demo-result').innerHTML='<span>✓</span><div><strong>Совпадение подтверждено · 0,97</strong><small>Найден зарегистрированный источник: «Стеклянные барабаны».</small></div>';$('#registry-demo-state').textContent='ГОТОВО';logHow(`Сходство 0,97 ≥ ${similarityPolicy.same.toLocaleString('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} (NDP Demo policy). Объект сопоставлен с NDP-ID ND-SMP-43BC-0201.`);}
+  async function runAdnaDemo(){showHowStep(1);$('#adna-demo-state').textContent='АНАЛИЗ';$('#adna-waveform').classList.add('scanning');$('#demo-fingerprint').textContent='вычисление спектрограммы…';logHow('Получен аудиофрагмент metro_break_172.wav. Строится 256-байтный ADNA-отпечаток.');await delay(650);$('#demo-fingerprint').textContent='8f4c91aa02de…43bc020178ca';$('#demo-similarity').textContent='0,97';$('#demo-similarity-bar').style.width='97%';await delay(550);$('#adna-waveform').classList.remove('scanning');$('#adna-demo-state').textContent='MATCH';$('#adna-demo-result').innerHTML='<span>✓</span><div><strong>Совпадение подтверждено · 0,97</strong><small>Найден зарегистрированный источник: «Стеклянные барабаны».</small></div>';$('#registry-demo-state').textContent='ГОТОВО';logHow('Сходство 0,97 ≥ 0,95. Объект сопоставлен с NDP-ID ND-SMP-43BC-0201.');}
   async function runRegistryDemo(){showHowStep(2);$('#registry-demo-state').textContent='RESOLVING';logHow('Реестр раскрывает связи «производное → исходное» и манифесты прав.');const nodes=$$('[data-rights-node]');for(let i=0;i<nodes.length;i++){await delay(380);nodes[i].classList.add('resolved');$('#graph-resolve').innerHTML=`<strong>${i+1} / 3</strong><small>узлов прав разрешено</small>`;}$('#registry-demo-state').textContent='РАЗРЕШЕНО';$('#payout-demo-state').textContent='ГОТОВО';logHow('Цепочка разрешена: сэмпл → исходный трек → производное произведение. Найдены условия downstream.');}
   async function runPayoutDemo(){showHowStep(3);$('#payout-demo-state').textContent='РАСЧЁТ';logHow('Получено событие использования на 1 000 ₽. Выполняется каскадный расчёт сплитов.');let total=0;for(const el of $$('[data-payout]')){await delay(280);const value=Number(el.dataset.payout);total+=value;el.textContent=`${value.toLocaleString('ru-RU')} ₽`;$('#payout-total').textContent=`${total.toLocaleString('ru-RU')} ₽ / 1 000 ₽`;}$('#payout-demo-state').textContent='РАСПРЕДЕЛЕНО';logHow('1 000 ₽ полностью распределены. Расчётный слой подготовил выплаты правообладателям через выбранный платёжный рельс.');}
   const delay=ms=>new Promise(resolve=>setTimeout(resolve,ms));
@@ -607,13 +442,9 @@ input:
   $$('.endpoint').forEach(btn=>btn.addEventListener('click',()=>renderDeveloper(btn.dataset.endpoint))); $('#copy-code').addEventListener('click',async()=>{await navigator.clipboard?.writeText($('#code-example').textContent);notify('Пример скопирован','Код помещён в буфер обмена.');});
 
   // Profile & settings
-  $('#profile-form').addEventListener('submit',e=>{e.preventDefault();currentUser={...currentUser,name:$('#profile-name').value.trim(),role:$('#profile-role').value};save(STORAGE.user,currentUser);repository.audit('UserProfileChanged',{user_id:currentUser.id,demo:true});hydrateUser();notify('Профиль обновлён','Изменения сохранены локально.');});
+  $('#profile-form').addEventListener('submit',e=>{e.preventDefault();currentUser={...currentUser,name:$('#profile-name').value.trim(),role:$('#profile-role').value};save(STORAGE.user,currentUser);hydrateUser();notify('Профиль обновлён','Изменения сохранены локально.');});
   $('#notifications-toggle').checked=localStorage.getItem(STORAGE.notifications)!=='0';$('#notifications-toggle').addEventListener('change',e=>localStorage.setItem(STORAGE.notifications,e.target.checked?'1':'0'));
-  function renderRuntimeTruth(){const root=$('#runtime-truth');if(!root)return;const stats=demoApi.stats();root.innerHTML=`<div><span>Версия</span><strong>NDP V${escapeHtml(CORE.config.appVersion)}</strong></div><div><span>Режим</span><strong>DEMO / static frontend</strong></div><div><span>ADNA engine</span><strong>DemoFingerprintEngine · ${escapeHtml(stats.fingerprint_version)}</strong></div><div><span>NDT</span><strong>${escapeHtml(CORE.config.ndt.version)}</strong></div><div><span>Storage</span><strong>LocalRepository / localStorage</strong></div><div><span>Production target</span><strong>REST/MCP + PostgreSQL</strong></div>`;}
-  $('#export-backup')?.addEventListener('click',()=>{const backup=repository.exportBackup(STORAGE);const blob=new Blob([JSON.stringify(backup,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`NDP_Backup_${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500);repository.audit('BackupExported',{demo:true});notify('Backup создан','Локальные данные экспортированы в формате NDP Backup.');});
-  $('#import-backup')?.addEventListener('click',()=>$('#import-backup-file')?.click());
-  $('#import-backup-file')?.addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const backup=JSON.parse(await file.text());repository.importBackup(backup,STORAGE);ensureSeed();currentUser=load(STORAGE.user,null);renderAll();notify('Backup импортирован','Данные проверены и восстановлены.');}catch(error){notify('Не удалось импортировать backup',error.message,'error');}finally{e.target.value='';}});
-  $('#reset-demo').addEventListener('click',()=>{if(!confirm('Сбросить локальные данные демонстрации?'))return;[STORAGE.user,STORAGE.session,STORAGE.tracks,STORAGE.events,STORAGE.samples,STORAGE.conversations,CORE.config.storage.auditKey,CORE.config.storage.metaKey].forEach(k=>localStorage.removeItem(k));ensureSeed();repository.migrateLegacy(STORAGE);showAuth();notify('Данные сброшены','Демонстрационный реестр восстановлен.');});
+  $('#reset-demo').addEventListener('click',()=>{if(!confirm('Сбросить локальные данные демонстрации?'))return;[STORAGE.user,STORAGE.session,STORAGE.tracks,STORAGE.events,STORAGE.samples,STORAGE.conversations].forEach(k=>localStorage.removeItem(k));ensureSeed();showAuth();notify('Данные сброшены','Демонстрационный реестр восстановлен.');});
 
   window.addEventListener('hashchange',()=>{if(localStorage.getItem(STORAGE.session)==='1')navigate(location.hash.replace('#','')||'dashboard',false)});
   if(localStorage.getItem(STORAGE.session)==='1') showApp(); else showAuth();

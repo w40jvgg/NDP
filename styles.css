@@ -1574,8 +1574,35 @@ html[data-theme="dark"] .story-section .story-copy-panel h3 { color:#f8fafc !imp
   .ndp-logo-hint { max-width: 90px; flex-basis: 90px; font-size: 12px; margin-left: 6px; }
 }
 
-/* NDP V2.0 architecture chain */
-.architecture-flow-v2{grid-template-columns:repeat(15,minmax(0,auto));overflow:visible}
-.architecture-flow-v2 .architecture-node{min-width:0}
-@media(max-width:1180px){.architecture-flow-v2{grid-template-columns:repeat(4,minmax(0,1fr))}.architecture-flow-v2>i{display:none}}
-@media(max-width:780px){.architecture-flow-v2{grid-template-columns:minmax(0,1fr)!important}.architecture-flow-v2>i{display:none!important}}
+/* 2026-09-21 v12 — final white NDP logo, transparent background. */
+.brand.ndp-wordmark-link img.ndp-wordmark,
+.site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark {
+  width: 82px !important;
+  height: auto !important;
+  aspect-ratio: 954 / 1170 !important;
+  object-fit: contain !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  filter: none !important;
+  flex: 0 0 auto !important;
+}
+.site-header .nav,
+.site-header.is-compact .nav { min-height: 104px !important; }
+html[data-theme="light"] .brand.ndp-wordmark-link img.ndp-wordmark {
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,.55)) drop-shadow(0 0 1px rgba(0,0,0,.55)) !important;
+}
+@media (max-width: 680px) {
+  .brand.ndp-wordmark-link img.ndp-wordmark,
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 66px !important;
+  }
+  .site-header .nav,
+  .site-header.is-compact .nav { min-height: 90px !important; }
+  .ndp-logo-hint { max-width: 128px !important; flex-basis: 128px !important; margin-left: 10px !important; }
+}
+@media (max-width: 360px) {
+  .brand.ndp-wordmark-link img.ndp-wordmark,
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark { width: 58px !important; }
+  .ndp-logo-hint { max-width: 112px !important; flex-basis: 112px !important; }
+}

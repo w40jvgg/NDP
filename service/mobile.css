@@ -267,12 +267,16 @@ html.ndp-theme-transition .button{
   .how-step{flex:none!important;width:100%!important;min-width:0!important;scroll-snap-align:none!important}
 }
 
-/* NDP V2.0 mobile: all new domain data remains vertical-only */
-@media(max-width:780px){
-  .provenance-live-graph{width:100%;overflow:visible}
-  .provenance-node{width:100%;max-width:100%;min-width:0}
-  .policy-grid,.ai-policy-grid,.runtime-truth{grid-template-columns:minmax(0,1fr)!important}
-  .runtime-truth>div{grid-template-columns:minmax(0,1fr)!important}
-  .settings-actions{display:grid;grid-template-columns:minmax(0,1fr);gap:8px}
-  .settings-actions .button{width:100%}
+/* v12 — compact white logo override after all service mobile legacy rules. */
+@media (max-width:900px) {
+  .sidebar .brand.ndp-wordmark-link { grid-template-columns: 62px minmax(0,1fr) !important; column-gap: 9px !important; }
+  .sidebar .brand.ndp-wordmark-link img.ndp-wordmark { width: 62px !important; height:auto !important; aspect-ratio:954/1170 !important; border-radius:0 !important; }
+  .auth-card-brand.ndp-wordmark-link { grid-template-columns: 84px minmax(0,1fr) !important; column-gap: 10px !important; width:100% !important; }
+  .auth-card-brand.ndp-wordmark-link img.ndp-wordmark { width:84px !important; height:auto !important; aspect-ratio:954/1170 !important; border-radius:0 !important; }
+}
+@media (max-width:420px) {
+  .sidebar .brand.ndp-wordmark-link { grid-template-columns: 56px minmax(0,1fr) !important; }
+  .sidebar .brand.ndp-wordmark-link img.ndp-wordmark { width:56px !important; }
+  .auth-card-brand.ndp-wordmark-link { grid-template-columns: 76px minmax(0,1fr) !important; }
+  .auth-card-brand.ndp-wordmark-link img.ndp-wordmark { width:76px !important; }
 }

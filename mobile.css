@@ -171,3 +171,22 @@ html.ndp-theme-transition .site-footer{
 }
 
 @media (max-width:680px){.site-header.is-compact .nav,.site-header .nav{min-height:82px!important;height:auto!important;padding-top:5px;padding-bottom:5px}}
+
+/* v12 — compact white logo override after all legacy mobile wordmark rules. */
+@media (max-width: 680px) {
+  .brand.ndp-wordmark-link img.ndp-wordmark,
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark {
+    width: 66px !important;
+    height: auto !important;
+    aspect-ratio: 954 / 1170 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    object-fit: contain !important;
+  }
+  .site-header .nav,.site-header.is-compact .nav { min-height: 90px !important; }
+}
+@media (max-width: 360px) {
+  .brand.ndp-wordmark-link img.ndp-wordmark,
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark { width: 58px !important; }
+}
