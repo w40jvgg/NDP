@@ -16,28 +16,18 @@
 
   openButton?.setAttribute('aria-controls','sidebar');
   openButton?.setAttribute('aria-expanded','false');
-  /* Base app owns the primary open/close click handlers; this layer only keeps state/a11y in sync. */
+  /* Base app owns click actions; this layer only synchronizes responsive state. */
   openButton?.addEventListener('click', () => requestAnimationFrame(() => setOpen(sidebar.classList.contains('open'))));
   closeButton?.addEventListener('click', () => requestAnimationFrame(() => setOpen(sidebar.classList.contains('open'))));
   sidebar.querySelectorAll('.side-link').forEach(link => link.addEventListener('click', () => { if(mobile.matches) setOpen(false); }));
 
+  // Tap-only close behavior: backdrop / close button / Escape. No horizontal swipe gesture.
   document.addEventListener('click', event => {
     if (!mobile.matches || !sidebar.classList.contains('open')) return;
     if (event.target.closest('#sidebar') || event.target.closest('#sidebar-open')) return;
     setOpen(false);
   });
   document.addEventListener('keydown', event => { if(event.key==='Escape' && sidebar.classList.contains('open')) setOpen(false); });
-
-  let sx=0, sy=0;
-  sidebar.addEventListener('touchstart', event => {
-    if(!mobile.matches || event.touches.length!==1) return;
-    sx=event.touches[0].clientX; sy=event.touches[0].clientY;
-  }, {passive:true});
-  sidebar.addEventListener('touchend', event => {
-    if(!mobile.matches || !event.changedTouches.length) return;
-    const dx=event.changedTouches[0].clientX-sx, dy=event.changedTouches[0].clientY-sy;
-    if(dx < -52 && Math.abs(dx) > Math.abs(dy)*1.2) setOpen(false);
-  }, {passive:true});
 
   const syncViewport = () => {
     const h = vv?.height || window.innerHeight;

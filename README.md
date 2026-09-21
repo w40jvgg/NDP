@@ -69,3 +69,10 @@ python -m http.server 8080
 
 ## 2026-09-21 — Brand wordmark update
 Visible landing/service brand marks use the supplied horizontal NDP / NormalDance Protocol wordmark at increased display sizes. The 5-second transition icon remains unchanged.
+
+## Transition v9
+Экран перехода использует предоставленный пользователем референс без изменения композиции. Статическая шкала из изображения перекрывается и заменяется реальной шкалой загрузки 0→100%, синхронизированной с 5-секундным переходом Landing ↔ Service.
+
+## Mobile v10 — vertical-only interaction
+
+Mobile navigation no longer requires left/right swipes. Landing content is available through native vertical scrolling and tap only. The “Как работает NDP” scene is driven by vertical scroll, service tabs/progress are vertical, the mobile dashboard table becomes stacked record cards, and the service menu is tap/backdrop controlled without swipe-to-close.

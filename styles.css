@@ -1500,10 +1500,10 @@ html[data-theme="dark"] .story-section .story-copy-panel h3 { color:#f8fafc !imp
 .brand.ndp-wordmark-link img.ndp-wordmark {
   width: 240px;
   height: auto;
-  aspect-ratio: 1610 / 544;
+  aspect-ratio: 1594 / 528;
   object-fit: contain;
   border-radius: 9px;
-  background: #05070c;
+  background: transparent;
   box-shadow: none;
   filter: none;
 }
@@ -1536,4 +1536,40 @@ html[data-theme="dark"] .story-section .story-copy-panel h3 { color:#f8fafc !imp
   .brand.ndp-wordmark-link img.ndp-wordmark {
     width: 148px !important;
   }
+}
+
+/* 2026-09-21 — transparent cropped NDP wordmark; no image plaque. */
+.ndp-wordmark-link img.ndp-wordmark{background:transparent!important;box-shadow:none!important;}
+
+
+/* 2026-09-21 — navigation hint next to the clickable NDP wordmark. */
+.ndp-wordmark-link { line-height: 1.2; }
+.ndp-logo-hint {
+  display: block;
+  flex: 0 1 178px;
+  max-width: 178px;
+  margin-left: 14px;
+  color: var(--text-3);
+  font: 600 12px/1.35 var(--ui);
+  letter-spacing: .015em;
+  text-wrap: balance;
+  pointer-events: none;
+  opacity: .82;
+}
+@media (max-width: 980px) {
+  .ndp-logo-hint { max-width: 142px; flex-basis: 142px; font-size: 12px; }
+}
+@media (max-width: 680px) {
+  .ndp-logo-hint {
+    max-width: 94px;
+    flex-basis: 94px;
+    margin-left: 8px;
+    font-size: 12px;
+    line-height: 1.28;
+  }
+}
+@media (max-width: 360px) {
+  .site-header.is-compact .brand.ndp-wordmark-link img.ndp-wordmark,
+  .brand.ndp-wordmark-link img.ndp-wordmark { width: 126px !important; }
+  .ndp-logo-hint { max-width: 90px; flex-basis: 90px; font-size: 12px; margin-left: 6px; }
 }

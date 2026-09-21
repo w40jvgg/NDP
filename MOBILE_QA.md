@@ -46,3 +46,18 @@ Passed before archive creation:
 - 5-second brand transition remains `TRANSITION_MS = 5000`;
 - transition layer remains pure black;
 - full transition logo remains 2508×2508 px, with responsive mobile derivative available.
+
+
+## v10 — Vertical-only mobile navigation
+
+- Removed all landing horizontal swipe handlers.
+- “Как работает NDP” is controlled only by native vertical scroll in a sticky 420svh scene.
+- Stage transitions use opacity + translateY + scale only.
+- Landing flow cards are a vertical sequence; no horizontal carousel or scroll-snap.
+- Architecture flow is vertical on phones.
+- Service sidebar is tap/backdrop/close-button controlled; swipe-to-close removed.
+- Service verification tabs are vertical and fully visible; no scrollable tab bar.
+- Service “Как работает” progress is vertical; no sideways stage list.
+- Dashboard table becomes vertical record cards on mobile.
+- Code/fingerprint output wraps instead of requiring horizontal pan.
+- Page-level horizontal overflow remains clipped.

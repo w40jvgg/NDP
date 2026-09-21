@@ -7,7 +7,7 @@
   const ARRIVAL_KEY = 'ndp-transition-arrival';
   const ARRIVAL_PARAM = 'ndp-transition';
   const TRANSITION_MS = 5000;
-  const EXIT_PHASE_MS = 4250;
+  const EXIT_PHASE_MS = 4630;
   let running = false;
   let arrived = false;
 

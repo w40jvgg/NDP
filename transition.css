@@ -1,4 +1,4 @@
-/* NDP brand transition only. Product UI styles are intentionally untouched. */
+/* NDP five-second transition — exact supplied loading-screen composition. */
 .ndp-transition {
   position: fixed;
   inset: 0;
@@ -9,19 +9,19 @@
   min-height: 100vh;
   min-height: 100svh;
   min-height: 100dvh;
+  padding:
+    max(8px, env(safe-area-inset-top))
+    max(8px, env(safe-area-inset-right))
+    max(8px, env(safe-area-inset-bottom))
+    max(8px, env(safe-area-inset-left));
   background: #000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   isolation: isolate;
   transition:
-    opacity .58s cubic-bezier(.22, 1, .36, 1),
-    visibility 0s linear .58s;
-}
-
-.ndp-transition::before,
-.ndp-transition::after {
-  content: none;
+    opacity .48s cubic-bezier(.22, 1, .36, 1),
+    visibility 0s linear .48s;
 }
 
 .ndp-transition.is-active {
@@ -29,24 +29,23 @@
   visibility: visible;
   pointer-events: all;
   transition:
-    opacity .58s cubic-bezier(.22, 1, .36, 1),
+    opacity .48s cubic-bezier(.22, 1, .36, 1),
     visibility 0s;
 }
 
 .ndp-transition-stage {
   position: relative;
   z-index: 1;
-  width: min(62vmin, 760px);
-  width: min(62svmin, 760px);
-  aspect-ratio: 1;
-  display: grid;
-  place-items: center;
+  width: min(96vw, calc(96dvh * 1.5), 1536px);
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: #000;
   opacity: 0;
-  transform: translate3d(0, 8px, 0) scale(.965);
-  will-change: opacity, transform;
+  transform: translate3d(0, 4px, 0) scale(.992);
+  transform-origin: 50% 50%;
   transition:
-    opacity .92s cubic-bezier(.22, 1, .36, 1) .22s,
-    transform 1.24s cubic-bezier(.22, 1, .36, 1) .18s;
+    opacity .66s cubic-bezier(.22, 1, .36, 1) .08s,
+    transform .82s cubic-bezier(.22, 1, .36, 1) .06s;
 }
 
 .ndp-transition.is-active .ndp-transition-stage {
@@ -54,154 +53,109 @@
   transform: translate3d(0, 0, 0) scale(1);
 }
 
-/* New rounded-square NDP icon. The source image is deliberately zoomed inside
-   an overflow clip so the original neon perimeter never appears on screen. */
-.ndp-transition-icon {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1;
-  overflow: hidden;
-  border: 0;
-  outline: 0;
-  border-radius: 23.5%;
-  background:
-    radial-gradient(circle at 30% 12%, rgba(74, 92, 210, .18), transparent 34%),
-    radial-gradient(circle at 79% 42%, rgba(0, 167, 192, .10), transparent 42%),
-    #050b18;
-  box-shadow: 0 26px 78px rgba(0, 0, 0, .46);
-  transform: translateZ(0);
-  isolation: isolate;
-}
-
-.ndp-transition-icon-base {
+.ndp-loading-picture,
+.ndp-loading-image {
   position: absolute;
   inset: 0;
-  z-index: 1;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transform: scale(1.145);
-  transform-origin: 50% 50%;
+}
+
+.ndp-loading-picture {
+  display: block;
+}
+
+.ndp-loading-image {
+  display: block;
+  object-fit: contain;
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
-  image-rendering: auto;
+  transform: translateZ(0);
 }
 
-/* Five independent bars reproduce the supplied icon, but now act as a live
-   oscilloscope. Only transform/opacity animate for compositor-friendly motion. */
-.ndp-oscilloscope {
+/* The reference image already contains a partially-filled bar. This zone masks only that
+   bar and redraws it as a real 0→100% loading indicator while leaving the composition intact. */
+.ndp-progress-zone {
   position: absolute;
-  z-index: 3;
-  left: 50%;
-  top: 51.2%;
-  width: 66%;
-  height: 60%;
-  transform: translate3d(-50%, -50%, 0);
+  z-index: 4;
+  left: 27.45%;
+  top: 83.55%;
+  width: 45.05%;
+  height: 3.65%;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 5.2%;
-  padding: 0 2.2%;
+  padding: 0 .30%;
+  background: #000;
   pointer-events: none;
 }
 
-.ndp-osc-bar {
+.ndp-progress-track {
   position: relative;
-  flex: 0 0 12.1%;
-  height: var(--bar-height);
-  min-width: 0;
+  width: 100%;
+  height: 10px;
+  border: 1px solid rgba(238, 238, 222, .86);
   border-radius: 999px;
-  transform: scaleY(var(--start-scale));
-  transform-origin: 50% 50%;
-  opacity: .98;
-  will-change: transform, opacity;
-  animation: ndp-oscilloscope-wave var(--duration) cubic-bezier(.65, 0, .35, 1) infinite;
-  animation-delay: var(--delay);
+  background: #080808;
+  overflow: visible;
   box-shadow:
-    inset 0 1px 1px rgba(255, 255, 255, .42),
-    0 0 10px var(--bar-glow),
-    0 0 22px color-mix(in srgb, var(--bar-glow) 34%, transparent);
+    inset 0 0 0 1px rgba(255, 255, 255, .035),
+    0 0 5px rgba(255, 255, 255, .025);
 }
 
-.ndp-osc-bar::after {
+.ndp-progress-fill {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: calc(100% - 2px);
+  border-radius: inherit;
+  background: #fff400;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  box-shadow:
+    0 0 7px rgba(255, 244, 0, .82),
+    0 0 18px rgba(255, 244, 0, .34);
+  will-change: transform;
+}
+
+.ndp-progress-fill::after {
   content: "";
   position: absolute;
-  inset: 1px 10% auto;
-  height: 26%;
-  border-radius: 999px;
-  background: linear-gradient(180deg, rgba(255,255,255,.26), rgba(255,255,255,0));
-  opacity: .58;
+  right: -4px;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fffbd2;
+  transform: translateY(-50%);
+  box-shadow:
+    0 0 7px #fff400,
+    0 0 18px rgba(255, 244, 0, .88);
 }
 
-.ndp-osc-bar:nth-child(1) {
-  --bar-height: 32%;
-  --start-scale: .72;
-  --duration: 1.08s;
-  --delay: -.54s;
-  --bar-glow: rgba(139, 45, 255, .58);
-  background: linear-gradient(180deg, #bc58ff 0%, #8c2cff 46%, #653dff 100%);
+/* 0→100% during the five-second route transition. */
+.ndp-transition.is-active .ndp-progress-fill {
+  animation: ndp-progress-fill 4.32s linear .24s both;
 }
 
-.ndp-osc-bar:nth-child(2) {
-  --bar-height: 64%;
-  --start-scale: .84;
-  --duration: .93s;
-  --delay: -.21s;
-  --bar-glow: rgba(111, 76, 255, .58);
-  background: linear-gradient(180deg, #d078ff 0%, #9854ff 38%, #497dff 100%);
-}
-
-.ndp-osc-bar:nth-child(3) {
-  --bar-height: 100%;
-  --start-scale: .76;
-  --duration: 1.17s;
-  --delay: -.76s;
-  --bar-glow: rgba(38, 190, 255, .62);
-  background: linear-gradient(180deg, #6ce8ff 0%, #28bfff 28%, #268cff 66%, #22dfe2 100%);
-}
-
-.ndp-osc-bar:nth-child(4) {
-  --bar-height: 64%;
-  --start-scale: .88;
-  --duration: 1.01s;
-  --delay: -.47s;
-  --bar-glow: rgba(21, 225, 211, .58);
-  background: linear-gradient(180deg, #57f2eb 0%, #11e2dc 42%, #15c7b7 100%);
-}
-
-.ndp-osc-bar:nth-child(5) {
-  --bar-height: 32%;
-  --start-scale: .68;
-  --duration: .86s;
-  --delay: -.69s;
-  --bar-glow: rgba(33, 231, 199, .56);
-  background: linear-gradient(180deg, #78f6df 0%, #29e5cc 44%, #0dc8ae 100%);
-}
-
-.ndp-transition.is-active .ndp-osc-bar {
-  animation-play-state: running;
-}
-
-/* Final phase of the existing five-second transition: icon dissolves into black
-   before navigation, so there is no image/DOM flash between landing and service. */
 .ndp-transition.is-exiting .ndp-transition-stage {
   opacity: 0;
-  transform: translate3d(0, -4px, 0) scale(1.012);
+  transform: translate3d(0, -2px, 0) scale(1.002);
   transition:
-    opacity .70s cubic-bezier(.65, 0, .35, 1),
-    transform .78s cubic-bezier(.65, 0, .35, 1);
+    opacity .34s cubic-bezier(.65, 0, .35, 1),
+    transform .38s cubic-bezier(.65, 0, .35, 1);
 }
 
-.ndp-transition.is-exiting .ndp-oscilloscope {
+.ndp-transition.is-exiting .ndp-progress-zone {
   opacity: 0;
-  transition: opacity .42s cubic-bezier(.65, 0, .35, 1);
+  transition: opacity .22s ease;
 }
 
 body.ndp-transitioning > *:not(.ndp-transition) {
   opacity: 0 !important;
   pointer-events: none !important;
-  transition: opacity .55s cubic-bezier(.22, 1, .36, 1) !important;
+  transition: opacity .46s cubic-bezier(.22, 1, .36, 1) !important;
 }
 
 html.ndp-arrival-pending body > *:not(.ndp-transition) {
@@ -225,47 +179,32 @@ html.ndp-arrival-pending .ndp-transition-stage,
 
 .ndp-transition.is-arrival.is-arrival-ready {
   opacity: 0;
-  transition: opacity .78s cubic-bezier(.22, 1, .36, 1);
+  transition: opacity .70s cubic-bezier(.22, 1, .36, 1);
 }
 
-@keyframes ndp-oscilloscope-wave {
-  0%   { transform: scaleY(.46); opacity: .92; }
-  13%  { transform: scaleY(.79); opacity: 1; }
-  28%  { transform: scaleY(.58); opacity: .95; }
-  45%  { transform: scaleY(1); opacity: 1; }
-  61%  { transform: scaleY(.67); opacity: .97; }
-  78%  { transform: scaleY(.89); opacity: 1; }
-  100% { transform: scaleY(.51); opacity: .93; }
+@keyframes ndp-progress-fill {
+  0% { transform: scaleX(0); }
+  100% { transform: scaleX(1); }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 780px) {
   .ndp-transition-stage {
-    width: min(74vmin, 560px);
-    width: min(74svmin, 560px);
+    width: min(98vw, calc(94dvh * 1.5), 900px);
   }
-
-  .ndp-transition-icon {
-    box-shadow: 0 18px 54px rgba(0,0,0,.42);
-  }
-
-  .ndp-osc-bar {
-    box-shadow:
-      inset 0 1px 1px rgba(255,255,255,.34),
-      0 0 9px var(--bar-glow);
-  }
+  .ndp-progress-track { height: 7px; }
+  .ndp-progress-fill::after { width: 8px; height: 8px; right: -3px; }
 }
 
-@media (max-width: 430px) {
-  .ndp-transition-stage {
-    width: min(78vmin, 430px);
-    width: min(78svmin, 430px);
+@media (orientation: portrait) and (max-width: 600px) {
+  .ndp-transition {
+    padding-left: 0;
+    padding-right: 0;
   }
+  .ndp-transition-stage { width: 100vw; }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
-  .ndp-transition-stage {
-    width: min(72svh, 520px);
-  }
+  .ndp-transition-stage { width: min(96vw, calc(94dvh * 1.5)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -274,10 +213,8 @@ html.ndp-arrival-pending .ndp-transition-stage,
   body.ndp-transitioning > *:not(.ndp-transition) {
     transition-duration: 180ms !important;
   }
-
-  .ndp-osc-bar {
-    animation: none !important;
-    transform: scaleY(.82);
-    opacity: 1;
+  /* Loading progress remains animated because it conveys route progress rather than decoration. */
+  .ndp-transition.is-active .ndp-progress-fill {
+    animation: ndp-progress-fill 4.32s linear .24s both !important;
   }
 }

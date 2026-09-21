@@ -29,7 +29,8 @@
   <header class="site-header">
     <div class="container nav">
       <a class="brand ndp-wordmark-link" href="service/index.html" data-ndp-transition aria-label="Открыть сервис NormalDance Protocol">
-        <img class="ndp-wordmark" src="assets/ndp-wordmark-805.png" srcset="assets/ndp-wordmark-805.png 805w, assets/ndp-wordmark.png 1610w" sizes="(max-width: 680px) 48vw, 240px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1610" height="544" decoding="async">
+        <img class="ndp-wordmark" src="assets/ndp-wordmark-805.png" srcset="assets/ndp-wordmark-805.png 805w, assets/ndp-wordmark.png 1594w" sizes="(max-width: 680px) 48vw, 240px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1594" height="528" decoding="async">
+        <span class="ndp-logo-hint">для перехода в сервис NDP нажми на логотип</span>
       </a>
       <nav class="nav-links" aria-label="Основная навигация">
         <a href="#technology">Технология</a>
@@ -496,11 +497,12 @@
   </footer>
   <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
     <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
-      <div class="ndp-transition-icon" role="img" aria-label="NDP audio signal">
-        <img class="ndp-transition-icon-base" src="assets/ndp-transition-icon-768.png" srcset="assets/ndp-transition-icon-768.png 768w, assets/ndp-transition-icon.png 1536w" sizes="(max-width: 780px) 74vmin, 62vmin" alt="" width="1536" height="1536" decoding="async">
-        <div class="ndp-oscilloscope" aria-hidden="true">
-          <span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span>
-        </div>
+      <picture class="ndp-loading-picture">
+        <source media="(max-width: 780px)" srcset="assets/ndp-loading-screen-900.png">
+        <img class="ndp-loading-image" src="assets/ndp-loading-screen.png" alt="NDP — экран загрузки NormalDance Protocol">
+      </picture>
+      <div class="ndp-progress-zone" aria-hidden="true">
+        <div class="ndp-progress-track"><i class="ndp-progress-fill"></i></div>
       </div>
     </div>
   </div>

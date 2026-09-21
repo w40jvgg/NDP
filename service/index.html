@@ -31,7 +31,8 @@
   <section id="auth-shell" class="auth-shell" aria-labelledby="auth-title">
     <div class="auth-visual">
       <a class="brand brand-large ndp-wordmark-link" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-        <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1610w" sizes="380px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1610" height="544" decoding="async">
+        <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1594w" sizes="380px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1594" height="528" decoding="async">
+          <span class="ndp-logo-hint">для перехода на лэндинг нажми на логотип</span>
       </a>
       <div class="auth-copy">
         <p class="eyebrow">Инфраструктура музыкальных прав</p>
@@ -59,7 +60,8 @@
     <div class="auth-panel">
       <div class="auth-card">
         <a class="auth-card-brand ndp-wordmark-link" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-          <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1610w" sizes="260px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1610" height="544" decoding="async">
+          <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1594w" sizes="260px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1594" height="528" decoding="async">
+          <span class="ndp-logo-hint">для перехода на лэндинг нажми на логотип</span>
         </a>
         <div class="auth-tabs" role="tablist" aria-label="Авторизация">
           <button type="button" class="auth-tab active" data-auth-tab="login" role="tab" aria-selected="true">Вход</button>
@@ -102,7 +104,8 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-top">
         <a class="brand ndp-wordmark-link" href="../index.html" data-ndp-transition aria-label="Вернуться на лендинг NormalDance">
-          <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1610w" sizes="210px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1610" height="544" decoding="async">
+          <img class="ndp-wordmark" src="../assets/ndp-wordmark-805.png" srcset="../assets/ndp-wordmark-805.png 805w, ../assets/ndp-wordmark.png 1594w" sizes="210px" alt="NDP — NormalDance Protocol — Music Rights Infrastructure" width="1594" height="528" decoding="async">
+          <span class="ndp-logo-hint">для перехода на лэндинг нажми на логотип</span>
         </a>
         <button class="icon-button sidebar-close" id="sidebar-close" type="button" aria-label="Закрыть меню">×</button>
       </div>
@@ -526,11 +529,12 @@
 
   <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
     <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
-      <div class="ndp-transition-icon" role="img" aria-label="NDP audio signal">
-        <img class="ndp-transition-icon-base" src="../assets/ndp-transition-icon-768.png" srcset="../assets/ndp-transition-icon-768.png 768w, ../assets/ndp-transition-icon.png 1536w" sizes="(max-width: 900px) 74vmin, 62vmin" alt="" width="1536" height="1536" decoding="async">
-        <div class="ndp-oscilloscope" aria-hidden="true">
-          <span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span><span class="ndp-osc-bar"></span>
-        </div>
+      <picture class="ndp-loading-picture">
+        <source media="(max-width: 780px)" srcset="../assets/ndp-loading-screen-900.png">
+        <img class="ndp-loading-image" src="../assets/ndp-loading-screen.png" alt="NDP — экран загрузки NormalDance Protocol">
+      </picture>
+      <div class="ndp-progress-zone" aria-hidden="true">
+        <div class="ndp-progress-track"><i class="ndp-progress-fill"></i></div>
       </div>
     </div>
   </div>
