@@ -85,3 +85,21 @@ Mobile navigation no longer requires left/right swipes. Landing content is avail
 ## 2026-09-21 — White logo v12
 
 All visible NDP brand marks now use the supplied headphone/equalizer logo converted to pure white with a transparent alpha background. The legacy wordmark, mark, favicon and unused transition-logo assets were removed. The same white logo is used on the landing, service auth surfaces, sidebar and transition artwork. The v11 animated waveform/progress transition logic remains in place.
+
+## 2026-09-21 — Mobile Rebuilt v13
+
+The landing mobile experience was rebuilt as a dedicated vertical composition based on the supplied mobile-first master specification. Desktop layout and service business logic remain intact.
+
+Key changes:
+
+- vertical scroll + tap is the complete mobile interaction model;
+- no required left/right swipes or horizontal content tracks;
+- mobile header/menu rebuilt for safe areas and one-hand use;
+- hero, provenance, capability, graph, royalty, AI, architecture, CTA and footer sections use mobile-specific reading order;
+- “Как работает NormalDance” is a vertically driven sticky story with a complete static fallback for short landscape/reduced motion;
+- wide graphs become vertical mobile paths instead of horizontally pannable diagrams;
+- typography/spacing/touch targets were recalculated for phone viewports;
+- portrait-specific Landing ↔ Service transition layout added while preserving the existing 5-second waveform/progress transition;
+- automated layout checks performed at 320, 360, 375, 390 and 430 px plus compact touch landscape.
+
+See `MOBILE_QA.md` for the exact QA scope and limitations.

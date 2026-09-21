@@ -243,3 +243,31 @@ html.ndp-arrival-pending .ndp-transition-stage,
   /* Progress remains animated because it conveys route progress, while waveform motion is calmer. */
   .ndp-wave-canvas { opacity: .72; }
 }
+
+/* Mobile portrait profile: same NDP loading language, recomposed for a tall viewport. */
+.ndp-mobile-transition-ui{display:none}
+@media (max-width:767px) and (orientation:portrait){
+  .ndp-transition{padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) max(12px,env(safe-area-inset-bottom)) max(14px,env(safe-area-inset-left))}
+  .ndp-transition-stage{width:100%;height:100%;max-width:520px;aspect-ratio:auto;background:#000;overflow:hidden}
+  .ndp-loading-picture{display:none}
+  .ndp-wave-veil{display:none}
+  .ndp-mobile-transition-ui{display:block;position:absolute;inset:0;z-index:2;pointer-events:none;text-align:center;color:#f3f6fb}
+  .ndp-mobile-transition-kicker{position:absolute;top:7.5%;left:8%;right:8%;color:#7f8999;font:700 10px/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.18em}
+  .ndp-mobile-transition-logo{position:absolute;top:12%;left:50%;width:min(33vw,132px);height:auto;transform:translateX(-50%);object-fit:contain;filter:none}
+  .ndp-mobile-transition-title{position:absolute;top:29%;left:9%;right:9%;color:#aeb8c8;font:600 10px/1.45 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.13em}
+  .ndp-wave-canvas{z-index:3;left:5%;top:36%;width:90%;height:29%;opacity:0}
+  .ndp-transition.is-active .ndp-wave-canvas{opacity:1}
+  .ndp-mobile-transition-loading{position:absolute;left:8%;right:8%;bottom:19.5%;color:#b7bfcc;font:600 11px/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.28em}
+  .ndp-progress-zone{z-index:5;left:10%;right:10%;top:auto;bottom:14%;width:auto;height:auto;display:grid;grid-template-columns:minmax(0,1fr) 42px;gap:10px;padding:0;background:none;box-shadow:none}
+  .ndp-progress-track{height:8px;background:#101a27;box-shadow:inset 0 0 0 1px rgba(118,153,181,.10)}
+  .ndp-progress-value{min-width:42px;font-size:13px;text-align:right}
+  .ndp-mobile-transition-foot{position:absolute;left:8%;right:8%;bottom:7.5%;color:#627085;font:700 9px/1.2 ui-monospace,"SFMono-Regular",Consolas,monospace;letter-spacing:.20em}
+  .ndp-transition.is-exiting .ndp-mobile-transition-ui{opacity:0;transition:opacity .20s ease}
+}
+
+@media (max-width:360px) and (orientation:portrait){
+  .ndp-mobile-transition-logo{top:13%;width:min(31vw,112px)}
+  .ndp-mobile-transition-title{top:30%;font-size:9px}
+  .ndp-wave-canvas{top:37%;height:27%}
+  .ndp-mobile-transition-loading{bottom:20.5%}
+}

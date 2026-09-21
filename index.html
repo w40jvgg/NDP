@@ -24,12 +24,13 @@
   <link rel="stylesheet" href="styles.css">
   <link rel="stylesheet" href="transition.css">
   <link rel="stylesheet" href="mobile.css">
+  <link rel="preload" href="assets/ndp-logo-white-512.png" as="image">
 </head>
 <body>
   <header class="site-header">
     <div class="container nav">
       <a class="brand ndp-wordmark-link" href="service/index.html" data-ndp-transition aria-label="Открыть сервис NormalDance Protocol">
-        <img class="ndp-wordmark" src="assets/ndp-logo-white-512.png" srcset="assets/ndp-logo-white-512.png 512w, assets/ndp-logo-white.png 954w" sizes="(max-width: 680px) 72px, 82px" alt="NDP — NormalDance Protocol" width="954" height="1170" decoding="async">
+        <img class="ndp-wordmark" src="assets/ndp-logo-white-512.png" srcset="assets/ndp-logo-white-512.png 512w, assets/ndp-logo-white.png 954w" sizes="(max-width: 680px) 72px, 82px" alt="NDP — NormalDance Protocol" width="954" height="1170" decoding="async" fetchpriority="high">
         <span class="ndp-logo-hint">для перехода в сервис NDP нажми на логотип</span>
       </a>
       <nav class="nav-links" aria-label="Основная навигация">
@@ -365,14 +366,14 @@
 
       <div class="container story-mobile-summary">
         <ol>
-          <li><strong>01 · Трек</strong><span>Мастер-запись становится объектом произведения.</span></li>
-          <li><strong>02 · Права</strong><span>NDT фиксирует авторов, доли, лицензии и условия использования.</span></li>
-          <li><strong>03 · ADNA</strong><span>Перцептивный отпечаток идентифицирует оригинал и производные.</span></li>
-          <li><strong>04 · Граф</strong><span>Сэмплы, ремиксы и новые треки связываются с источниками.</span></li>
-          <li><strong>05 · Usage</strong><span>Конкретное использование становится событием учёта.</span></li>
-          <li><strong>06 · Расчёт</strong><span>Royalty Engine определяет участников и применяет сплиты.</span></li>
-          <li><strong>07 · Роялти</strong><span>Стоимость каскадно проходит по подтверждённому графу прав.</span></li>
-          <li><strong>08 · Выплата</strong><span>Суммы подготавливаются к распределению между получателями.</span></li>
+          <li><strong>01 · ИСХОДНЫЙ ТРЕК</strong><h3>Произведение становится цифровым объектом системы.</h3><p>NormalDance принимает мастер-запись и связывает её с единым объектом произведения. Исходный аудиофайл не является «правом» сам по себе — он становится точкой входа в проверяемую цепочку данных.</p><div class="mobile-summary-fact"><span>ВХОД</span><b>WAV / MP3 / FLAC</b></div></li>
+          <li><strong>02 · NDT / ПАСПОРТ ПРАВ</strong><h3>Авторы, доли и условия становятся машиночитаемыми.</h3><p>Паспорт NDT фиксирует участников, сплиты, лицензии и разрешения для внешних сервисов и ИИ. Визуальные доли ниже — демонстрационные.</p><div class="mobile-summary-fact"><span>ПРАВА</span><b>50% · 30% · 20%</b></div></li>
+          <li><strong>03 · ADNA / ИДЕНТИФИКАЦИЯ</strong><h3>Звук получает устойчивый перцептивный отпечаток.</h3><p>ADNA используется для поиска того же произведения и его производных после перекодирования и других допустимых преобразований. Вердикт формируется по измеренному сходству.</p><div class="mobile-summary-fact"><span>ПОРОГИ ДЕМО</span><b>same ≥ 0,90 · derivative ≥ 0,75</b></div></li>
+          <li><strong>04 · ГРАФ ПРОИСХОЖДЕНИЯ</strong><h3>Сэмпл, ремикс и новое произведение связываются с источником.</h3><p>Каждый подтверждённый объект становится узлом. Связь показывает происхождение и позволяет системе учитывать участников исходной и производной работы одновременно.</p><div class="mobile-summary-fact"><span>ГРАФ</span><b>ORIGINAL → SAMPLE → DERIVATIVE</b></div></li>
+          <li><strong>05 · СОБЫТИЕ ИСПОЛЬЗОВАНИЯ</strong><h3>Факт использования привязывается к конкретному произведению.</h3><p>Событие получает идентификатор, источник, время и найденное совпадение. Затем система разрешает его через граф происхождения и права.</p><div class="mobile-summary-fact"><span>СОБЫТИЕ</span><b>EV-2026-074291</b></div></li>
+          <li><strong>06 · ROYALTY ENGINE</strong><h3>Система определяет участников цепочки и рассчитывает доли.</h3><p>Сумма использования проходит через правила произведения и его происхождения. Расчёт выполняется по зафиксированным сплитам; числа на сцене служат только для демонстрации логики.</p><div class="mobile-summary-fact"><span>РАСЧЁТ ДЕМО</span><b>2 500 ₽ → 1 250 / 750 / 500</b></div></li>
+          <li><strong>07 · КАСКАДНЫЕ РОЯЛТИ</strong><h3>Роялти проходит назад по подтверждённому графу прав.</h3><p>Поток стоимости следует тем же связям, по которым доказано происхождение. Так в расчёт попадают не только авторы производного трека, но и участники исходных объектов.</p><div class="mobile-summary-fact"><span>МАРШРУТ</span><b>USAGE → GRAPH → HOLDERS</b></div></li>
+          <li><strong>08 · ВЫПЛАТА</strong><h3>Рассчитанные суммы превращаются в платёжные поручения.</h3><p>После проверки получателей NormalDance подготавливает распределение. Текущий целевой контур — СБП; цифровой рубль предусмотрен как последующий платёжный слой.</p><div class="mobile-summary-fact"><span>ВЫХОД</span><b>РАСПРЕДЕЛЕНИЕ → ВЫПЛАТА</b></div></li>
         </ol>
       </div>
     </section>
@@ -501,6 +502,13 @@
         <source media="(max-width: 780px)" srcset="assets/ndp-loading-screen-900.png 900w, assets/ndp-loading-screen-1200.png 1200w" sizes="100vw">
         <img class="ndp-loading-image" src="assets/ndp-loading-screen.png" alt="NDP — экран загрузки NormalDance Protocol" width="1774" height="887" decoding="async">
       </picture>
+      <div class="ndp-mobile-transition-ui" aria-hidden="true">
+        <div class="ndp-mobile-transition-kicker">NDP / NORMALDANCE PROTOCOL</div>
+        <img class="ndp-mobile-transition-logo" src="assets/ndp-logo-white-512.png" alt="" width="512" height="628" decoding="async">
+        <div class="ndp-mobile-transition-title">ЗВУК → ИДЕНТИЧНОСТЬ → ПРАВА</div>
+        <div class="ndp-mobile-transition-loading">ЗАГРУЗКА</div>
+        <div class="ndp-mobile-transition-foot">MUSIC RIGHTS INFRASTRUCTURE</div>
+      </div>
       <div class="ndp-wave-veil" aria-hidden="true"></div>
       <canvas class="ndp-wave-canvas" data-ndp-wave aria-hidden="true"></canvas>
       <div class="ndp-progress-zone" aria-hidden="true">

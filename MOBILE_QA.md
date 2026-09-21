@@ -1,83 +1,135 @@
-# NDP — Mobile optimization QA
+# NDP v13 — Mobile-first QA
 
-Implementation scope: sections 22–35 of the supplied mobile-first specification. Desktop business logic, view hierarchy, data model, routes and service workflows are unchanged.
+## Scope
 
-## Implemented
+This build applies the mobile-first landing requirements from the supplied master prompt while preserving the existing desktop landing, service business logic, logo navigation and 5-second Landing ↔ Service transition.
 
-- viewport-fit=cover and safe-area insets for header, drawers, content and bottom spacing;
-- explicit mobile states covering 320, 360, 375, 390, 393, 412, 414 and 430 px through continuous responsive rules plus narrow-edge guards;
-- iPhone/Android portrait and compact landscape rules using svh/dvh and safe areas;
-- mobile typography: H1 32–36 px, H2 24–28 px, H3 19–21 px where applicable, body 15–16 px, controls 15–17 px, captions >=12 px for principal UI;
-- 16 px mobile side padding and min-width:0/minmax(0,1fr) hardening;
-- no page-level horizontal scrolling; data tables/code/tabs may scroll inside their own containers;
-- principal touch targets >=44×44 px, with 48 px preferred buttons;
-- common motion tokens: 120 / 180 / 240 / 380 ms and NDP easing curves;
-- mobile decorative hero parallax disabled to keep native scrolling responsive;
-- mobile eight-stage “Как работает” sequence uses direct finger tracking, velocity completion, edge resistance and continuation from the current gesture position;
-- no artificial smooth-scroll engine; native browser scrolling remains authoritative;
-- mobile menu/drawer transitions use transform + opacity and avoid layout animation;
-- reduced-motion fallback removes decorative loops and complex swipe scene animation;
-- synchronous short theme transition and initial theme application before CSS paint to avoid theme flash;
-- responsive logo assets with srcset/sizes; high-resolution transition logo remains available for high-DPR devices;
-- landing ↔ service navigation remains only on NDP logos and retains the dedicated 5-second brand transition.
+The mobile interaction model is intentionally simple:
 
-## Source-level acceptance checks
+- vertical native scrolling;
+- tap/click actions;
+- no required horizontal swipe;
+- no page-level horizontal scrolling;
+- no off-canvas content that must be dragged sideways.
 
-- transition buttons between landing and service are absent;
-- NDP logos carry data-ndp-transition links in both directions;
-- mobile CSS/JS layers load after the base styles/scripts;
-- no business-logic files were replaced; only presentation/motion guards and theme transition hooks were adjusted;
-- JavaScript syntax and local asset references are checked before packaging.
+## Mobile architecture implemented
 
-## Real-device verification recommended
+- Dedicated mobile composition layer instead of shrinking the desktop layout.
+- Safe-area aware header/content using `env(safe-area-inset-*)`.
+- Compact tap-only vertical navigation popover; no swipe-to-close drawer.
+- Rebuilt mobile hero with one-column reading order and stacked CTAs.
+- Provenance graph converted to a vertical tap-controlled path on phones.
+- “Как работает NormalDance” rebuilt as native vertical scroll storytelling:
+  - portrait devices with sufficient height use one sticky scene controlled by page scroll;
+  - short screens, landscape and reduced-motion mode use a complete vertical fallback containing all 8 stages and their full explanatory text.
+- Capability stack converted to a vertical editorial sequence.
+- Wide interactive graph converted to a vertical tree on phones.
+- Royalty and architecture flows converted to vertical pipelines.
+- AI / technology blocks reflow to single-column mobile structures.
+- Footer and final CTA use a dedicated vertical mobile layout.
+- Transition screen has a portrait-specific composition while preserving the existing 5-second animated waveform/progress route transition.
 
-Frame pacing, Safari Dynamic Island/browser-toolbar behavior and high-refresh rendering should still be confirmed on physical iPhone/Android hardware because headless rendering is not a substitute for real mobile compositor behavior.
+## Horizontal interaction audit
 
-## Packaging validation result
+Static scan of the dedicated landing mobile layer confirms no:
 
-Passed before archive creation:
+- `touchstart` / `touchmove` / `touchend` swipe navigation handlers;
+- `clientX` / `deltaX` horizontal gesture logic;
+- `scroll-snap-type: x`;
+- mobile `overflow-x: auto` / `scroll` content tracks;
+- horizontal swipe required to reach landing content.
 
-- `node --check`: `script.js`, `mobile.js`, `transition.js`, `service/app.js`, `service/mobile.js`;
-- all local `src` / stylesheet references in landing and service resolve to existing files;
-- CSS brace-balance check passed for mobile and transition layers;
-- landing contains exactly one cross-product transition link and it is the NDP brand/logo;
-- service transition links are attached only to NDP brand/logo elements;
-- `.service-link` and `.landing-return` transition buttons are absent;
-- 5-second brand transition remains `TRANSITION_MS = 5000`;
-- transition layer remains pure black;
-- transition uses the supplied 1774×887 NDP waveform composition with 1200/900 px responsive derivatives.
+The service business logic was not rebuilt. Its existing navigation remains tap-driven; the landing mobile rebuild does not introduce horizontal gestures into it.
 
+## Automated viewport checks
 
-## v10 — Vertical-only mobile navigation
+Rendered and inspected with Chromium mobile/touch emulation using the actual NDP HTML/CSS/JS composition (inlined locally to avoid external navigation restrictions).
 
-- Removed all landing horizontal swipe handlers.
-- “Как работает NDP” is controlled only by native vertical scroll in a sticky 420svh scene.
-- Stage transitions use opacity + translateY + scale only.
-- Landing flow cards are a vertical sequence; no horizontal carousel or scroll-snap.
-- Architecture flow is vertical on phones.
-- Service sidebar is tap/backdrop/close-button controlled; swipe-to-close removed.
-- Service verification tabs are vertical and fully visible; no scrollable tab bar.
-- Service “Как работает” progress is vertical; no sideways stage list.
-- Dashboard table becomes vertical record cards on mobile.
-- Code/fingerprint output wraps instead of requiring horizontal pan.
-- Page-level horizontal overflow remains clipped.
+Portrait widths tested:
 
+| Viewport | Page overflow | Touch target scan | Text overflow | Story mode |
+|---|---:|---:|---:|---|
+| 320×568 | none | no principal target <44 px | none | full vertical fallback |
+| 360×800 | none | no principal target <44 px | none | vertical sticky story |
+| 375×812 | none | no principal target <44 px | none | vertical sticky story |
+| 390×844 | none | no principal target <44 px | none | vertical sticky story |
+| 430×932 | none | no principal target <44 px | none | vertical sticky story |
 
-## v11 — Animated transition waveform
+For every portrait run, `documentElement.scrollWidth === clientWidth`.
 
-- Transition base is the supplied NDP waveform artwork; composition and side labels are preserved.
-- Live oscilloscope is drawn on a dedicated canvas only while the 5-second route transition is active.
-- Canvas DPR is capped at 2 for mobile performance and stops immediately after navigation.
-- Progress is transform-based, 0→100%, with synchronized numeric percentage.
-- Progress animation uses no layout-changing width animation.
-- Reduced-motion keeps functional loading progress while calming the decorative waveform.
-- Landing/service business logic and vertical-only mobile navigation are unchanged.
+The sticky story was programmatically sampled mid-sequence and reached stage `05`, confirming that vertical scroll progress updates the stage state.
 
-## v12 — White logo replacement
+A separate touch-enabled compact landscape run at 844×390 also completed with:
 
-- New supplied headphone/equalizer NDP logo converted to pure white RGBA with antialiased transparency.
-- Landing header logo updated.
-- Service desktop auth, mobile auth and sidebar logos updated.
-- Transition artwork updated to use the new white logo.
-- Legacy NDP logo/wordmark/mark/favicon assets removed.
-- Mobile logo sizing rebalanced for 320–430 px layouts without changing navigation logic.
+- no page-level horizontal overflow;
+- no principal touch-target violations;
+- short-height vertical fallback instead of sticky choreography.
+
+## Header/theme verification
+
+- Header fits at 320 px and 430 px without overlap.
+- Principal header controls remain 44×44 px.
+- Dark theme mobile header resolves to the dark background token.
+- Light theme mobile header resolves to the light background token after the controlled theme transition.
+- Theme button remains accessible on phone widths.
+- Header background and dimensions remain stable while scrolling; no intentional height collapse is used.
+
+## Text/layout verification
+
+Automated checks report no detected text node whose scroll width exceeds its content box on the tested portrait sizes.
+
+Specific long-content hardening includes:
+
+- `min-width: 0` on nested grids;
+- `minmax(0,1fr)` for responsive tracks;
+- controlled wrapping for IDs/code values;
+- wider mobile label allocation for long labels such as “Правообладатель”.
+
+## Motion/performance design
+
+- Native browser scrolling remains authoritative; no artificial smooth-scroll engine.
+- Ordinary reveal effects use `transform` + `opacity`.
+- Sticky story scroll work is activated only near the story and updates through one `requestAnimationFrame` cycle.
+- IntersectionObserver is used for visibility/reveal orchestration where applicable.
+- Decorative motion is reduced on mobile.
+- `prefers-reduced-motion` disables sticky choreography and exposes the complete vertical content fallback.
+- Persistent animation is not required for access to information.
+
+## Transition invariant
+
+- Landing ↔ Service remains logo-driven.
+- `TRANSITION_MS = 5000` is unchanged.
+- Existing animated waveform and progress logic remain functional.
+- A portrait-specific transition layout is present in both landing and service documents so the transition is not a cropped desktop canvas on phones.
+
+## Source/static validation
+
+Passed:
+
+- `node --check`:
+  - `script.js`
+  - `mobile.js`
+  - `transition.js`
+  - `service/app.js`
+  - `service/mobile.js`
+- CSS parse via `tinycss2` with zero parser errors:
+  - `styles.css`
+  - `mobile.css`
+  - `transition.css`
+  - `service/styles.css`
+  - `service/mobile.css`
+- no duplicate IDs in landing/service HTML;
+- local stylesheet/script/image references resolve;
+- no page-level horizontal swipe code found in the rebuilt landing mobile layer.
+
+## Limitations of this QA environment
+
+This build was visually exercised with Chromium mobile/touch emulation, not on physical iPhone/Android hardware. Therefore the following should still be verified before a production release on real devices:
+
+- Safari iOS dynamic browser chrome / Dynamic Island compositor behavior;
+- 60/120 Hz frame pacing on physical hardware;
+- Samsung Internet-specific rendering;
+- physical keyboard/IME interactions in the service;
+- Lighthouse/Core Web Vitals using the deployed production URL.
+
+No Lighthouse score is claimed in this report because Lighthouse is not installed in the current execution environment.
