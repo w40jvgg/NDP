@@ -76,3 +76,8 @@ Visible landing/service brand marks use the supplied horizontal NDP / NormalDanc
 ## Mobile v10 — vertical-only interaction
 
 Mobile navigation no longer requires left/right swipes. Landing content is available through native vertical scrolling and tap only. The “Как работает NDP” scene is driven by vertical scroll, service tabs/progress are vertical, the mobile dashboard table becomes stacked record cards, and the service menu is tap/backdrop controlled without swipe-to-close.
+
+
+## Transition v11 — live waveform
+
+Экран перехода Landing ↔ Service использует предоставленную пользователем NDP-композицию 1774×887 как визуальную основу. Поверх изображения работает отдельный Canvas-осциллограф: цветные вертикальные полосы плавно меняют амплитуду и получают движущийся sweep-проход. Шкала загрузки перекрывает статические 78% исходного изображения и реально проходит 0→100% за время 5-секундного перехода; числовой процент обновляется синхронно. Остальной интерфейс и mobile-v10 навигация не изменены.

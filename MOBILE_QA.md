@@ -45,7 +45,7 @@ Passed before archive creation:
 - `.service-link` and `.landing-return` transition buttons are absent;
 - 5-second brand transition remains `TRANSITION_MS = 5000`;
 - transition layer remains pure black;
-- full transition logo remains 2508×2508 px, with responsive mobile derivative available.
+- transition uses the supplied 1774×887 NDP waveform composition with 1200/900 px responsive derivatives.
 
 
 ## v10 — Vertical-only mobile navigation
@@ -61,3 +61,14 @@ Passed before archive creation:
 - Dashboard table becomes vertical record cards on mobile.
 - Code/fingerprint output wraps instead of requiring horizontal pan.
 - Page-level horizontal overflow remains clipped.
+
+
+## v11 — Animated transition waveform
+
+- Transition base is the supplied NDP waveform artwork; composition and side labels are preserved.
+- Live oscilloscope is drawn on a dedicated canvas only while the 5-second route transition is active.
+- Canvas DPR is capped at 2 for mobile performance and stops immediately after navigation.
+- Progress is transform-based, 0→100%, with synchronized numeric percentage.
+- Progress animation uses no layout-changing width animation.
+- Reduced-motion keeps functional loading progress while calming the decorative waveform.
+- Landing/service business logic and vertical-only mobile navigation are unchanged.

@@ -530,11 +530,14 @@
   <div class="ndp-transition" id="ndp-transition" aria-hidden="true">
     <div class="ndp-transition-stage" aria-label="Переход NormalDance Protocol">
       <picture class="ndp-loading-picture">
-        <source media="(max-width: 780px)" srcset="../assets/ndp-loading-screen-900.png">
-        <img class="ndp-loading-image" src="../assets/ndp-loading-screen.png" alt="NDP — экран загрузки NormalDance Protocol">
+        <source media="(max-width: 780px)" srcset="../assets/ndp-loading-screen-900.png 900w, ../assets/ndp-loading-screen-1200.png 1200w" sizes="100vw">
+        <img class="ndp-loading-image" src="../assets/ndp-loading-screen.png" alt="NDP — экран загрузки NormalDance Protocol" width="1774" height="887" decoding="async">
       </picture>
+      <div class="ndp-wave-veil" aria-hidden="true"></div>
+      <canvas class="ndp-wave-canvas" data-ndp-wave aria-hidden="true"></canvas>
       <div class="ndp-progress-zone" aria-hidden="true">
         <div class="ndp-progress-track"><i class="ndp-progress-fill"></i></div>
+        <span class="ndp-progress-value" data-ndp-progress-value>0%</span>
       </div>
     </div>
   </div>

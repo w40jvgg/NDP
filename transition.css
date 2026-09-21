@@ -1,4 +1,4 @@
-/* NDP five-second transition — exact supplied loading-screen composition. */
+/* NDP five-second transition — supplied NDP waveform composition with live oscilloscope + progress. */
 .ndp-transition {
   position: fixed;
   inset: 0;
@@ -11,17 +11,17 @@
   min-height: 100dvh;
   padding:
     max(8px, env(safe-area-inset-top))
-    max(8px, env(safe-area-inset-right))
+    max(0px, env(safe-area-inset-right))
     max(8px, env(safe-area-inset-bottom))
-    max(8px, env(safe-area-inset-left));
+    max(0px, env(safe-area-inset-left));
   background: #000;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
   isolation: isolate;
   transition:
-    opacity .48s cubic-bezier(.22, 1, .36, 1),
-    visibility 0s linear .48s;
+    opacity .46s cubic-bezier(.22, 1, .36, 1),
+    visibility 0s linear .46s;
 }
 
 .ndp-transition.is-active {
@@ -29,23 +29,23 @@
   visibility: visible;
   pointer-events: all;
   transition:
-    opacity .48s cubic-bezier(.22, 1, .36, 1),
+    opacity .46s cubic-bezier(.22, 1, .36, 1),
     visibility 0s;
 }
 
 .ndp-transition-stage {
   position: relative;
   z-index: 1;
-  width: min(96vw, calc(96dvh * 1.5), 1536px);
-  aspect-ratio: 3 / 2;
+  width: min(100vw, calc(96dvh * 2), 1774px);
+  aspect-ratio: 1774 / 887;
   overflow: hidden;
   background: #000;
   opacity: 0;
-  transform: translate3d(0, 4px, 0) scale(.992);
+  transform: translate3d(0, 4px, 0) scale(.994);
   transform-origin: 50% 50%;
   transition:
-    opacity .66s cubic-bezier(.22, 1, .36, 1) .08s,
-    transform .82s cubic-bezier(.22, 1, .36, 1) .06s;
+    opacity .62s cubic-bezier(.22, 1, .36, 1) .06s,
+    transform .78s cubic-bezier(.22, 1, .36, 1) .04s;
 }
 
 .ndp-transition.is-active .ndp-transition-stage {
@@ -61,9 +61,7 @@
   height: 100%;
 }
 
-.ndp-loading-picture {
-  display: block;
-}
+.ndp-loading-picture { display: block; }
 
 .ndp-loading-image {
   display: block;
@@ -74,93 +72,123 @@
   transform: translateZ(0);
 }
 
-/* The reference image already contains a partially-filled bar. This zone masks only that
-   bar and redraws it as a real 0→100% loading indicator while leaving the composition intact. */
+/* The supplied image remains the exact visual base. A feathered veil reduces the static
+   waveform only enough for the live oscilloscope layer to become the visual focus. */
+.ndp-wave-veil {
+  position: absolute;
+  z-index: 2;
+  left: 2.4%;
+  top: 26.8%;
+  width: 95.2%;
+  height: 46.0%;
+  pointer-events: none;
+  background: rgba(1, 8, 15, .34);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 14%, #000 86%, transparent 100%);
+}
+
+.ndp-wave-canvas {
+  position: absolute;
+  z-index: 3;
+  left: 2.4%;
+  top: 26.8%;
+  width: 95.2%;
+  height: 46.0%;
+  display: block;
+  pointer-events: none;
+  opacity: 0;
+  transform: translateZ(0);
+  transition: opacity .36s ease .16s;
+}
+
+.ndp-transition.is-active .ndp-wave-canvas { opacity: 1; }
+
+/* Cover the baked-in 78% bar only, keeping the supplied loading label untouched. */
 .ndp-progress-zone {
   position: absolute;
-  z-index: 4;
-  left: 27.45%;
-  top: 83.55%;
-  width: 45.05%;
-  height: 3.65%;
-  display: flex;
+  z-index: 5;
+  left: 31.2%;
+  top: 78.55%;
+  width: 37.4%;
+  height: 6.2%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 54px;
   align-items: center;
-  padding: 0 .30%;
-  background: #000;
+  gap: 20px;
+  padding: 0 1.6% 0 1.2%;
   pointer-events: none;
+  background: linear-gradient(180deg, rgba(2,8,15,.995), rgba(1,7,13,.998));
+  box-shadow: 0 0 18px 8px rgba(1,7,13,.72);
 }
 
 .ndp-progress-track {
   position: relative;
   width: 100%;
-  height: 10px;
-  border: 1px solid rgba(238, 238, 222, .86);
+  height: 12px;
   border-radius: 999px;
-  background: #080808;
-  overflow: visible;
+  background: #0d2132;
+  overflow: hidden;
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, .035),
-    0 0 5px rgba(255, 255, 255, .025);
+    inset 0 0 0 1px rgba(118, 153, 181, .08),
+    0 0 10px rgba(0, 184, 255, .035);
 }
 
 .ndp-progress-fill {
   position: absolute;
-  left: 1px;
-  top: 1px;
-  bottom: 1px;
-  width: calc(100% - 2px);
+  inset: 0;
   border-radius: inherit;
-  background: #fff400;
+  background: linear-gradient(90deg, #8d42ff 0%, #5b75ff 27%, #35bcff 53%, #38e6dc 77%, #49e7c4 100%);
   transform: scaleX(0);
   transform-origin: 0 50%;
   box-shadow:
-    0 0 7px rgba(255, 244, 0, .82),
-    0 0 18px rgba(255, 244, 0, .34);
+    0 0 10px rgba(83, 126, 255, .35),
+    0 0 18px rgba(57, 226, 218, .22);
   will-change: transform;
 }
 
 .ndp-progress-fill::after {
   content: "";
   position: absolute;
-  right: -4px;
+  right: -2px;
   top: 50%;
-  width: 10px;
-  height: 10px;
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: #fffbd2;
+  background: #c8fff7;
   transform: translateY(-50%);
-  box-shadow:
-    0 0 7px #fff400,
-    0 0 18px rgba(255, 244, 0, .88);
+  box-shadow: 0 0 8px rgba(71, 239, 217, .76);
 }
 
-/* 0→100% during the five-second route transition. */
-.ndp-transition.is-active .ndp-progress-fill {
-  animation: ndp-progress-fill 4.32s linear .24s both;
+.ndp-progress-value {
+  min-width: 54px;
+  color: #f4f6fb;
+  font: 500 clamp(15px, 1.28vw, 23px)/1 ui-monospace, "SFMono-Regular", Consolas, monospace;
+  letter-spacing: .02em;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
 }
 
 .ndp-transition.is-exiting .ndp-transition-stage {
   opacity: 0;
   transform: translate3d(0, -2px, 0) scale(1.002);
   transition:
-    opacity .34s cubic-bezier(.65, 0, .35, 1),
-    transform .38s cubic-bezier(.65, 0, .35, 1);
+    opacity .32s cubic-bezier(.65, 0, .35, 1),
+    transform .36s cubic-bezier(.65, 0, .35, 1);
 }
 
+.ndp-transition.is-exiting .ndp-wave-canvas,
 .ndp-transition.is-exiting .ndp-progress-zone {
   opacity: 0;
-  transition: opacity .22s ease;
+  transition: opacity .20s ease;
 }
 
 body.ndp-transitioning > *:not(.ndp-transition) {
   opacity: 0 !important;
   pointer-events: none !important;
-  transition: opacity .46s cubic-bezier(.22, 1, .36, 1) !important;
+  transition: opacity .44s cubic-bezier(.22, 1, .36, 1) !important;
 }
 
-html.ndp-arrival-pending body > *:not(.ndp-transition) {
-  opacity: 0 !important;
-}
+html.ndp-arrival-pending body > *:not(.ndp-transition) { opacity: 0 !important; }
 
 html.ndp-arrival-pending .ndp-transition,
 .ndp-transition.is-arrival {
@@ -179,32 +207,30 @@ html.ndp-arrival-pending .ndp-transition-stage,
 
 .ndp-transition.is-arrival.is-arrival-ready {
   opacity: 0;
-  transition: opacity .70s cubic-bezier(.22, 1, .36, 1);
-}
-
-@keyframes ndp-progress-fill {
-  0% { transform: scaleX(0); }
-  100% { transform: scaleX(1); }
+  transition: opacity .68s cubic-bezier(.22, 1, .36, 1);
 }
 
 @media (max-width: 780px) {
   .ndp-transition-stage {
-    width: min(98vw, calc(94dvh * 1.5), 900px);
+    width: min(100vw, calc(96dvh * 2));
   }
+
+  .ndp-progress-zone {
+    grid-template-columns: minmax(0, 1fr) 34px;
+    gap: 8px;
+  }
+
   .ndp-progress-track { height: 7px; }
-  .ndp-progress-fill::after { width: 8px; height: 8px; right: -3px; }
+  .ndp-progress-value { min-width: 34px; font-size: clamp(8px, 2.7vw, 12px); }
 }
 
 @media (orientation: portrait) and (max-width: 600px) {
-  .ndp-transition {
-    padding-left: 0;
-    padding-right: 0;
-  }
+  .ndp-transition { padding-left: 0; padding-right: 0; }
   .ndp-transition-stage { width: 100vw; }
 }
 
 @media (orientation: landscape) and (max-height: 560px) {
-  .ndp-transition-stage { width: min(96vw, calc(94dvh * 1.5)); }
+  .ndp-transition-stage { width: min(100vw, calc(96dvh * 2)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -213,8 +239,7 @@ html.ndp-arrival-pending .ndp-transition-stage,
   body.ndp-transitioning > *:not(.ndp-transition) {
     transition-duration: 180ms !important;
   }
-  /* Loading progress remains animated because it conveys route progress rather than decoration. */
-  .ndp-transition.is-active .ndp-progress-fill {
-    animation: ndp-progress-fill 4.32s linear .24s both !important;
-  }
+
+  /* Progress remains animated because it conveys route progress, while waveform motion is calmer. */
+  .ndp-wave-canvas { opacity: .72; }
 }
